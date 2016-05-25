@@ -22,7 +22,7 @@
  *     this program.  If not, see <https://opensource.org/licenses/> or
  *     <http://www.gnu.org/licenses/> respectively.
  */
-if (!Array.indexOf) {
+if (!Array.prototype.hasOwnProperty('indexOf')) {
     Array.prototype.indexOf = function (obj) {
         var i, len;
         for (i = 0, len = this.length; i < len; i += 1) {
