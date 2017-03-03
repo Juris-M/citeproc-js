@@ -16737,3 +16737,5 @@ CSL.parseParticles = function(){
         }
     }
 }();
+
+if (typeof module != 'undefined) { module.exports = CSL }
