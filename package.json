@@ -1,0 +1,15 @@
+{
+  "name": "citeproc-js",
+  "version": "1.1.164",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com:Juris-M/citeproc-js.git"
+  },
+  "license": "AGPLv3",
+  "dependencies": {},
+  "devDependencies": {}
+}
