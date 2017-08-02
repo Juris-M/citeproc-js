@@ -937,7 +937,15 @@ if (typeof require !== "undefined" && typeof module !== 'undefined' && "exports"
 }
 CSL.TERMINAL_PUNCTUATION_REGEXP = new RegExp("^([" + CSL.TERMINAL_PUNCTUATION.slice(0, -1).join("") + "])(.*)");
 CSL.CLOSURES = new RegExp(".*[\\]\\)]");
-if ("undefined" === typeof console) {
+if (Components) {
+    CSL.ConsoleService = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
+    CSL.debug = function (str) {
+        CSL.ConsoleService.logStringMessage("CSL: " + str + "\n");
+    };
+    CSL.error = function (str) {
+        CSL.ConsoleService.logStringMessage("CSL error: " + str + "\n");
+    };
+} else if ("undefined" === typeof console) {
     CSL.debug = function (str) {
         dump("CSL: " + str + "\n");
     };
