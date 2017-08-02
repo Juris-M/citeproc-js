@@ -1,4 +1,4 @@
-define(['exports'], function (exports) { 'use strict';
+define(function () { 'use strict';
 
 /*
  * Copyright (c) 2009-2016 Frank Bennett
@@ -24,6 +24,7 @@ define(['exports'], function (exports) { 'use strict';
  *     this program.  If not, see <https://opensource.org/licenses/> or
  *     <http://www.gnu.org/licenses/> respectively.
  */
+
 var CSL = {
     PROCESSOR_VERSION: "1.1.172",
     CONDITION_LEVEL_TOP: 1,
@@ -10829,7 +10830,7 @@ CSL.Attributes["@variable"] = function (state, arg) {
         this.execs.push(func);
         func = function (state, Item, item) {
             var mydate;
-            var output = false;
+            output = false;
             for (var i=0,ilen=this.variables.length;i<ilen;i++) {
                 var variable = this.variables[i];
                 if (["authority", "committee"].indexOf(variable) > -1
@@ -14907,10 +14908,10 @@ CSL.Output.Formatters = new function () {
     this["capitalize-first"] = capitalizeFirst;
     this["capitalize-all"] = capitalizeAll;
     var rexStr = "(?:\u2018|\u2019|\u201C|\u201D| \"| \'|\"|\'|[-\–\—\/.,;?!:]|\\[|\\]|\\(|\\)|<span style=\"font-variant: small-caps;\">|<span class=\"no(?:case|decor)\">|<\/span>|<\/?(?:i|sc|b|sub|sup)>)";
-    var tagDoppel = new CSL.Doppeler(rexStr, function(str) {
+    tagDoppel = new CSL.Doppeler(rexStr, function(str) {
         return str.replace(/(<span)\s+(class=\"no(?:case|decor)\")[^>]*(>)/g, "$1 $2$3").replace(/(<span)\s+(style=\"font-variant:)\s*(small-caps);?(\")[^>]*(>)/g, "$1 $2 $3;$4$5");
     });
-    var wordDoppel = new CSL.Doppeler("(?:[\u0020\u00A0\u2000-\u200B\u205F\u3000]+)");
+    wordDoppel = new CSL.Doppeler("(?:[\u0020\u00A0\u2000-\u200B\u205F\u3000]+)");
     var _tagParams = {
         "<span style=\"font-variant: small-caps;\">": "</span>",
         "<span class=\"nocase\">": "</span>",
@@ -16463,7 +16464,7 @@ CSL.ParticleList = function() {
 	var either_2_dropping_best = [[[0,2],null],[null, [0,2]]];
 	var either_3_dropping_best = [[[0,3],null],[null, [0,3]]];
 	var non_dropping_2_alt_dropping_1_non_dropping_1 = [[null, [0,2]], [[0,1], [1,2]]];
-    var PARTICLES = [
+	return  PARTICLES = [
 		["'s", always_non_dropping_1],
 		["'s-", always_non_dropping_1],
 		["'t", always_non_dropping_1],
@@ -16686,8 +16687,7 @@ CSL.ParticleList = function() {
 		["zu", either_1_dropping_best],
 		["zum", either_1],
 		["zur", either_1]
-    ];
-    return PARTICLES;
+	];
 }();
 CSL.parseParticles = function(){
     function splitParticles(nameValue, firstNameFlag, caseOverride) {
@@ -16789,8 +16789,6 @@ CSL.parseParticles = function(){
     }
 }();
 
-exports.CSL = CSL;
-
-Object.defineProperty(exports, '__esModule', { value: true });
+return CSL;
 
 });
