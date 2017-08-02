@@ -2,7 +2,7 @@
   "name": "citeproc",
   "version": "1.1.172",
   "description": "A JavaScript implementation of the Citation Style Language (CSL)",
-  "main": "citeproc.js",
+  "main": "dist/citeproc.cjs.js",
   "directories": {
     "doc": "docs",
     "test": "tests"
