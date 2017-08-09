@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.Engine.prototype.makeBibliography = function (bibsection) {
     var debug, ret, params, maxoffset, item, len, pos, tok, tokk, tokkk, entry_ids, entry_strings, bibliography_errors;
