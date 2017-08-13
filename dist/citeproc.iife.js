@@ -1,4 +1,4 @@
-(function () {
+var Citeproc = (function () {
 'use strict';
 
 /*
@@ -16334,7 +16334,7 @@ CSL.ParticleList = function() {
 	var either_2_dropping_best = [[[0,2],null],[null, [0,2]]];
 	var either_3_dropping_best = [[[0,3],null],[null, [0,3]]];
 	var non_dropping_2_alt_dropping_1_non_dropping_1 = [[null, [0,2]], [[0,1], [1,2]]];
-	PARTICLES = [
+	var PARTICLES = [
 		["'s", always_non_dropping_1],
 		["'s-", always_non_dropping_1],
 		["'t", always_non_dropping_1],
@@ -16558,6 +16558,7 @@ CSL.ParticleList = function() {
 		["zum", either_1],
 		["zur", either_1]
 	];
+	return PARTICLES;
 }();
 CSL.parseParticles = function(){
     function splitParticles(nameValue, firstNameFlag, caseOverride) {
@@ -16655,5 +16656,7 @@ CSL.parseParticles = function(){
         }
     }
 }();
+
+return CSL;
 
 }());

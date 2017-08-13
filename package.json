@@ -41,6 +41,10 @@
     },
     "globals": {
       "CSL": true
+    },
+    "env": {
+      "browser": true,
+      "commonjs": true
     }
   }
 }

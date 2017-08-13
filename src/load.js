@@ -1,3 +1,4 @@
+/* eslint-env: node */ 
 /* global load: true */
 
 /**
@@ -1301,3 +1302,4 @@ if (!CSL.Registry.prototype.disambiguateCites) {
 }
 
 //SNIP-END
+export default CSL;
