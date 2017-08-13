@@ -1317,7 +1317,9 @@ CSL.citeStart = function (Item, item, blockShadowNumberReset) {
             if (this.tmp.area === 'bibliography' && this.tmp.disambig_settings && this.tmp.disambig_override) {
                 if (this.opt["disambiguate-add-names"]) {
                     this.tmp.disambig_settings.names = this.registry.registry[Item.id].disambig.names.slice();
-                    this.tmp.disambig_request.names = this.registry.registry[Item.id].disambig.names.slice();
+                    if (typeof this.tmp.disambig_request === 'object') {
+                        this.tmp.disambig_request.names = this.registry.registry[Item.id].disambig.names.slice();
+                    }
                 }
                 if (this.opt["disambiguate-add-givenname"]) {
                     // This is weird and delicate and not fully understood

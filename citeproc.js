@@ -5762,7 +5762,9 @@ CSL.citeStart = function (Item, item, blockShadowNumberReset) {
             if (this.tmp.area === 'bibliography' && this.tmp.disambig_settings && this.tmp.disambig_override) {
                 if (this.opt["disambiguate-add-names"]) {
                     this.tmp.disambig_settings.names = this.registry.registry[Item.id].disambig.names.slice();
-                    this.tmp.disambig_request.names = this.registry.registry[Item.id].disambig.names.slice();
+                    if (typeof this.tmp.disambig_request === 'object') {
+                        this.tmp.disambig_request.names = this.registry.registry[Item.id].disambig.names.slice();
+                    }
                 }
                 if (this.opt["disambiguate-add-givenname"]) {
                     this.tmp.disambig_request = this.tmp.disambig_settings;
@@ -8408,9 +8410,9 @@ CSL.NameOutput.prototype.joinPersons = function (blobs, pos, j, tokenname) {
         tokenname = "name";
     }
     if ("undefined" === typeof j) {
-        if (this.etal_spec[pos].freeters === 1) {
+        if (this.etal_spec[pos] && this.etal_spec[pos].freeters === 1) {
            ret = this._joinEtAl(blobs, tokenname);
-        } else if (this.etal_spec[pos].freeters === 2) {
+        } else if (this.etal_spec[pos] && this.etal_spec[pos].freeters === 2) {
             ret = this._joinEllipsis(blobs, tokenname);
         } else if (!this.state.tmp.sort_key_flag) {
             ret = this._joinAnd(blobs, tokenname);
