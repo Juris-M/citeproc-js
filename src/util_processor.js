@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.substituteOne = function (template) {
     return function (state, list) {
@@ -47,38 +46,35 @@ CSL.Mode = function (mode) {
     decorations = {};
     params = CSL.Output.Formats[mode];
     for (param in params) {
-        if (true) {
+        if ("@" !== param.slice(0, 1)) {
+            decorations[param] = params[param];
+            continue;
+        }
+        func = false;
+        val = params[param];
+        args = param.split('/');
 
-            if ("@" !== param.slice(0, 1)) {
-                decorations[param] = params[param];
-                continue;
-            }
-            func = false;
-            val = params[param];
-            args = param.split('/');
-
-            if (typeof val === "string" && val.indexOf("%%STRING%%") > -1)  {
-                if (val.indexOf("%%PARAM%%") > -1) {
-                    func = CSL.substituteTwo(val);
-                } else {
-                    func = CSL.substituteOne(val);
-                }
-            } else if (typeof val === "boolean" && !val) {
-                func = CSL.Output.Formatters.passthrough;
-            } else if (typeof val === "function") {
-                func = val;
+        if (typeof val === "string" && val.indexOf("%%STRING%%") > -1)  {
+            if (val.indexOf("%%PARAM%%") > -1) {
+                func = CSL.substituteTwo(val);
             } else {
-                throw "CSL.Compiler: Bad " + mode + " config entry for " + param + ": " + val;
+                func = CSL.substituteOne(val);
             }
+        } else if (typeof val === "boolean" && !val) {
+            func = CSL.Output.Formatters.passthrough;
+        } else if (typeof val === "function") {
+            func = val;
+        } else {
+            throw "CSL.Compiler: Bad " + mode + " config entry for " + param + ": " + val;
+        }
 
-            if (args.length === 1) {
-                decorations[args[0]] = func;
-            } else if (args.length === 2) {
-                if (!decorations[args[0]]) {
-                    decorations[args[0]] = {};
-                }
-                decorations[args[0]][args[1]] = func;
+        if (args.length === 1) {
+            decorations[args[0]] = func;
+        } else if (args.length === 2) {
+            if (!decorations[args[0]]) {
+                decorations[args[0]] = {};
             }
+            decorations[args[0]][args[1]] = func;
         }
     }
     return decorations;
@@ -103,19 +99,16 @@ CSL.setDecorations = function (state, attributes) {
     // This applies a fixed processing sequence
     ret = [];
     for (pos in CSL.FORMAT_KEY_SEQUENCE) {
-        if (true) {
-            key = CSL.FORMAT_KEY_SEQUENCE[pos];
-            if (attributes[key]) {
-                ret.push([key, attributes[key]]);
-                delete attributes[key];
-            }
+        key = CSL.FORMAT_KEY_SEQUENCE[pos];
+        if (attributes[key]) {
+            ret.push([key, attributes[key]]);
+            delete attributes[key];
         }
     }
     return ret;
 };
 
 CSL.Doppeler = function(rexStr, stringMangler) {
-    var mx, lst, len, pos, m, buf1, buf2, idx, ret, myret;
     this.split = split;
     this.join = join;
     var matchRex = new RegExp("(" + rexStr + ")", "g");

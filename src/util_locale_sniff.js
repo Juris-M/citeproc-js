@@ -4,7 +4,7 @@ CSL.getLocaleNames = function (myxml, preferredLocale) {
     function extendLocaleList(localeList, locale) {
         var forms = ["base", "best"];
         if (locale) {
-            normalizedLocale = CSL.localeResolve(locale);
+            var normalizedLocale = CSL.localeResolve(locale);
             for (var i=0,ilen=forms.length;i<ilen;i++) {
                 if (normalizedLocale[forms[i]] && localeList.indexOf(normalizedLocale[forms[i]]) === -1) {
                     localeList.push(normalizedLocale[forms[i]]);

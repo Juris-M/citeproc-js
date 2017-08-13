@@ -1,17 +1,16 @@
-/*global CSL: true */
 
 CSL.Node.choose = {
     build: function (state, target) {
         var func;
         if (this.tokentype === CSL.START) {
             //open condition
-            func = function (state, Item) {
+            func = function (state) {
                 state.tmp.jump.push(undefined, CSL.LITERAL);
             };
         }
         if (this.tokentype === CSL.END) {
             //close condition
-            func = function (state, Item) {
+            func = function (state) {
                 state.tmp.jump.pop();
             };
         }

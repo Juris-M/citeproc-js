@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.Util.Names = {};
 
@@ -12,8 +11,8 @@ CSL.Util.Names.unInitialize = function (state, name) {
     if (!name) {
         return "";
     }
-    namelist = name.split(/(?:\-|\s+)/);
-    punctlist = name.match(/(\-|\s+)/g);
+    namelist = name.split(/(?:-|\s+)/);
+    punctlist = name.match(/(-|\s+)/g);
     ret = "";
     for (i = 0, ilen = namelist.length; i < ilen; i += 1) {
         if (CSL.ALL_ROMANESQUE_REGEXP.exec(namelist[i].slice(0,-1)) 
@@ -36,7 +35,7 @@ CSL.Util.Names.unInitialize = function (state, name) {
  * Initialize a name.
  */
 CSL.Util.Names.initializeWith = function (state, name, terminator, normalizeOnly) {
-    var i, ilen, j, jlen, n, m, mm, str, lst, ret;
+    var i, ilen, j, jlen, mm, lst, ret;
     if (!name) {
         return "";
     }
@@ -50,7 +49,7 @@ CSL.Util.Names.initializeWith = function (state, name, terminator, normalizeOnly
     }
     var namelist = name;
     if (state.opt["initialize-with-hyphen"] === false) {
-        namelist = namelist.replace(/\-/g, " ");
+        namelist = namelist.replace(/-/g, " ");
     }
 
     // Oh boy.
@@ -64,13 +63,13 @@ CSL.Util.Names.initializeWith = function (state, name, terminator, normalizeOnly
     //       (b) Do the thing below
 
     // (1) Split the string
-    namelist = namelist.replace(/\s*\-\s*/g, "-").replace(/\s+/g, " ");
+    namelist = namelist.replace(/\s*-\s*/g, "-").replace(/\s+/g, " ");
     namelist = namelist.replace(/-([a-z])/g, "\u2013$1");
     // Workaround for Internet Explorer
     //namelist = namelist.split(/(\-|\s+)/);
     // Workaround for Internet Explorer
-    mm = namelist.match(/[\-\s]+/g);
-    lst = namelist.split(/[\-\s]+/);
+    mm = namelist.match(/[-\s]+/g);
+    lst = namelist.split(/[-\s]+/);
 
     if (lst.length === 0) {
         // This doesn't make much sense, and may be impossible.
@@ -112,7 +111,7 @@ CSL.Util.Names.initializeWith = function (state, name, terminator, normalizeOnly
     return ret;
 };
 
-CSL.Util.Names.doNormalize = function (state, namelist, terminator, mode) {
+CSL.Util.Names.doNormalize = function (state, namelist, terminator) {
     var i, ilen;
     terminator = terminator ? terminator : "";
     //   (2) Step through the string, deleting periods and, if initalize="false", then
@@ -132,7 +131,6 @@ CSL.Util.Names.doNormalize = function (state, namelist, terminator, mode) {
     //   (3) If initialize="false" then:
     //       (a) Do the thing below, but only pushing terminator; or else
     //       (b) Do the thing below
-    var ret = [];
     for (i = 0, ilen = namelist.length; i < ilen; i += 2) {
         if (isAbbrev[i]) {
             if (i < namelist.length - 2) {
@@ -160,10 +158,10 @@ CSL.Util.Names.doNormalize = function (state, namelist, terminator, mode) {
             }
         }
     }
-    return namelist.join("").replace(/[\u0009\u000a\u000b\u000c\u000d\u0020\ufeff\u00a0]+$/,"").replace(/\s*\-\s*/g, "-").replace(/[\u0009\u000a\u000b\u000c\u000d\u0020]+/g, " ");
+    return namelist.join("").replace(/[\u0009\u000a\u000b\u000c\u000d\u0020\ufeff\u00a0]+$/,"").replace(/\s*-\s*/g, "-").replace(/[\u0009\u000a\u000b\u000c\u000d\u0020]+/g, " ");
 };
 
-CSL.Util.Names.doInitialize = function (state, namelist, terminator, mode) {
+CSL.Util.Names.doInitialize = function (state, namelist, terminator) {
     var i, ilen, m, j, jlen, lst, n;
     for (i = 0, ilen = namelist.length; i < ilen; i += 2) {
         n = namelist[i];
@@ -214,7 +212,7 @@ CSL.Util.Names.doInitialize = function (state, namelist, terminator, mode) {
         }
     }
     var ret = namelist.join("");
-    ret = ret.replace(/[\u0009\u000a\u000b\u000c\u000d\u0020\ufeff\u00a0]+$/,"").replace(/\s*\-\s*/g, "-").replace(/[\u0009\u000a\u000b\u000c\u000d\u0020]+/g, " ");
+    ret = ret.replace(/[\u0009\u000a\u000b\u000c\u000d\u0020\ufeff\u00a0]+$/,"").replace(/\s*-\s*/g, "-").replace(/[\u0009\u000a\u000b\u000c\u000d\u0020]+/g, " ");
     return ret;
 };
 

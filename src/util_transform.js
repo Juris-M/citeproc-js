@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 /*
  * Fields can be transformed by translation/transliteration, or by
@@ -52,8 +51,6 @@
  */
 
 CSL.Transform = function (state) {
-    var debug = false, abbreviations, token, fieldname, abbrev_family, opt;
-
     // Abbreviation families
     this.abbrevs = {};
     this.abbrevs["default"] = new state.sys.AbbreviationSegments();
@@ -102,9 +99,9 @@ CSL.Transform = function (state) {
         //   and Item.type is treaty or patent
         //   print the remainder
         // Otherwise return false
-        if (value && value.match(/^\!(?:[^>]+,)*here(?:,[^>]+)*>>>/)) {
+        if (value && value.match(/^!(?:[^>]+,)*here(?:,[^>]+)*>>>/)) {
             if (variable === "jurisdiction" && ["treaty", "patent"].indexOf(Item.type) > -1) {
-                value = value.replace(/^\![^>]*>>>\s*/, "");
+                value = value.replace(/^![^>]*>>>\s*/, "");
             } else {
                 value = false;
             }
@@ -121,7 +118,7 @@ CSL.Transform = function (state) {
             localeRex = new RegExp("^([a-zA-Z]{2})(?:$|-.*|.*)");
         }
         if (Item.language) {
-            m = ("" + Item.language).match(localeRex);
+            var m = ("" + Item.language).match(localeRex);
             if (m) {
                 ret = m[1];
             } else {
@@ -142,7 +139,7 @@ CSL.Transform = function (state) {
 
     // Internal functions
     function getTextSubField (Item, field, locale_type, use_default, stopOrig) {
-        var m, lst, opt, o, oo, pos, key, ret, len, myret, opts;
+        var opt, o, ret, opts;
         var usedOrig = stopOrig;
         var usingOrig = false;
 
@@ -169,7 +166,7 @@ CSL.Transform = function (state) {
         } else if (use_default && ("undefined" === typeof opts || opts.length === 0)) {
             // If we want the original, or if we don't have any specific guidance and we 
             // definitely want output, just return the original value.
-            var ret = {name:Item[field], usedOrig:true, locale:getFieldLocale(Item,field)};
+            ret = {name:Item[field], usedOrig:true, locale:getFieldLocale(Item,field)};
             hasVal = true;
             usingOrig = true;
         }
@@ -177,7 +174,7 @@ CSL.Transform = function (state) {
         if (!hasVal) {
             for (var i = 0, ilen = opts.length; i < ilen; i += 1) {
                 opt = opts[i];
-                o = opt.split(/[\-_]/)[0];
+                o = opt.split(/[-_]/)[0];
                 if (opt && Item.multi && Item.multi._keys[field] && Item.multi._keys[field][opt]) {
                     ret.name = Item.multi._keys[field][opt];
                     ret.locale = opt;
@@ -218,7 +215,6 @@ CSL.Transform = function (state) {
     // This initializes a single abbreviation based on known
     // data.
     function loadAbbreviation(jurisdiction, category, orig, itemType) {
-        var pos, len;
         if (!jurisdiction) {
             jurisdiction = "default";
         }
@@ -275,7 +271,7 @@ CSL.Transform = function (state) {
     }
 
     // Return function appropriate to selected options
-    function getOutputFunction(variables, myabbrev_family, abbreviation_fallback, alternative_varname, transform_fallback) {
+    function getOutputFunction(variables, myabbrev_family, abbreviation_fallback, alternative_varname) {
         // var mytoken;
 
         // Set the primary_locale and secondary_locale lists appropriately.
@@ -290,8 +286,8 @@ CSL.Transform = function (state) {
             localesets = state.opt['cite-lang-prefs'][langPrefs];
         }
 
-        return function (state, Item, item, usedOrig) {
-            var primary, primary_locale, secondary, secondary_locale, tertiary, tertiary_locale, primary_tok, group_tok, key;
+        return function (state, Item, item) {
+            var primary, primary_locale, secondary, secondary_locale, tertiary, tertiary_locale, primary_tok, i, ilen;
             if (!variables[0] || (!Item[variables[0]] && !Item[alternative_varname])) {
                 return null;
             }
@@ -302,7 +298,7 @@ CSL.Transform = function (state) {
             } else {
                 if (localesets) {
                     var slotnames = ["primary", "secondary", "tertiary"];
-                    for (var i = 0, ilen = slotnames.length; i < ilen; i += 1) {
+                    for (i = 0, ilen = slotnames.length; i < ilen; i += 1) {
                         if (localesets.length - 1 <  i) {
                             break;
                         }
@@ -341,7 +337,7 @@ CSL.Transform = function (state) {
             var res = getTextSubField.call(this, Item, variables[0], slot.primary, true);
             primary = res.name;
             primary_locale = res.locale;
-            var primary_tok = res.token;
+            primary_tok = res.token;
             var primaryUsedOrig = res.usedOrig;
 
             if (publisherCheck(this, Item, primary, myabbrev_family)) {
@@ -391,7 +387,7 @@ CSL.Transform = function (state) {
 
             if (primaryPrefix === "<i>" && variables[0] === 'title' && !primaryUsedOrig) {
                 var hasItalic = false;
-                for (var i = 0, ilen = primary_tok.decorations.length; i < ilen; i += 1) {
+                for (i = 0, ilen = primary_tok.decorations.length; i < ilen; i += 1) {
                     if (primary_tok.decorations[i][0] === "@font-style"
                         && primary_tok.decorations[i][1] === "italic") {
                         
@@ -414,6 +410,7 @@ CSL.Transform = function (state) {
 
             if (secondary || tertiary) {
 
+                var blob_obj, blobs_pos;
                 state.output.openLevel("empty");
 
                 // A little too aggressive maybe.
@@ -428,7 +425,7 @@ CSL.Transform = function (state) {
                         secondary_tok.strings.prefix = " ";
                     }
                     // Remove quotes
-                    for (var i = secondary_tok.decorations.length - 1; i > -1; i += -1) {
+                    for (i = secondary_tok.decorations.length - 1; i > -1; i += -1) {
                         if (['@quotes/true', '@font-style/italic', '@font-style/oblique', '@font-weight/bold'].indexOf(secondary_tok.decorations[i].join('/')) > -1) {
                             secondary_tok.decorations = secondary_tok.decorations.slice(0, i).concat(secondary_tok.decorations.slice(i + 1))
                         }
@@ -443,8 +440,8 @@ CSL.Transform = function (state) {
                     state.output.append(secondary, secondary_tok);
                     state.output.closeLevel();
 
-                    var blob_obj = state.output.current.value();
-                    var blobs_pos = state.output.current.value().blobs.length - 1;
+                    blob_obj = state.output.current.value();
+                    blobs_pos = state.output.current.value().blobs.length - 1;
                     // Suppress supplementary multilingual info on subsequent
                     // partners of a parallel cite.
                     // The logic of this is obscure. Parent blob is used by parallels
@@ -463,7 +460,7 @@ CSL.Transform = function (state) {
                         tertiary_tok.strings.prefix = " ";
                     }
                     // Remove quotes
-                    for (var i = tertiary_tok.decorations.length - 1; i > -1; i += -1) {
+                    for (i = tertiary_tok.decorations.length - 1; i > -1; i += -1) {
                         if (['@quotes/true', '@font-style/italic', '@font-style/oblique', '@font-weight/bold'].indexOf(tertiary_tok.decorations[i].join('/')) > -1) {
                             tertiary_tok.decorations = tertiary_tok.decorations.slice(0, i).concat(tertiary_tok.decorations.slice(i + 1))
                         }
@@ -478,8 +475,8 @@ CSL.Transform = function (state) {
                     state.output.append(tertiary, tertiary_tok);
                     state.output.closeLevel();
 
-                    var blob_obj = state.output.current.value();
-                    var blobs_pos = state.output.current.value().blobs.length - 1;
+                    blob_obj = state.output.current.value();
+                    blobs_pos = state.output.current.value().blobs.length - 1;
                     // Suppress supplementary multilingual info on subsequent
                     // partners of a parallel cite.
                     // See note above.

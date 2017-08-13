@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 /**
  * An output instance object representing a number or a range

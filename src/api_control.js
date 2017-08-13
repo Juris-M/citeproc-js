@@ -1,5 +1,3 @@
-/*global CSL: true */
-
 CSL.Engine.prototype.setOutputFormat = function (mode) {
     this.opt.mode = mode;
     this.fun.decorate = CSL.Mode(mode);

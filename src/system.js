@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.setupXml = function(xmlObject) {
     var dataObj = {};

@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.Node["else"] = {
     build: function (state, target) {

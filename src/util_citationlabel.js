@@ -1,5 +1,3 @@
-/*global CSL: true */
-
 
 CSL.Engine.prototype.getCitationLabel = function (Item) {
     var label = "";
@@ -28,7 +26,7 @@ CSL.Engine.prototype.getCitationLabel = function (Item) {
                 var name = res.name;
                 if (name && name.family) {
                     myname = name.family;
-                    myname = myname.replace(/^([ \'\u2019a-z]+\s+)/, "");
+                    myname = myname.replace(/^([ '\u2019a-z]+\s+)/, "");
 
                 } else if (name && name.literal) {
                     myname = name.literal;
@@ -57,7 +55,7 @@ CSL.Engine.prototype.getCitationLabel = function (Item) {
         if (Item.title) {
             var skipWords = this.locale[this.opt.lang].opts["skip-words"];
             var lst = Item.title.split(/\s+/);
-            for (var i = lst.length - 1; i > -1; i--) {
+            for (i = lst.length - 1; i > -1; i--) {
                 if (skipWords.indexOf(lst[i]) > -1) {
                     lst = lst.slice(0, i).concat(lst.slice(i + 1));
                 }

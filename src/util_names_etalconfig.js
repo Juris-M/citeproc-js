@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.NameOutput.prototype.getEtAlConfig = function () {
     var item = this.item;

@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.NameOutput.prototype.setCommonTerm = function () {
     var variables = this.variables;
@@ -26,7 +25,6 @@ CSL.NameOutput.prototype.setCommonTerm = function () {
         this.common_term = false;
         return;
     }
-    var freeters_offset = 0;
     for (var i = 0, ilen = this.variables.length - 1; i < ilen; i += 1) {
         var v = this.variables[i];
         var vv = this.variables[i + 1];
@@ -36,7 +34,6 @@ CSL.NameOutput.prototype.setCommonTerm = function () {
                 this.common_term = false;
                 return;
             }
-            freeters_offset += 1;
         }
         if (this.persons[v].length !== this.persons[vv].length) {
             this.common_term = false;
@@ -57,7 +54,6 @@ CSL.NameOutput.prototype._compareNamesets = function (base_nameset, nameset) {
         return false;
     }
     for (var i = 0, ilen = nameset.length; i < ilen; i += 1) {
-        var name = nameset[i];
         for (var j = 0, jlen = CSL.NAME_PARTS.length; j < jlen; j += 1) {
             var part = CSL.NAME_PARTS[j];
             if (!base_nameset[i] || base_nameset[i][part] != nameset[i][part]) {

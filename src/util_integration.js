@@ -1,11 +1,10 @@
-/*global CSL: true */
-
 
 CSL.Engine.prototype.setCitationId = function (citation, force) {
     var ret, id, direction;
     ret = false;
     if (!citation.citationID || force) {
         id = Math.floor(Math.random() * 100000000000000);
+        // eslint-disable-next-line
         while (true) {
             direction = 0;
             if (!this.registry.citationreg.citationById[id]) {

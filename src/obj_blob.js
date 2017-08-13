@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.Blob = function (str, token, levelname) {
     var len, pos, key;

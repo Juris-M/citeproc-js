@@ -1,10 +1,8 @@
-/*global CSL: true */
 
 CSL.NameOutput.prototype.constrainNames = function () {
     // figure out how many names to include, in light of the disambig params
     //
     this.names_count = 0;
-    //var pos = 0;
     var pos;
     for (var i = 0, ilen = this.variables.length; i < ilen; i += 1) {
         var v = this.variables[i];

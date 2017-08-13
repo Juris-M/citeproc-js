@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.NameOutput.prototype.isPerson = function (value) {
     if (value.literal

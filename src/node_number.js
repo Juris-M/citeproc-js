@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.Node.number = {
     build: function (state, target) {
@@ -31,7 +30,6 @@ CSL.Node.number = {
         //
         // push number or text
         func = function (state, Item, item) {
-            var i, ilen, newlst, lst;
             // NOTE: this works because this is the ONLY function in this node.
             // If further functions are added, they need to start with the same
             // abort condition.
@@ -40,10 +38,9 @@ CSL.Node.number = {
                 return;
             }
             if ("undefined" === typeof item) {
-                var item = {};
+                item = {};
             }
-            var varname, num, number, m, j, jlen;
-            varname = this.variables[0];
+            var varname = this.variables[0];
             if (varname === "locator" && state.tmp.just_looking) {
                 return;
             }
@@ -54,8 +51,6 @@ CSL.Node.number = {
                 state.parallel.AppendToVariable(Item[this.variables[0]]);
             }
 
-            var rex = new RegExp("(?:&|, | and |" + state.getTerm("page-range-delimiter") + ")");
-            
             if (varname === 'collection-number' && Item.type === 'legal_case') {
                 state.tmp.renders_collection_number = true;
             }
@@ -63,12 +58,6 @@ CSL.Node.number = {
             // Only allow the suppression of a year identical
             // to collection-number if the container-title
             // is rendered after collection-number.
-            var value = Item[this.variables[0]];
-            
-            var form = "long";
-            if (this.strings.label_form_override) {
-                form = this.strings.label_form_override;
-            }
             
             // For bill or legislation items that have a label-form
             // attribute set on the cs:number node rendering the locator,

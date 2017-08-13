@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 /**
  * Style token.

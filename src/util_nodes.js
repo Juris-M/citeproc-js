@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.tokenExec = function (token, Item, item) {
     // Called on state object
@@ -44,7 +43,7 @@ CSL.tokenExec = function (token, Item, item) {
  * <p>Called on the state object.</p>
  */
 CSL.expandMacro = function (macro_key_token, target) {
-    var mkey, start_token, key, end_token, navi, macro_nodes, newoutput, mergeoutput, end_of_macro, func;
+    var mkey, macro_nodes, end_of_macro, func;
 
     mkey = macro_key_token.postponed_macro;
 
@@ -60,7 +59,7 @@ CSL.expandMacro = function (macro_key_token, target) {
     }
     if (hasDate) {
         mkey = mkey + "@" + this.build.current_default_locale;
-        func = function (state, Item) {
+        func = function (state) {
             if (state.tmp.extension) {
                 state.tmp["doing-macro-with-date"] = true;
             }
@@ -95,7 +94,7 @@ CSL.expandMacro = function (macro_key_token, target) {
         CSL.configureMacro.call(this, mytarget);
     }
     if (!this.build.extension) {
-        var func = function(macro_name) {
+        func = function(macro_name) {
             return function (state, Item, item) {
                 var next = 0;
                 while (next < state.macros[macro_name].length) {
@@ -112,7 +111,7 @@ CSL.expandMacro = function (macro_key_token, target) {
     end_of_macro = new CSL.Token("group", CSL.END);
     
     if (hasDate) {
-        func = function (state, Item) {
+        func = function (state) {
             if (state.tmp.extension) {
                 state.tmp["doing-macro-with-date"] = false;
             }
@@ -173,7 +172,7 @@ CSL.configureMacro = function (mytarget) {
  * <code>CSL.END</code> or <code>CSL.SINGLETON</code>.
  */
 CSL.XmlToToken = function (state, tokentype, explicitTarget) {
-    var name, txt, attrfuncs, attributes, decorations, token, key, target;
+    var name, txt, attributes, decorations, token, key, target;
     name = state.cslXml.nodename(this);
     //CSL.debug(tokentype + " : " + name);
     if (state.build.skip && state.build.skip !== name) {
@@ -189,7 +188,6 @@ CSL.XmlToToken = function (state, tokentype, explicitTarget) {
     if (!CSL.Node[state.cslXml.nodename(this)]) {
         throw "Undefined node name \"" + name + "\".";
     }
-    attrfuncs = [];
     attributes = state.cslXml.attributes(this);
     decorations = CSL.setDecorations.call(this, state, attributes);
     token = new CSL.Token(name, tokentype);

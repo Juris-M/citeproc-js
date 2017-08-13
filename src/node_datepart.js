@@ -1,8 +1,7 @@
-/*global CSL: true */
 
 CSL.Node["date-part"] = {
     build: function (state, target) {
-        var func, pos, len, decor, first_date, value, value_end, real, have_collapsed, invoked, precondition, known_year, bc, ad, bc_end, ad_end, ready, curr, dcurr, number, num, formatter, item, i, ilen;
+        var func, pos, len, first_date, value, value_end, real, have_collapsed, invoked, precondition, known_year, bc, ad, ready, curr, dcurr, number, num, formatter, item, i, ilen;
         if (!this.strings.form) {
             this.strings.form = "long";
         }
@@ -55,8 +54,6 @@ CSL.Node["date-part"] = {
             if ("undefined" !== typeof value) {
                 bc = false;
                 ad = false;
-                bc_end = false;
-                ad_end = false;
                 if ("year" === this.strings.name) {
                     if (parseInt(value, 10) < 500 && parseInt(value, 10) > 0) {
                         ad = state.getTerm("ad");
@@ -67,10 +64,12 @@ CSL.Node["date-part"] = {
                     }
                     if (value_end) {
                         if (parseInt(value_end, 10) < 500 && parseInt(value_end, 10) > 0) {
-                            ad_end = state.getTerm("ad");
+                            // FIXME: these are never used
+                            // ad_end = state.getTerm("ad");
                         }
                         if (parseInt(value_end, 10) < 0) {
-                            bc_end = state.getTerm("bc");
+                            // FIXME: these are never used
+                            // bc_end = state.getTerm("bc");
                             value_end = (parseInt(value_end, 10) * -1);
                         }
                     }

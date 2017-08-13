@@ -1,17 +1,15 @@
-/*global CSL: true */
 
 CSL.Node.institution = {
     build: function (state, target) {
         if ([CSL.SINGLETON, CSL.START].indexOf(this.tokentype) > -1) {
 
-            var func = function (state, Item) {
+            var func = function (state) {
                 if ("string" === typeof this.strings.delimiter) {
                     state.tmp.institution_delimiter = this.strings.delimiter;
                 } else {
                     state.tmp.institution_delimiter = state.tmp.name_delimiter;
                 }
 
-                var myand, and_default_prefix, and_suffix;
                 // This is the same code for the same result as in node_name.js, 
                 // but when cs:institution comes on stream, it may produce
                 // different results.
@@ -75,7 +73,7 @@ CSL.Node.institution = {
         }
         target.push(this);
     },
-    configure: function (state, pos) {
+    configure: function (state) {
         if ([CSL.SINGLETON, CSL.START].indexOf(this.tokentype) > -1) {
             state.build.has_institution = true;
         }

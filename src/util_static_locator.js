@@ -8,6 +8,7 @@ CSL.Engine.prototype.remapSectionVariable = function (inputList) {
     // remapping cannot take place when the Item data is received.
     // Citation provides a list of Item/item pairs, hence the iteration
     // used here.
+    var m;
     for (var i = 0, ilen = inputList.length; i < ilen; i += 1) {
         var Item = inputList[i][0];
         var item = inputList[i][1];
@@ -17,7 +18,7 @@ CSL.Engine.prototype.remapSectionVariable = function (inputList) {
             //   (a) Leave be an overriding label at the start of the locator field, defaulting to label value
             if (item.locator) {
                 item.locator = item.locator.trim();
-                var m = item.locator.match(CSL.STATUTE_SUBDIV_PLAIN_REGEX);
+                m = item.locator.match(CSL.STATUTE_SUBDIV_PLAIN_REGEX);
                 if (!m) {
                     if (item.label) {
                         item.locator = CSL.STATUTE_SUBDIV_STRINGS_REVERSE[item.label] + " " + item.locator;
@@ -31,7 +32,7 @@ CSL.Engine.prototype.remapSectionVariable = function (inputList) {
             var sectionMasterLabel = null;
             if (Item.section) {
                 Item.section = Item.section.trim();
-                var m = Item.section.match(CSL.STATUTE_SUBDIV_PLAIN_REGEX);
+                m = Item.section.match(CSL.STATUTE_SUBDIV_PLAIN_REGEX);
                 if (!m) {
                     Item.section = "sec. " + Item.section;
                     sectionMasterLabel = "sec.";
@@ -50,7 +51,7 @@ CSL.Engine.prototype.remapSectionVariable = function (inputList) {
             // If both section and locator exist, then
             //   (a) If locator starts with p., remove p., merge with space or no-space, and set in locator field
             //   (b) If locator starts with non-p., prepend section value to locator with space, and set in locator field
-                    var m = item.locator.match(/^([^ ]*)\s*(.*)/);
+                    m = item.locator.match(/^([^ ]*)\s*(.*)/);
                     var space = " ";
                     if (m) {
                         if (m[1] === "p." && sectionMasterLabel !== "p.") {
@@ -93,13 +94,11 @@ CSL.Engine.prototype.setNumberLabels = function (Item) {
         var firstlabel = CSL.STATUTE_SUBDIV_STRINGS[firstword];
         if (firstlabel) {
             // Get list and match
-            var m = value.match(CSL.STATUTE_SUBDIV_GROUPED_REGEX);
             var splt = value.split(CSL.STATUTE_SUBDIV_PLAIN_REGEX);
             if (splt.length > 1) {
                 // Convert matches to localized form
                 var lst = [];
                 for (var j=1, jlen=splt.length; j < jlen; j += 1) {
-                    var subdiv = m[j - 1].replace(/^\s*/, "");
                     lst.push(splt[j].replace(/\s*$/, "").replace(/^\s*/, ""));
                 }
                 // Preemptively save to shadow_numbers

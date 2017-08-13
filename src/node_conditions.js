@@ -1,5 +1,5 @@
 CSL.Node["conditions"] = {
-    build: function (state, target) {
+    build: function (state) {
         if (this.tokentype === CSL.START) {
             state.tmp.conditions.addMatch(this.match);
         }

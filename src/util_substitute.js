@@ -1,8 +1,7 @@
-/*global CSL: true */
 
 CSL.Util.substituteStart = function (state, target) {
     var element_trace, display, bib_first, func, choose_start, if_start, nodetypes;
-    func = function (state, Item) {
+    func = function (state) {
         for (var i = 0, ilen = this.decorations.length; i < ilen; i += 1) {
             if ("@strip-periods" === this.decorations[i][0] && "true" === this.decorations[i][1]) {
                 state.tmp.strip_periods += 1;
@@ -94,7 +93,7 @@ CSL.Util.substituteStart = function (state, target) {
         // macro if we have acquired a name value.
 
         // check for variable
-        func = function (Item,item) {
+        func = function () {
             if (state.tmp.can_substitute.value()) {
                 return true;
             }
@@ -113,7 +112,7 @@ CSL.Util.substituteStart = function (state, target) {
             if (!state.tmp.just_looking && !state.tmp.suppress_decorations) {
                 // Attach item data and variable names.
                 // Do with them what you will.
-                variable_entry = new CSL.Token("text", CSL.START);
+                var variable_entry = new CSL.Token("text", CSL.START);
                 variable_entry.decorations = [["@showid", "true"]];
                 state.output.startTag("variable_entry", variable_entry);
                 var position = null;
@@ -164,12 +163,12 @@ CSL.Util.substituteStart = function (state, target) {
 
 
 CSL.Util.substituteEnd = function (state, target) {
-    var func, bib_first_end, bib_other, if_end, choose_end, toplevel, hasval, author_substitute, str;
+    var func, bib_first_end, bib_other, if_end, choose_end, str;
 
     if (state.sys.variableWrapper
         && (this.hasVariable || (this.variables_real && this.variables_real.length))) {
         
-        func = function (state,Item) {
+        func = function (state) {
             if (!state.tmp.just_looking && !state.tmp.suppress_decorations) {
                 state.output.endTag("variable_entry");
             }
@@ -177,7 +176,7 @@ CSL.Util.substituteEnd = function (state, target) {
         this.execs.push(func);
     }
 
-    func = function (state, Item) {
+    func = function (state) {
         for (var i = 0, ilen = this.decorations.length; i < ilen; i += 1) {
             if ("@strip-periods" === this.decorations[i][0] && "true" === this.decorations[i][1]) {
                 state.tmp.strip_periods += -1;
@@ -190,7 +189,7 @@ CSL.Util.substituteEnd = function (state, target) {
     state.build.render_nesting_level += -1;
     if (state.build.render_nesting_level === 0) {
         if (state.build.cls) {
-            func = function (state, Item) {
+            func = function (state) {
                 state.output.endTag("bib_first");
             };
             this.execs.push(func);
@@ -198,7 +197,7 @@ CSL.Util.substituteEnd = function (state, target) {
         } else if (state.build.area === "bibliography" && state.bibliography.opt["second-field-align"]) {
             bib_first_end = new CSL.Token("group", CSL.END);
             // first func end
-            func = function (state, Item) {
+            func = function (state) {
                 if (!state.tmp.render_seen) {
                     state.output.endTag("bib_first"); // closes bib_first
                 }
@@ -207,7 +206,7 @@ CSL.Util.substituteEnd = function (state, target) {
             target.push(bib_first_end);
             bib_other = new CSL.Token("group", CSL.START);
             bib_other.decorations = [["@display", "right-inline"]];
-            func = function (state, Item) {
+            func = function (state) {
                 if (!state.tmp.render_seen) {
                     state.tmp.render_seen = true;
                     state.output.startTag("bib_other", bib_other);
@@ -225,7 +224,6 @@ CSL.Util.substituteEnd = function (state, target) {
     }
 
     if ("names" === this.name || ("text" === this.name && this.variables_real !== "title")) {
-        author_substitute = new CSL.Token("text", CSL.SINGLETON);
         func = function (state, Item) {
             if (state.tmp.area !== "bibliography") return;
             if ("string" !== typeof state.bibliography.opt["subsequent-author-substitute"]) return;
@@ -235,14 +233,14 @@ CSL.Util.substituteEnd = function (state, target) {
             }
 
             var subrule = state.bibliography.opt["subsequent-author-substitute-rule"];
-            var i, ilen;
+            var i, ilen, rendered_name;
             //var text_esc = CSL.getSafeEscape(state);
             var printing = !state.tmp.suppress_decorations;
             if (printing && state.tmp.subsequent_author_substitute_ok) {
                 if (state.tmp.rendered_name) {
                     if ("partial-each" === subrule || "partial-first" === subrule) {
                         var dosub = true;
-                        var rendered_name = [];
+                        rendered_name = [];
                         // This is a wee bit risky, as we're assuming that the name
                         // children and the list of stringified names are congruent.
                         // That *should* always be true, but you never know.
@@ -265,7 +263,7 @@ CSL.Util.substituteEnd = function (state, target) {
                         // might want to slice this?
                         state.tmp.last_rendered_name = rendered_name;
                     } else if ("complete-each" === subrule) {
-                        var rendered_name = state.tmp.rendered_name.join(",");
+                        rendered_name = state.tmp.rendered_name.join(",");
                         if (rendered_name) {
                             if (state.tmp.last_rendered_name && !rendered_name.localeCompare(state.tmp.last_rendered_name)) {
                                 for (i = 0, ilen = state.tmp.name_node.children.length; i < ilen; i += 1) {
@@ -276,7 +274,7 @@ CSL.Util.substituteEnd = function (state, target) {
                             state.tmp.last_rendered_name = rendered_name;
                         }
                     } else {
-                        var rendered_name = state.tmp.rendered_name.join(",");
+                        rendered_name = state.tmp.rendered_name.join(",");
                         if (rendered_name) {
                             if (state.tmp.last_rendered_name && !rendered_name.localeCompare(state.tmp.last_rendered_name)) {
                                 str = new CSL.Blob(state[state.tmp.area].opt["subsequent-author-substitute"]);
@@ -301,7 +299,7 @@ CSL.Util.substituteEnd = function (state, target) {
 
     if (("text" === this.name && !this.postponed_macro) || ["number", "date", "names"].indexOf(this.name) > -1) {
         // element trace
-        func = function (state, Item) {
+        func = function (state) {
             state.tmp.element_trace.pop();
         };
         this.execs.push(func);

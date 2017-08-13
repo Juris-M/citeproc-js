@@ -1,3 +1,5 @@
+/* global load:true */
+
 /*
  * Pre-sniff loader for E4X parsing module
  * 

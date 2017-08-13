@@ -76,7 +76,7 @@ CSL.Parallel.prototype.StartCitation = function (sortedItems, out) {
  *
  */
 CSL.Parallel.prototype.StartCite = function (Item, item, prevItemID) {
-    var position, len, pos, x, curr, master, last_id, prev_locator, curr_locator, is_master, parallel;
+    var position, len, pos, curr, master, last_id, prev_locator, curr_locator, i, ilen;
     if (this.use_parallels) {
         if (this.sets.value().length && this.sets.value()[0].itemId == Item.id) {
             this.ComposeSet();
@@ -94,7 +94,7 @@ CSL.Parallel.prototype.StartCite = function (Item, item, prevItemID) {
         //
         this.try_cite = true;
         var has_required_var = false;
-        for (var i = 0, ilen = CSL.PARALLEL_MATCH_VARS.length; i < ilen; i += 1) {
+        for (i = 0, ilen = CSL.PARALLEL_MATCH_VARS.length; i < ilen; i += 1) {
             if (Item[CSL.PARALLEL_MATCH_VARS[i]]) {
                 has_required_var = true;
                 break;
@@ -155,7 +155,7 @@ CSL.Parallel.prototype.StartCite = function (Item, item, prevItemID) {
             this.cite.useProceduralHistory = true;
             var prev = this.sets.value()[(this.sets.value().length - 1)];
             if (prev && prev.back) {
-                for (var i=prev.back.length-1;i>-1;i+=-1) {
+                for (i=prev.back.length-1;i>-1;i+=-1) {
                     if (prev.back[i] && prev[prev.back[i]]) {
                         delete prev[prev.back[i]];
                     }
@@ -311,7 +311,7 @@ CSL.Parallel.prototype.AppendBlobPointer = function (blob) {
  * Adds string data to the current variable
  * in the variables tracking object.
  */
-CSL.Parallel.prototype.AppendToVariable = function (str, varname) {
+CSL.Parallel.prototype.AppendToVariable = function (str) {
     if (this.use_parallels) {
         if (this.ignoreVars.indexOf(this.variable) > -1) {
             return;
@@ -320,20 +320,22 @@ CSL.Parallel.prototype.AppendToVariable = function (str, varname) {
         //    str = str.split(';')[0];
         //}
         if (this.try_cite || this.force_collapse) {
-            if (this.target !== "back" || true) {
-                //zcite.debug("  setting: "+str);
-                this.data.value += "::" + str;
-            } else {
-                var prev = this.sets.value()[(this.sets.value().length - 1)];
-                if (prev) {
-                    if (prev[this.variable]) {
-                        if (prev[this.variable].value) {
-                            //**print("append var "+this.variable+" as value "+this.data.value);
-                            this.data.value += "::" + str;
-                        }
-                    }
-                }
-            }
+            this.data.value += "::" + str;
+            // FIXME: constant condition. Else never runs. Probably a bug.
+            // if (this.target !== "back" || true) {
+            //     //zcite.debug("  setting: "+str);
+            //     this.data.value += "::" + str;
+            // } else {
+            //     var prev = this.sets.value()[(this.sets.value().length - 1)];
+            //     if (prev) {
+            //         if (prev[this.variable]) {
+            //             if (prev[this.variable].value) {
+            //                 //**print("append var "+this.variable+" as value "+this.data.value);
+            //                 this.data.value += "::" + str;
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
 };
@@ -415,7 +417,7 @@ CSL.Parallel.prototype.CloseVariable = function () {
  * tracking array, and evaluate maybe.
  */
 CSL.Parallel.prototype.CloseCite = function () {
-    var x, pos, len, has_issued, use_journal_info, volume_pos, container_title_pos, section_pos;
+    var x, pos, len, use_journal_info, volume_pos, container_title_pos, collection_number_pos, section_pos, has_date;
     if (this.use_parallels && (this.force_collapse || this.try_cite)) {
         use_journal_info = false;
         if (!this.cite.front_collapse["container-title"]) {
@@ -505,8 +507,8 @@ CSL.Parallel.prototype.CloseCite = function () {
  * Move variables tracking array into the array of
  * composed sets.
  */
-CSL.Parallel.prototype.ComposeSet = function (next_output_in_progress) {
-    var cite, pos, master, len;
+CSL.Parallel.prototype.ComposeSet = function () {
+    var cite, pos, len;
     if (this.use_parallels && (this.force_collapse || this.try_cite)) {
         // a bit loose here: zero-length sets relate to one cite,
         // apparently.
@@ -657,7 +659,7 @@ CSL.Parallel.prototype.purgeGroupsIfParallel = function (original_condition) {
                     && !this.state.registry.registry[obj.id].master)
                 || ("servant" === obj.conditions[j]
                     && !this.state.registry.registry[obj.id].parallel))) {
-                var purgeme = false;
+                purgeme = false;
                 break;
             }
         }

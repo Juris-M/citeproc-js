@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.Output = {};
 /**
@@ -101,7 +100,7 @@ CSL.Output.Queue.prototype.pushFormats = function (tokenstore) {
 };
 
 
-CSL.Output.Queue.prototype.popFormats = function (tokenstore) {
+CSL.Output.Queue.prototype.popFormats = function () {
     //SNIP-START
     CSL.debug("XXX popFormats()");
     //SNIP-END
@@ -129,8 +128,8 @@ CSL.Output.Queue.prototype.endTag = function (name) {
 // list, and adjusts the current pointer so that subsequent
 // appends are made to blob list of the new object.
 
-CSL.Output.Queue.prototype.openLevel = function (token, ephemeral) {
-    var blob, curr, x, has_ephemeral;
+CSL.Output.Queue.prototype.openLevel = function (token) {
+    var blob, curr;
     if ("object" === typeof token) {
         // delimiter, prefix, suffix, decorations from token
         blob = new CSL.Blob(undefined, token);
@@ -233,10 +232,10 @@ CSL.Output.Queue.prototype.append = function (str, tokname, notSerious, ignorePr
         this.last_char_rendered = str.slice(-1);
         // This, and not the str argument below on flipflop, is the
         // source of the flipflopper string source.
-        str = str.replace(/\s+'/g, " \'");
+        str = str.replace(/\s+'/g, " '");
         if (!notSerious) {
             // this condition for sort_LeadingApostropheOnNameParticle
-            str = str.replace(/^'/g, " \'");
+            str = str.replace(/^'/g, " '");
         }
 
         // signal whether we end with terminal punctuation?
@@ -411,7 +410,7 @@ CSL.Output.Queue.prototype.string = function (state, myblobs, blob) {
                 // Patch up world-class weird bug in the ill-constructed code of mine.
                 if ("string" !== addtoret && addtoret.length > 1 && blobjr.strings.delimiter) {
                     var numberSeen = false;
-                    for (var j=0,jlen=addtoret.length;j<jlen;j++) {
+                    for (j=0,jlen=addtoret.length;j<jlen;j++) {
                         if ("string" !== typeof addtoret[j]) {
                             numberSeen = true;
                         } else if (numberSeen) {
@@ -454,15 +453,10 @@ CSL.Output.Queue.prototype.string = function (state, myblobs, blob) {
             //print("XXX ret: "+ret+" -- "+blob_delimiter);
         }
     }
-/*
-    if (blob && (blob.decorations.length || blob.strings.suffix || blob.strings.prefix)) {
-        span_split = ret.length;
-    }
-*/
     if (blob && (blob.decorations.length || blob.strings.suffix)) {
         span_split = ret.length;
     } else if (blob && blob.strings.prefix) {
-        for (var i=0,ilen=ret.length;i<ilen;i++) {
+        for (i=0,ilen=ret.length;i<ilen;i++) {
             if ("undefined" !== typeof ret[i].num) {
                 span_split = i;
                 if (i === 0) {
@@ -556,14 +550,13 @@ CSL.Output.Queue.prototype.clearlevel = function () {
 };
 
 CSL.Output.Queue.prototype.renderBlobs = function (blobs, delim, in_cite, parent) {
-    var state, ret, ret_last_char, use_delim, i, blob, pos, len, ppos, llen, pppos, lllen, res, str, params, txt_esc;
+    var state, ret, use_delim, blob, pos, len, ppos, llen, str, params, txt_esc;
     txt_esc = CSL.getSafeEscape(this.state);
     if (!delim) {
         delim = "";
     }
     state = this.state;
     ret = "";
-    ret_last_char = [];
     use_delim = "";
     len = blobs.length;
     if (this.state.tmp.area === "citation" && !this.state.tmp.just_looking && len === 1 && typeof blobs[0] === "object" && parent) {
@@ -795,7 +788,7 @@ CSL.Output.Queue.adjust = function (punctInQuote) {
     PUNCT_OR_SPACE[" "] = true;
 
     var RtoL_MAP = {};
-    for (var key in LtoR_MAP) {
+    for (key in LtoR_MAP) {
         for (var subkey in LtoR_MAP[key]) {
             if (!RtoL_MAP[subkey]) {
                 RtoL_MAP[subkey] = {};
@@ -894,8 +887,8 @@ CSL.Output.Queue.adjust = function (punctInQuote) {
     };
     
     function mergeChars (First, first, Second, second, merge_right) {
-        FirstStrings = "blobs" === first ? First : First.strings;
-        SecondStrings = "blobs" === second ? Second: Second.strings;
+        var FirstStrings = "blobs" === first ? First : First.strings;
+        var SecondStrings = "blobs" === second ? Second: Second.strings;
         var firstChar = FirstStrings[first].slice(-1);
         var secondChar = SecondStrings[second].slice(0,1);
         function cullRight () {
@@ -968,8 +961,8 @@ CSL.Output.Queue.adjust = function (punctInQuote) {
 
         // back-to-front, bottom-first
         var parentDecorations = blobHasDecorations(parent,true);
+        var childChar;
         for (var i=parent.blobs.length-1;i>-1;i--) {
-            var endFlag = i === (parent.blobs.length-1);
             this.upward(parent.blobs[i]);
             var parentStrings = parent.strings;
             var childStrings = parent.blobs[i].strings;
@@ -979,7 +972,7 @@ CSL.Output.Queue.adjust = function (punctInQuote) {
                     childStrings.prefix = childStrings.prefix.slice(1);
                 }
                 // Migrate leading punctuation or space on a first-position prefix upward
-                var childChar = childStrings.prefix.slice(0, 1);
+                childChar = childStrings.prefix.slice(0, 1);
                 if (!parentDecorations && PUNCT_OR_SPACE[childChar] && !parentStrings.prefix) {
                     parentStrings.prefix += childChar;
                     childStrings.prefix = childStrings.prefix.slice(1);
@@ -987,7 +980,7 @@ CSL.Output.Queue.adjust = function (punctInQuote) {
             }
             if (i === (parent.blobs.length - 1)) {
                 // Migrate trailing space ONLY on a last-position suffix upward, controlling for duplicates
-                var childChar = childStrings.suffix.slice(-1);
+                childChar = childStrings.suffix.slice(-1);
                 // ZZZ Loosened to fix initialized names wrapped in a span and followed by a period
                 if (!parentDecorations && [" "].indexOf(childChar) > -1) {
                     if (parentStrings.suffix.slice(0,1) !== childChar) {
@@ -1052,7 +1045,7 @@ CSL.Output.Queue.adjust = function (punctInQuote) {
         }
     };
 
-    function downward (parent, top) {
+    function downward (parent) {
         //print("START3");
         // Terminus if no blobs
         if (parent.blobs && "string" == typeof parent.blobs) {
@@ -1070,33 +1063,30 @@ CSL.Output.Queue.adjust = function (punctInQuote) {
         //}
 
         var parentStrings = parent.strings;
+        var childStrings, i;
         // Check for numeric child
-        var someChildrenAreNumbers = false;
-        for (var i=0,ilen=parent.blobs.length;i<ilen;i++) {
-            if (blobIsNumber(parent.blobs[i])) {
-                someChildrenAreNumbers = true;
-                break;
-            }
-        }
-        if (true || !someChildrenAreNumbers) {
-            // If there is a leading swappable character on delimiter, copy it to suffixes IFF none of the targets are numbers
-            if (parentStrings.delimiter && PUNCT[parentStrings.delimiter.slice(0, 1)]) {
-                var delimChar = parentStrings.delimiter.slice(0, 1);
-                for (var i=parent.blobs.length-2;i>-1;i--) {
-                    var childStrings = parent.blobs[i].strings;
-                    if (childStrings.suffix.slice(-1) !== delimChar) {
-                        childStrings.suffix += delimChar;
-                    }
+        // var someChildrenAreNumbers = false;
+        // for (var i=0,ilen=parent.blobs.length;i<ilen;i++) {
+        //     if (blobIsNumber(parent.blobs[i])) {
+        //         someChildrenAreNumbers = true;
+        //         break;
+        //     }
+        // }
+        // If there is a leading swappable character on delimiter, copy it to suffixes IFF none of the targets are numbers
+        if (parentStrings.delimiter && PUNCT[parentStrings.delimiter.slice(0, 1)]) {
+            var delimChar = parentStrings.delimiter.slice(0, 1);
+            for (i=parent.blobs.length-2;i>-1;i--) {
+                childStrings = parent.blobs[i].strings;
+                if (childStrings.suffix.slice(-1) !== delimChar) {
+                    childStrings.suffix += delimChar;
                 }
-                parentStrings.delimiter = parentStrings.delimiter.slice(1);
             }
+            parentStrings.delimiter = parentStrings.delimiter.slice(1);
         }
         // back-to-front, top-first
-        var parentDecorations = blobHasDecorations(parent, true);
-        var parentIsNumber = blobIsNumber(parent);
-        for (var i=parent.blobs.length-1;i>-1;i--) {
+        for (i=parent.blobs.length-1;i>-1;i--) {
             var child = parent.blobs[i];
-            var childStrings = parent.blobs[i].strings;
+            childStrings = parent.blobs[i].strings;
             var childDecorations = blobHasDecorations(child, true);
             var childIsNumber = blobIsNumber(child);
 
@@ -1106,52 +1096,50 @@ CSL.Output.Queue.adjust = function (punctInQuote) {
                 //    print("JSON "+JSON.stringify(parent, ["strings", "decorations", "blobs", "prefix", "suffix", "delimiter"]));
                 //}
 
-                if (true || !someChildrenAreNumbers) {
-                    // If we have decorations, drill down to see if there are quotes below.
-                    // If so, we allow migration anyway.
-                    // Original discussion is here:
-                    // https://forums.zotero.org/discussion/37091/citeproc-bug-punctuation-in-quotes/
-                    var parentChar = parentStrings.suffix.slice(0, 1);
+                // If we have decorations, drill down to see if there are quotes below.
+                // If so, we allow migration anyway.
+                // Original discussion is here:
+                // https://forums.zotero.org/discussion/37091/citeproc-bug-punctuation-in-quotes/
+                var parentChar = parentStrings.suffix.slice(0, 1);
 
-                    // Hmm.
-                    // Consider writing out the matching child from blobHasDescendant functions.
-                    // It should save some cycles, and produce the same result.
+                // Hmm.
+                // Consider writing out the matching child from blobHasDescendant functions.
+                // It should save some cycles, and produce the same result.
 
-                    var allowMigration = false;
-                    if (PUNCT[parentChar]) {
-                        allowMigration = blobHasDescendantMergingPunctuation(parentChar,child);
-                        if (!allowMigration && punctInQuote) {
-                            allowMigration = blobHasDescendantQuotes(child);
-                        }
+                var allowMigration = false;
+                if (PUNCT[parentChar]) {
+                    allowMigration = blobHasDescendantMergingPunctuation(parentChar,child);
+                    if (!allowMigration && punctInQuote) {
+                        allowMigration = blobHasDescendantQuotes(child);
                     }
-                    if (allowMigration) {
-                        if (PUNCT[parentChar]) {
-                            if (!blobEndsInNumber(child)) {
-                                if ("string" === typeof child.blobs) {
-                                    mergeChars(child, 'blobs', parent, 'suffix');
-                                } else {
-                                    mergeChars(child, 'suffix', parent, 'suffix');
-                                }
-                                if (parentStrings.suffix.slice(0,1) === ".") {
-                                    childStrings.suffix += parentStrings.suffix.slice(0,1);
-                                    parentStrings.suffix = parentStrings.suffix.slice(1);
-                                }
+                }
+                if (allowMigration) {
+                    if (PUNCT[parentChar]) {
+                        if (!blobEndsInNumber(child)) {
+                            if ("string" === typeof child.blobs) {
+                                mergeChars(child, 'blobs', parent, 'suffix');
+                            } else {
+                                mergeChars(child, 'suffix', parent, 'suffix');
+                            }
+                            if (parentStrings.suffix.slice(0,1) === ".") {
+                                childStrings.suffix += parentStrings.suffix.slice(0,1);
+                                parentStrings.suffix = parentStrings.suffix.slice(1);
                             }
                         }
                     }
-                    if (childStrings.suffix.slice(-1) === " " && parentStrings.suffix.slice(0,1) === " ") {
-                        parentStrings.suffix = parentStrings.suffix.slice(1);
+                }
+                if (childStrings.suffix.slice(-1) === " " && parentStrings.suffix.slice(0,1) === " ") {
+                    parentStrings.suffix = parentStrings.suffix.slice(1);
+                }
+                // More duplicates control
+                if (PUNCT_OR_SPACE[childStrings.suffix.slice(0,1)]) {
+                    if ("string" === typeof child.blobs && child.blobs.slice(-1) === childStrings.suffix.slice(0,1)) {
+                        // Remove parent punctuation of it duplicates the last character of a field
+                        childStrings.suffix = childStrings.suffix.slice(1);
                     }
-                    // More duplicates control
-                    if (PUNCT_OR_SPACE[childStrings.suffix.slice(0,1)]) {
-                        if ("string" === typeof child.blobs && child.blobs.slice(-1) === childStrings.suffix.slice(0,1)) {
-                            // Remove parent punctuation of it duplicates the last character of a field
-                            childStrings.suffix = childStrings.suffix.slice(1);
-                        }
-                        if (childStrings.suffix.slice(-1) === parentStrings.suffix.slice(0, 1)) {
-                            // Remove duplicate punctuation on child suffix
-                            parentStrings.suffix = parentStrings.suffix.slice(0, -1);
-                        }
+                    if (childStrings.suffix.slice(-1) === parentStrings.suffix.slice(0, 1)) {
+                        // Remove duplicate punctuation on child suffix
+                        parentStrings.suffix = parentStrings.suffix.slice(0, -1);
                     }
                 }
                 // Squash dupes
@@ -1219,14 +1207,15 @@ CSL.Output.Queue.adjust = function (punctInQuote) {
         }
     }
     function swapToTheRight (child) {
+        var childChar;
         if ("string" === typeof child.blobs) {
-            var childChar = child.blobs.slice(-1);
+            childChar = child.blobs.slice(-1);
             while (SWAP_OUT[childChar]) {
                 mergeChars(child, 'blobs', child, 'suffix', true);
                 childChar = child.blobs.slice(-1);
             }
         } else {
-            var childChar = child.blobs[child.blobs.length-1].strings.suffix.slice(-1);
+            childChar = child.blobs[child.blobs.length-1].strings.suffix.slice(-1);
             while (SWAP_OUT[childChar]) {
                 mergeChars(child.blobs[child.blobs.length-1], 'suffix', child, 'suffix', true);
                 childChar = child.blobs[child.blobs.length-1].strings.suffix.slice(-1);

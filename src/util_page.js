@@ -1,9 +1,8 @@
-/*global CSL: true */
 
 CSL.Util.PageRangeMangler = {};
 
 CSL.Util.PageRangeMangler.getFunction = function (state, rangeType) {
-    var rangerex, pos, len, stringify, listify, expand, minimize, minimize_internal, chicago, lst, m, b, e, ret, begin, end, ret_func, ppos, llen;
+    var rangerex, pos, len, stringify, listify, expand, minimize, minimize_internal, chicago, lst, m, b, e, ret, begin, end, ret_func;
     
     var range_delimiter = state.getTerm(rangeType + "-range-delimiter");
 
@@ -17,7 +16,7 @@ CSL.Util.PageRangeMangler.getFunction = function (state, rangeType) {
             }
         }
         var ret = lst.join("");
-        ret = ret.replace(/([^\\])\-/g, "$1"+state.getTerm(rangeType + "-range-delimiter"));
+        ret = ret.replace(/([^\\])-/g, "$1"+state.getTerm(rangeType + "-range-delimiter"));
         return ret;
     };
 
@@ -39,7 +38,7 @@ CSL.Util.PageRangeMangler.getFunction = function (state, rangeType) {
         } else {
             ret = [lst[0]];
             for (pos = 1, len = lst.length; pos < len; pos += 1) {
-                ret.push(m[pos - 1].replace(/\s*\-\s*/g, "-"));
+                ret.push(m[pos - 1].replace(/\s*-\s*/g, "-"));
                 ret.push(lst[pos]);
             }
         }
@@ -64,7 +63,7 @@ CSL.Util.PageRangeMangler.getFunction = function (state, rangeType) {
                 }
             }
             if ("string" === typeof lst[pos]) {
-                lst[pos] = lst[pos].replace(/\-/g, range_delimiter);
+                lst[pos] = lst[pos].replace(/-/g, range_delimiter);
             }
         }
         return lst;
@@ -131,7 +130,6 @@ CSL.Util.PageRangeMangler.getFunction = function (state, rangeType) {
     // The top-level option handlers.
     //
     var sniff = function (str, func, minchars, isyear) {
-        var ret;
 		str = "" + str;
 		var lst = expand(str);
         var ret = func(lst, minchars, isyear);

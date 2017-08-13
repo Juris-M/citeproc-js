@@ -1,0 +1,50 @@
+{
+  "name": "citeproc",
+  "version": "1.1.172",
+  "description": "A JavaScript implementation of the Citation Style Language (CSL)",
+  "main": "dist/citeproc.cjs.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "./test.py -B && rollup -c",
+    "lint": "eslint --ext .js src/",
+    "test": "./test.py -s"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Juris-M/citeproc-js.git"
+  },
+  "author": "Frank Bennett",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Juris-M/citeproc-js/issues"
+  },
+  "homepage": "https://github.com/Juris-M/citeproc-js#readme",
+  "dependencies": {
+    "rollup": "^0.45.2"
+  },
+  "devDependencies": {
+    "eslint": "^4.4.1",
+    "eslint-config-prettier": "^2.3.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "prettier"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 3,
+      "sourceType": "script",
+      "ecmaFeatures": {}
+    },
+    "globals": {
+      "CSL": true
+    },
+    "env": {
+      "browser": true,
+      "commonjs": true
+    }
+  }
+}

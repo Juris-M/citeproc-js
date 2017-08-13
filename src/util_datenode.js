@@ -1,7 +1,6 @@
-/*global CSL: true */
 
 CSL.Util.fixDateNode = function (parent, pos, node) {
-    var form, variable, datexml, subnode, partname, attr, val, prefix, suffix, children, key, subchildren, kkey, display, cslid;
+    var form, variable, datexml, subnode, partname, attr, val, prefix, suffix, children, key, subchildren, display, cslid;
     
     var lingo = this.cslXml.getAttributeValue(node, "lingo");
 
@@ -12,7 +11,6 @@ CSL.Util.fixDateNode = function (parent, pos, node) {
     this.build.date_key = true;
 
     form = this.cslXml.getAttributeValue(node, "form");
-    var lingo;
     if (default_locale) {
         lingo = this.opt["default-locale"][0];
     } else {
