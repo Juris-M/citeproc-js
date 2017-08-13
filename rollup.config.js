@@ -7,21 +7,21 @@ const commonjs = {
 const iife = {
     entry: 'citeproc.js',
     format: 'iife',
-    moduleName: 'Citeproc',
+    moduleName: 'CSL',
     dest: 'dist/citeproc.iife.js',
 }
 
 const umd = {
     entry: 'citeproc.js',
     format: 'umd',
-    moduleName: 'Citeproc',
+    moduleName: 'CSL',
     dest: 'dist/citeproc.umd.js',
 }
 
 const amd = {
     entry: 'citeproc.js',
     format: 'amd',
-    moduleName: 'Citeproc',
+    moduleName: 'CSL',
     dest: 'dist/citeproc.amd.js',
 }
 

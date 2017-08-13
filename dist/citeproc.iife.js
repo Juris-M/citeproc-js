@@ -1,4 +1,4 @@
-var Citeproc = (function () {
+var CSL = (function () {
 'use strict';
 
 /*
