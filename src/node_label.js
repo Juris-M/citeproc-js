@@ -2,14 +2,7 @@
 
 CSL.Node.label = {
     build: function (state, target) {
-        var debug = false;
-        
         if (this.strings.term) {
-            // Non-names labels
-            var plural = false;
-            if (!this.strings.form) {
-                //this.strings.form = "long";
-            }
             var func = function (state, Item, item) {
                 // Must accomplish this without touching strings
                 // shared with the calling application: "sub verbo"
@@ -45,20 +38,21 @@ CSL.Node.label = {
             // Names labels
             // Picked up in names END
             var namevars = state.build.names_variables.slice(-1)[0];
+            var i, ilen;
             if (!state.build.name_label) {
                 state.build.name_label = {};
             }
-            for (var i = 0, ilen = namevars.length; i < ilen; i += 1) {
+            for (i = 0, ilen = namevars.length; i < ilen; i += 1) {
                 if (!state.build.name_label[namevars[i]]) {
                     state.build.name_label[namevars[i]] = {};
                 }
             }
             if (!state.build.name_flag) {
-                for (var i = 0, ilen = namevars.length; i < ilen; i += 1) {
+                for (i = 0, ilen = namevars.length; i < ilen; i += 1) {
                     state.build.name_label[namevars[i]].before = this;
                 }
             } else {
-                for (var i = 0, ilen = namevars.length; i < ilen; i += 1) {
+                for (i = 0, ilen = namevars.length; i < ilen; i += 1) {
                     state.build.name_label[namevars[i]].after = this;
                 }
             }

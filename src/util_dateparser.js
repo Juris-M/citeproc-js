@@ -1,5 +1,4 @@
-/*global CSL: true */
-
+/* global DATE_PARTS_ALL: true */
 
 CSL.DateParser = new function () {
 
@@ -17,15 +16,16 @@ CSL.DateParser = new function () {
 
     // years by jse imperial epoch
     var epochYearByName = {};
+    var val
     for (var i=0,ilen=epochPairs.length; i<ilen; i++) {
         var key = epochPairs[i][0];
-        var val = epochPairs[i][1];
+        val = epochPairs[i][1];
         epochYearByName[key] = val;
     }
     
     var epochMatchStrings = [];
-    for (var i=0,ilen=epochPairs.length; i<ilen; i++) {
-        var val = epochPairs[i][0];
+    for (i=0,ilen=epochPairs.length; i<ilen; i++) {
+        val = epochPairs[i][0];
         epochMatchStrings.push(val);
     }
     var epochMatchString = epochMatchStrings.join("|");
@@ -89,14 +89,14 @@ CSL.DateParser = new function () {
             this.monthSets.push([this.monthStrings[i]]);
         }
         this.monthAbbrevs = [];
-        for (var i=0,ilen=this.monthSets.length; i<ilen; i++) {
+        for (i=0,ilen=this.monthSets.length; i<ilen; i++) {
             this.monthAbbrevs.push([]);
             for (var j=0,jlen=this.monthSets[i].length; j<jlen; j++) {
                 this.monthAbbrevs[i].push(this.monthSets[i][0].slice(0, 3));
             }
         }
         this.monthRexes = [];
-        for (var i=0,ilen=this.monthAbbrevs.length; i<ilen; i++) {
+        for (i=0,ilen=this.monthAbbrevs.length; i<ilen; i++) {
             this.monthRexes.push(new RegExp("(?:" + this.monthAbbrevs[i].join("|") + ")"));
         }
     };
@@ -116,20 +116,18 @@ CSL.DateParser = new function () {
             return;
         }
 
-        // Extend as necessary to resolve ambiguities
-        var otherMatch = [];
-        var thisMatch = [];
         // For each new month string ...
         for (var i=0,ilen=lst.length; i<ilen; i++) {
             var abbrevLength = null;
             var skip = false;
             var insert = 3;
             var extendedSets = {};
+            var k, klen;
             for (var j=0,jlen=this.monthAbbrevs.length; j<jlen; j++) {
                 extendedSets[j] = {};
                 if (j === i) {
                     // Mark for skipping if same as an existing abbreviation of same month
-                    for (var k=0,klen=this.monthAbbrevs[i].length; k<klen; k++) {
+                    for (k=0,klen=this.monthAbbrevs[i].length; k<klen; k++) {
                         if (this.monthAbbrevs[i][k] === lst[i].slice(0, this.monthAbbrevs[i][k].length)) {
                             skip = true;
                             break;
@@ -137,7 +135,7 @@ CSL.DateParser = new function () {
                     }
                 } else {
                     // Mark for extending if same as existing abbreviation of any expression of another month
-                    for (var k=0,klen=this.monthAbbrevs[j].length; k<klen; k++) {
+                    for (k=0,klen=this.monthAbbrevs[j].length; k<klen; k++) {
                         abbrevLength = this.monthAbbrevs[j][k].length;
                         if (this.monthAbbrevs[j][k] === lst[i].slice(0, abbrevLength)) {
                             while (this.monthSets[j][k].slice(0, abbrevLength) === lst[i].slice(0, abbrevLength)) {
@@ -156,7 +154,7 @@ CSL.DateParser = new function () {
                     }
                 }
                 for (var jKey in extendedSets) {
-                    for (kKey in extendedSets[jKey]) {
+                    for (var kKey in extendedSets[jKey]) {
                         abbrevLength = extendedSets[jKey][kKey];
                         jKey = parseInt(jKey, 10);
                         kKey = parseInt(kKey, 10);
@@ -174,12 +172,12 @@ CSL.DateParser = new function () {
         // Compose
         this.monthRexes = [];
         this.monthRexStrs = [];
-        for (var i=0,ilen=this.monthAbbrevs.length; i<ilen; i++) {
+        for (i=0,ilen=this.monthAbbrevs.length; i<ilen; i++) {
             this.monthRexes.push(new RegExp("^(?:" + this.monthAbbrevs[i].join("|") + ")"));
             this.monthRexStrs.push("^(?:" + this.monthAbbrevs[i].join("|") + ")");
         }
         if (this.monthAbbrevs.length === 18) {
-            for (var i=12,ilen=14; i<ilen; i++) {
+            for (i=12,ilen=14; i<ilen; i++) {
                 this.monthRexes[i+4] = new RegExp("^(?:" + this.monthAbbrevs[i].join("|") + ")");
                 this.monthRexStrs[i+4] = "^(?:" + this.monthAbbrevs[i].join("|") + ")";
             }
@@ -205,7 +203,7 @@ CSL.DateParser = new function () {
             delete thedate[part];
         }
         thedate["date-parts"].push([]);
-        for (var i=0, ilen=slicelen; i<ilen; i++) {
+        for (i=0, ilen=slicelen; i<ilen; i++) {
             part = ["year_end", "month_end", "day_end"][i];
             if (!thedate[part]) {
                 break;
@@ -252,7 +250,7 @@ CSL.DateParser = new function () {
                 break;
             }
         }
-        for (var i=0,ilen=lst.length; i<ilen; i++) {
+        for (i=0,ilen=lst.length; i<ilen; i++) {
             lst[i] = parseInt(lst[i], 10);
         }
         if (lst.length === 1 || (lst.length === 2 && !lst[1])) {
@@ -317,22 +315,24 @@ CSL.DateParser = new function () {
                     for (var i=0,ilen=mm.length; i<ilen; i++) {
                         mmx = mmx.concat(mm[i].match(/([^0-9]+)([0-9]+)/).slice(1));
                     }
-                    for (var i=0,ilen=slst.length; i<ilen; i++) {
+                    for (i=0,ilen=slst.length; i<ilen; i++) {
                         lst.push(slst[i]);
-                        if (i !== (len - 1)) {
-                            var mmpos = (pos * 2);
-                            lst.push(mmx[mmpos]);
-                            lst.push(mmx[mmpos + 1]);
-                        }
+                        // FIXME: Multiple undefined variables being used
+                        // if (i !== (len - 1)) {
+                        //     var mmpos = (pos * 2);
+                        //     lst.push(mmx[mmpos]);
+                        //     lst.push(mmx[mmpos + 1]);
+                        // }
                     }
                 } else {
                     lst = slst;
                 }
                 // workaround duly applied, this now works
-                for (var i=1,ilen=lst.length; i<ilen; i+=3) {
-                    lst[i + 1] = jiy[lst[i]] + parseInt(lst[i + 1], 10);
-                    lst[i] = "";
-                }
+                // FIXME: use of undefined variable
+                // for (i=1,ilen=lst.length; i<ilen; i+=3) {
+                //     lst[i + 1] = jiy[lst[i]] + parseInt(lst[i + 1], 10);
+                //     lst[i] = "";
+                // }
                 txt = lst.join("");
                 txt = txt.replace(/\s*-\s*$/, "").replace(/\s*-\s*\//, "/");
                 //
@@ -380,8 +380,8 @@ CSL.DateParser = new function () {
             lst = txt.split(rexDash);
         }
         var ret = [];
-        for (var i=0,ilen=lst.length; i<ilen; i++) {
-            var m = lst[i].match(/^\s*([\-\/]|[^\-\/\~\?0-9]+|[\-~?0-9]+)\s*$/);
+        for (i=0,ilen=lst.length; i<ilen; i++) {
+            m = lst[i].match(/^\s*([\-\/]|[^\-\/\~\?0-9]+|[\-~?0-9]+)\s*$/);
             if (m) {
                 ret.push(m[1]);
             }
@@ -404,12 +404,12 @@ CSL.DateParser = new function () {
         //
         var suff = "";
         
-        for (var i=0,ilen=delims.length; i<ilen; i++) {
-            delim = delims[i];
+        for (i=0,ilen=delims.length; i<ilen; i++) {
+            var delim = delims[i];
             //
             // Process each element ...
             //
-            date = ret.slice(delim[0], delim[1]);
+            var date = ret.slice(delim[0], delim[1]);
             outer: 
             for (var j=0,jlen=date.length; j<jlen; j++) {
                 var element = date[j];
@@ -496,7 +496,7 @@ CSL.DateParser = new function () {
         // from the other
         //
         if (isRange) {
-            for (var j=0,jlen=CSL.DATE_PARTS_ALL.length; j<jlen; j++) {
+            for (j=0,jlen=CSL.DATE_PARTS_ALL.length; j<jlen; j++) {
                 var item = CSL.DATE_PARTS_ALL[j];
                 if (thedate[item] && !thedate[(item + "_end")]) {
                     thedate[(item + "_end")] = thedate[item];
@@ -512,7 +512,7 @@ CSL.DateParser = new function () {
             thedate = { "literal": orig };
         }
         var parts = ["year", "month", "day", "year_end", "month_end", "day_end"];
-        for (var i=0,ilen=parts.length; i<ilen; i++) {
+        for (i=0,ilen=parts.length; i<ilen; i++) {
             var part = parts[i];
             if ("string" === typeof thedate[part] && thedate[part].match(/^[0-9]+$/)) {
                 thedate[part] = parseInt(thedate[part], 10);

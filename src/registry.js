@@ -1,5 +1,3 @@
-/*global CSL: true */
-
 
 //
 // Time for a rewrite of this module.
@@ -57,7 +55,7 @@
  * @class
  */
 CSL.Registry = function (state) {
-    var pos, len, ret, i, ilen;
+    var ret, i, ilen;
     this.debug = false;
     this.state = state;
     this.registry = {};
@@ -179,7 +177,7 @@ CSL.Registry.prototype.init = function (itemIDs, uncited_flag) {
         // If uncited_flag is non-nil, add any missing itemIDs to this.mylist
         // from itemIDs input list, and set the itemIDs in itemIDs on this.uncited.
         this.uncited = {};
-        for (var i=0,ilen=itemIDs.length;i<ilen; i += 1) {
+        for (i=0,ilen=itemIDs.length;i<ilen; i += 1) {
             if (!this.myhash[itemIDs[i]]) {
                 this.mylist.push("" + itemIDs[i]);
             }
@@ -202,7 +200,7 @@ CSL.Registry.prototype.init = function (itemIDs, uncited_flag) {
             }
         }
         this.mylist = [];
-        for (var i=0,ilen=itemIDs.length;i<ilen;i+=1) {
+        for (i=0,ilen=itemIDs.length;i<ilen;i+=1) {
             this.mylist.push("" + itemIDs[i]);
         }
         this.myhash = myhash;
@@ -291,24 +289,25 @@ CSL.Registry.prototype.dodeletes = function (myhash) {
                     this.registry[loneSiblingID].parallel = false;
                 } else if (this.registry[key].siblings.length > 1) {
                     var removeIDs = [key];
+                    var k, klen;
                     if (this.registry[key].master) {
                         var newmasterID = this.registry[key].siblings[0];
                         var newmaster = this.registry[newmasterID];
                         newmaster.master = true;
                         newmaster.parallel = false;
                         removeIDs.push(newmasterID);
-                        for (var k = 0, klen = this.registry[key].siblings.length; k < klen; k += 1) {
+                        for (k = 0, klen = this.registry[key].siblings.length; k < klen; k += 1) {
                             this.registry[this.registry[key].siblings[k]].parallel = newmasterID;
                         }
                     }
                     var buffer = [];
-                    for (var k = this.registry[key].siblings.length - 1; k > -1; k += -1) {
+                    for (k = this.registry[key].siblings.length - 1; k > -1; k += -1) {
                         var siblingID = this.registry[key].siblings.pop();
                         if (removeIDs.indexOf(siblingID) === -1) {
                             buffer.push(siblingID)
                         }
                     }
-                    for (var k = buffer.length - 1; k > -1; k += -1) {
+                    for (k = buffer.length - 1; k > -1; k += -1) {
                         this.registry[key].siblings.push(buffer[k]);
                     }
                 }
@@ -328,7 +327,7 @@ CSL.Registry.prototype.dodeletes = function (myhash) {
 };
 
 CSL.Registry.prototype.doinserts = function (mylist) {
-    var len, pos, item, Item, akey, newitem, abase, j, jlen, k, klen, i, ilen;
+    var item, Item, akey, newitem, abase, i, ilen;
     if ("string" === typeof mylist) {
         mylist = [mylist];
     }
@@ -427,7 +426,7 @@ CSL.Registry.prototype.douncited = function () {
 */
 
 CSL.Registry.prototype.rebuildlist = function () {
-    var count, len, pos, item;
+    var len, pos, item;
     //
     //  5. Create "new" list of hash pointers, in the order given in the argument
     //     to the update function.
@@ -464,7 +463,7 @@ CSL.Registry.prototype.rebuildlist = function () {
  */
 
 CSL.Registry.prototype.dorefreshes = function () {
-    var key, regtoken, Item, old_akey, akey, abase;
+    var key, regtoken, Item, akey, abase;
     //
     //  7. Refresh items requiring update.
     //
@@ -481,7 +480,7 @@ CSL.Registry.prototype.dorefreshes = function () {
         }
         regtoken.sortkeys = undefined;
         Item = this.state.retrieveItem(key);
-        var akey = regtoken.ambig;
+        akey = regtoken.ambig;
 
         if ("undefined" === typeof akey) {
             this.state.tmp.disambig_settings = false;
@@ -492,11 +491,11 @@ CSL.Registry.prototype.dorefreshes = function () {
         for (var akkey in this.ambigresets) {
             if (this.ambigresets[akkey] === 1) {
                 var loneKey = this.ambigcites[akey][0];
-                var Item = this.state.retrieveItem(loneKey);
+                Item = this.state.retrieveItem(loneKey);
                 this.registry[loneKey].disambig = new CSL.AmbigConfig;
                 this.state.tmp.disambig_settings = false;
-                var akey = CSL.getAmbiguousCite.call(this.state, Item);
-                var abase = CSL.getAmbigConfig.call(this.state);
+                akey = CSL.getAmbiguousCite.call(this.state, Item);
+                abase = CSL.getAmbigConfig.call(this.state);
                 this.registerAmbigToken(akey, loneKey, abase);
             }
         }
@@ -514,7 +513,7 @@ CSL.Registry.prototype.dorefreshes = function () {
  * crunched into this function?
  */
 CSL.Registry.prototype.setdisambigs = function () {
-    var akey, leftovers, key, pos, len, id;
+    var akey;
     //
     // Okay, more changes.  Here is where we resolve all disambiguation
     // issues for cites touched by the update.  The this.ambigcites set is
@@ -579,7 +578,7 @@ CSL.Registry.prototype.setsortkeys = function () {
     // 17. Set sort keys on each item token.
     //
     for (var i = 0, ilen = this.mylist.length; i < ilen; i += 1) {
-        var key = this.mylist[i];
+        key = this.mylist[i];
         // The last of these conditions may create some thrashing on styles that do not require sorting.
         if (this.touched[key] || this.state.tmp.taintedItemIDs[key] || !this.registry[key].sortkeys) {
             this.registry[key].sortkeys = CSL.getSortKeys.call(this.state, this.state.retrieveItem(key), "bibliography_sort");
@@ -692,7 +691,6 @@ CSL.Registry.prototype.registerAmbigToken = function (akey, id, ambig_config) {
         this.ambigcites[akey].push("" + id);
     }
     this.registry[id].ambig = akey;
-    var dome = false;
     this.registry[id].disambig = CSL.cloneAmbigConfig(ambig_config);
 };
 
@@ -702,12 +700,7 @@ CSL.Registry.prototype.registerAmbigToken = function (akey, id, ambig_config) {
  * <p>This is used internally by the Registry.</p>
  */
 CSL.getSortKeys = function (Item, key_type) {
-    var area, root, extension, strip_prepositions, use_parallels, len, pos;
-    //SNIP-START
-    if (false) {
-        CSL.debug("KEY TYPE: " + key_type);
-    }
-    //SNIP-END
+    var area, root, extension, strip_prepositions, len, pos;
     area = this.tmp.area;
     root = this.tmp.root;
     extension = this.tmp.extension;
@@ -728,12 +721,6 @@ CSL.getSortKeys = function (Item, key_type) {
     for (pos = 0; pos < len; pos += 1) {
         this[key_type].keys[pos] = strip_prepositions(this[key_type].keys[pos]);
     }
-    //SNIP-START
-    if (false) {
-        CSL.debug("sort keys (" + key_type + "): " + this[key_type].keys);
-    }
-    //SNIP-END
-    
     this.tmp.area = area;
     this.tmp.root = root;
     this.tmp.extension = extension;

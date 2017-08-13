@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.Node.layout = {
     build: function (state, target) {
@@ -7,8 +6,7 @@ CSL.Node.layout = {
         function setSuffix() {
             if (state.build.area === "bibliography") {
                 suffix_token = new CSL.Token("text", CSL.SINGLETON);
-                func = function(state, Item, item) {
-                    var last_locale = state.tmp.cite_locales[state.tmp.cite_locales.length - 1];
+                func = function(state) {
                     var suffix;
                     if (state.tmp.cite_affixes[state.tmp.area][state.tmp.last_cite_locale]) {
                         suffix = state.tmp.cite_affixes[state.tmp.area][state.tmp.last_cite_locale].suffix;
@@ -50,7 +48,7 @@ CSL.Node.layout = {
                     && Item.system_id 
                     && state.tmp.area === "citation") { 
 
-                    cite_entry = new CSL.Token("group", CSL.START);
+                    var cite_entry = new CSL.Token("group", CSL.START);
                     cite_entry.decorations = [["@cite", "entry"]];
                     state.output.startTag("cite_entry", cite_entry);
                     state.output.current.value().item_id = Item.system_id;
@@ -81,14 +79,14 @@ CSL.Node.layout = {
             };
             this.execs.push(func);
             // set opt delimiter
-            func = function (state, Item) {
+            func = function (state) {
                 // just in case
                 state.tmp.sort_key_flag = false;
             };
             this.execs.push(func);
             
             // reset nameset counter [all nodes]
-            func = function (state, Item) {
+            func = function (state) {
                 state.tmp.nameset_counter = 0;
             };
             this.execs.push(func);
@@ -109,11 +107,12 @@ CSL.Node.layout = {
             this.execs.push(func);
             target.push(this);
 
-            if (state.opt.development_extensions.rtl_support && false) {
-                //print("INSERT 200e into: " + this.strings.prefix);
-                this.strings.prefix = this.strings.prefix.replace(/\((.|$)/g,"(\u200e$1");
-                this.strings.suffix = this.strings.suffix.replace(/\)(.|$)/g,")\u200e$1");
-            }
+            // FIXME: This will never run. Probably a bug
+            // if (state.opt.development_extensions.rtl_support && false) {
+            //     //print("INSERT 200e into: " + this.strings.prefix);
+            //     this.strings.prefix = this.strings.prefix.replace(/\((.|$)/g,"(\u200e$1");
+            //     this.strings.suffix = this.strings.suffix.replace(/\)(.|$)/g,")\u200e$1");
+            // }
 
             if (state.build.area === "citation") {
                 prefix_token = new CSL.Token("text", CSL.SINGLETON);
@@ -136,7 +135,7 @@ CSL.Node.layout = {
                             sp = " ";
                         } else if (CSL.TERMINAL_PUNCTUATION.slice(0,-1).indexOf(test_char) > -1) {
                             sp = " ";
-                        } else if (test_char.match(/[\)\],0-9]/)) {
+                        } else if (test_char.match(/[)\],0-9]/)) {
                             sp = " ";
                         }
                         var ignorePredecessor = false;
@@ -146,7 +145,7 @@ CSL.Node.layout = {
                         }
                         // Protect against double spaces, which would trigger an extra,
                         // explicit, non-breaking space.
-                        prefix = (item.prefix + sp).replace(/\s+/g, " ");
+                        var prefix = (item.prefix + sp).replace(/\s+/g, " ");
                         if (!state.tmp.just_looking) {
                             prefix = state.output.checkNestedBrace.update(prefix);
                         }
@@ -278,7 +277,7 @@ CSL.Node.layout = {
                 }
 
                 // Closes the RTL token
-                func = function (state, Item) {
+                func = function (state) {
                     state.output.closeLevel();
                 };
                 this.execs.push(func);

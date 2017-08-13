@@ -1,6 +1,6 @@
-/*global CSL: true */
+/*global dump: true */
 
-if ("undefined" === typeof console) {
+if (typeof console === 'undefined') {
     CSL.debug = function (str) {
         dump("CSL: " + str + "\n");
     };
@@ -9,9 +9,11 @@ if ("undefined" === typeof console) {
     };
 } else {
     CSL.debug = function (str) {
+        // eslint-disable-next-line
         console.log("CSL: " + str);
     };
     CSL.error = function (str) {
+        // eslint-disable-next-line
         console.log("CSL error: " + str);
     };
 }

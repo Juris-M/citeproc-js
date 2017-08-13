@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.Util.padding = function (num) {
     var m = num.match(/\s*(-{0,1}[0-9]+)/);
@@ -169,11 +168,8 @@ CSL.Util.Suffixator.prototype.format = function (N) {
 };
 
 
-CSL.Engine.prototype.processNumber = function (node, ItemObject, variable, type) {
-    //print("** processNumber() ItemObject[variable]="+ItemObject[variable]);
-    var val, m, i, ilen, j, jlen;
-    var debug = false;
-
+CSL.Engine.prototype.processNumber = function (node, ItemObject, variable) {
+    var val;
     var me = this;
 
     // XXXX shadow_numbers should carry an array of objects with
@@ -205,7 +201,7 @@ CSL.Engine.prototype.processNumber = function (node, ItemObject, variable, type)
     //   }
     // ]
     
-    function normalizeFieldValue(str, defaultLabel) {
+    function normalizeFieldValue(str) {
         str = str.trim();
         var m = str.match(/^([^ ]+)/);
         if (m && !CSL.STATUTE_SUBDIV_STRINGS[m[1]]) {
@@ -229,14 +225,14 @@ CSL.Engine.prototype.processNumber = function (node, ItemObject, variable, type)
 
     function composeNumberInfo(origLabel, label, val, joiningSuffix) {
         joiningSuffix = joiningSuffix ? joiningSuffix : "";
-        var info = {};
+        var info = {}, m;
 
         if (!label && !CSL.STATUTE_SUBDIV_STRINGS_REVERSE[variable]) {
                 label = "var:"+variable;
         }
         
         if (label) {
-            var m = label.match(/(\s*)([^\s]*)(\s*)/);
+            m = label.match(/(\s*)([^\s]*)(\s*)/);
             info.label = m[2];
             info.origLabel = origLabel;
             info.labelSuffix = m[3] ? m[3] : "";
@@ -244,7 +240,7 @@ CSL.Engine.prototype.processNumber = function (node, ItemObject, variable, type)
             info.labelVisibility = false;
         }
         
-        var m = val.match(/^([a-zA-Z0]*)([0-9]+(?:[a-zA-Z]*|[-,a-zA-Z]+))$/);
+        m = val.match(/^([a-zA-Z0]*)([0-9]+(?:[a-zA-Z]*|[-,a-zA-Z]+))$/);
         //var m = val.match(/^([a-zA-Z]0*)([0-9]+(?:[a-zA-Z]*|[-,a-zA-Z]+))$/);
         if (m) {
             info.particle = m[1];
@@ -278,9 +274,10 @@ CSL.Engine.prototype.processNumber = function (node, ItemObject, variable, type)
 
         // Split chunks and collate delimiters.
         var elems = [];
-        var m = str.match(/(,\s+|\s*\\*[\-\u2013]+\s*|\s*&\s*)/g);
+        var m = str.match(/(,\s+|\s*\\*[-\u2013]+\s*|\s*&\s*)/g);
+        var lst, j, jlen;
         if (m) {
-            var lst = str.split(/(?:,\s+|\s*\\*[\-\u2013]+\s*|\s*&\s*)/);
+            lst = str.split(/(?:,\s+|\s*\\*[-\u2013]+\s*|\s*&\s*)/);
             for (var i=0,ilen=lst.length-1; i<ilen; i++) {
                 elems.push(lst[i]);
                 elems.push(m[i]);
@@ -290,21 +287,21 @@ CSL.Engine.prototype.processNumber = function (node, ItemObject, variable, type)
             elems = fixupSubsections(elems);
             //print("  fixup: "+elems);
         } else {
-            var elems = [str];
+            elems = [str];
         }
         // Split elements within each chunk build list of value objects.
         var values = [];
         var label = defaultLabel;
         var origLabel = "";
-        for (var i=0,ilen=elems.length;i<ilen;i += 2) {
-            var m = elems[i].match(/((?:^| )(?:[a-z]|[a-z][a-z]|[a-z][a-z][a-z]|[a-z][a-z][a-z][a-z])\. *)/g);
+        for (i=0,ilen=elems.length;i<ilen;i += 2) {
+            m = elems[i].match(/((?:^| )(?:[a-z]|[a-z][a-z]|[a-z][a-z][a-z]|[a-z][a-z][a-z][a-z])\. *)/g);
             if (m) {
-                var lst = elems[i].split(/(?:(?:^| )(?:[a-z]|[a-z][a-z]|[a-z][a-z][a-z]|[a-z][a-z][a-z][a-z])\. *)/);
+                lst = elems[i].split(/(?:(?:^| )(?:[a-z]|[a-z][a-z]|[a-z][a-z][a-z]|[a-z][a-z][a-z][a-z])\. *)/);
                 // ZZZ
                 //print("m="+JSON.stringify(m));
                 //print("lst="+JSON.stringify(lst));
                 // Head off disaster by merging parsed labels on non-numeric values into content
-                for (var j=lst.length-1;j>0;j--) {
+                for (j=lst.length-1;j>0;j--) {
                     // ZZZ
                     //print(j);
                     if (lst[j-1] && (!lst[j].match(/^[0-9]+([-,:a-zA-Z]*)$/) || !lst[j-1].match(/^[0-9]+([-,:a-zA-Z]*)$/))) {
@@ -329,11 +326,11 @@ CSL.Engine.prototype.processNumber = function (node, ItemObject, variable, type)
                     }
                 }
 
-                for (var j=0,jlen=lst.length; j<jlen; j++) {
+                for (j=0,jlen=lst.length; j<jlen; j++) {
                     if (lst[j] || j === (lst.length-1)) {
                         label = m[j-1] ? m[j-1] : label;
-                        var origLabel = j > 1 ? m[j-1] : "";
-                        var str = lst[j] ? lst[j].trim() : "";
+                        origLabel = j > 1 ? m[j-1] : "";
+                        str = lst[j] ? lst[j].trim() : "";
                         if (j === (lst.length-1)) {
                             values.push(composeNumberInfo(origLabel, label, str, elems[i+1]));
                         } else {
@@ -409,7 +406,6 @@ CSL.Engine.prototype.processNumber = function (node, ItemObject, variable, type)
             collapsible: true,
             pos: 0
         }
-        var masterLabel = values.length ? values[0].label : null;
         for (var i=0,ilen=values.length;i<ilen;i++) {
             if (values[i].label) {
                 if (values[i].label === currentLabelInfo.label) {
@@ -455,7 +451,7 @@ CSL.Engine.prototype.processNumber = function (node, ItemObject, variable, type)
                 values[0].plural = 1;
             }
         }
-        for (var i=0,ilen=values.length;i<ilen;i++) {
+        for (i=0,ilen=values.length;i<ilen;i++) {
             if (!values[i].numeric) {
                 var origLabel = values[i].origLabel ? values[i].origLabel : "";
                 values[i].value = (origLabel + values[i].value).trim();
@@ -733,7 +729,7 @@ CSL.Engine.prototype.processNumber = function (node, ItemObject, variable, type)
         var defaultLabel = CSL.STATUTE_SUBDIV_STRINGS_REVERSE[variable];
 
         if (!this.tmp.shadow_numbers.values) {
-            var values = parseString(val, defaultLabel);
+            values = parseString(val, defaultLabel);
             //print("parseString(): "+JSON.stringify(values, null, 2));
             
             setSpaces(values);
@@ -816,10 +812,11 @@ CSL.Util.outputNumericField = function(state, varname, itemID) {
             }
         }
         if (num.collapsible) {
+            var blob;
             if (num.value.match(/^[0-9]+$/)) {
-                var blob = new CSL.NumericBlob(num.particle, parseInt(num.value, 10), numStyling, itemID);
+                blob = new CSL.NumericBlob(num.particle, parseInt(num.value, 10), numStyling, itemID);
             } else {
-                var blob = new CSL.NumericBlob(num.particle, num.value, numStyling, itemID);
+                blob = new CSL.NumericBlob(num.particle, num.value, numStyling, itemID);
             }
             if ("undefined" === typeof blob.gender) {
                 blob.gender = state.locale[state.opt.lang]["noun-genders"][varname];

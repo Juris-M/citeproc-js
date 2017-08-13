@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.NameOutput.prototype.setEtAlParameters = function () {
     var i, ilen, j, jlen;

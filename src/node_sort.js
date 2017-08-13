@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 /*
  * Yikes, these functions were running out of scope for yonks.
@@ -10,6 +9,7 @@
 CSL.Node.sort = {
     build: function (state, target) {
         target = state[state.build.root + "_sort"].tokens;
+        var func;
         if (this.tokentype === CSL.START) {
             if (state.build.area === "citation") {
                 state.parallel.use_parallels = false;
@@ -18,7 +18,7 @@ CSL.Node.sort = {
             state.build.area = state.build.root + "_sort";
             state.build.extension = "_sort";
             
-            var func = function (state, Item) {
+            func = function (state, Item) {
                 //state.tmp.area = state.tmp.root + "_sort";
                 //state.tmp.extension = "_sort";
                 if (state.opt.has_layout_locale) {
@@ -47,7 +47,7 @@ CSL.Node.sort = {
         if (this.tokentype === CSL.END) {
             state.build.area = state.build.root;
             state.build.extension = "";
-            var func = function (state, Item) {
+            func = function (state) {
                 if (state.opt.has_layout_locale) {
                     state.opt.lang = state.tmp.lang_sort_hold;
                     delete state.tmp.lang_sort_hold;

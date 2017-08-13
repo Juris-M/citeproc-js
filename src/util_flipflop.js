@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 // Use a state machine
 
@@ -114,10 +113,10 @@ CSL.Util.FlipFlopper = function(state) {
                 "false": "true"
             }
         },
-        " \'": {
+        " '": {
             type: "quote",
-            opener: " \'",
-            closer: "\'",
+            opener: " '",
+            closer: "'",
             attr: "@quotes",
             outer: "inner",
             flipflop: {
@@ -129,7 +128,7 @@ CSL.Util.FlipFlopper = function(state) {
     }
 
     _nestingData["(\""] = _nestingData[" \""]
-    _nestingData["(\'"] = _nestingData[" \'"]
+    _nestingData["('"] = _nestingData[" '"]
 
     var localeOpenQuote = state.getTerm("open-quote");
     var localeCloseQuote = state.getTerm("close-quote");
@@ -138,47 +137,49 @@ CSL.Util.FlipFlopper = function(state) {
 
     // If locale uses straight quotes, do not register them. All will be well.
     // Otherwise, clone straight-quote data, and adjust.
-    if (localeOpenQuote && localeCloseQuote && [" \""," \'","\"","\'"].indexOf(localeOpenQuote) === -1) {
+    if (localeOpenQuote && localeCloseQuote && [" \""," '","\"","'"].indexOf(localeOpenQuote) === -1) {
         _nestingData[localeOpenQuote] = JSON.parse(JSON.stringify(_nestingData[" \""]));
         _nestingData[localeOpenQuote].opener = localeOpenQuote;
         _nestingData[localeOpenQuote].closer = localeCloseQuote;
     }
     
-    if (localeOpenInnerQuote && localeCloseInnerQuote && [" \""," \'","\"","\'"].indexOf(localeOpenInnerQuote) === -1) {
-        _nestingData[localeOpenInnerQuote] = JSON.parse(JSON.stringify(_nestingData[" \'"]));
+    if (localeOpenInnerQuote && localeCloseInnerQuote && [" \""," '","\"","'"].indexOf(localeOpenInnerQuote) === -1) {
+        _nestingData[localeOpenInnerQuote] = JSON.parse(JSON.stringify(_nestingData[" '"]));
         _nestingData[localeOpenInnerQuote].opener = localeOpenInnerQuote;
         _nestingData[localeOpenInnerQuote].closer = localeCloseInnerQuote;
     }
     
+    // eslint-disable-next-line
     var _nestingQuoteReverse = function() {
         var ret = {};
-        for (var key of Object.keys(_nestingData)) {
+        Object.keys(_nestingData).forEach(function(key) {
             if (_nestingData[key].type === "quote") {
                 ret[_nestingData[key].closer] = _nestingData[key];
             }
-        }
+        })
         return ret;
     }();
     
+    // eslint-disable-next-line
     var _nestingDataAttr = function() {
         var ret = {};
-        for (var key of Object.keys(_nestingData)) {
-            if (_nestingData[key].type === "nocase") continue;
+        Object.keys(_nestingData).forEach(function(key) {
+            if (_nestingData[key].type === "nocase") return;
             var attr = _nestingData[key].attr;
             var outer = _nestingData[key].outer;
             var inner = _nestingData[key].flipflop[_nestingData[key].outer];
             ret[attr + "/" + outer] = _nestingData[key];
             ret[attr + "/" + inner] = _nestingData[key];
-        }
+        });
         return ret;
     }();
     
     function _setOuterQuoteForm(quot) {
         var flip = {
-            " \'": " \"",
-            " \"": " \'",
-            "(\"": "(\'",
-            "(\'": "(\""
+            " '": " \"",
+            " \"": " '",
+            "(\"": "('",
+            "('": "(\""
         }
         _nestingData[quot].outer = "true";
         _nestingData[flip[quot]].outer = "inner";
@@ -186,12 +187,11 @@ CSL.Util.FlipFlopper = function(state) {
     
     function _getNestingOpenerParams(opener) {
         var openers = [];
-        var closer;
-        for (var key of Object.keys(_nestingData)) {
+        Object.keys(_nestingData).forEach(function(key) {
             if (_nestingData[opener].type !== "quote" || !_nestingData[opener]) {
                 openers.push(key);
             }
-        }
+        });
         var ret = _nestingData[opener];
         ret.opener = new RegExp("^(?:" + openers.map(function(str){return str.replace("(", "\\(")}).join("|") + ")"); 
         return ret;
@@ -199,9 +199,9 @@ CSL.Util.FlipFlopper = function(state) {
 
     var _nestingParams = function() {
         var ret = {};
-        for (var key of Object.keys(_nestingData)) {
+        Object.keys(_nestingData).forEach(function(key) {
             ret[key] = _getNestingOpenerParams(key);
-        }
+        });
         return ret;
     }()
 
@@ -213,9 +213,9 @@ CSL.Util.FlipFlopper = function(state) {
             openers.push(opener);
             vals[_nestingParams[opener].closer] = true;
         }
-        for (var closer of Object.keys(vals)) {
+        Object.keys(vals).forEach(function(closer) {
             closers.push(closer);
-        }
+        });
 
         var all = openers.concat(closers).map(function(str){return str.replace("(", "\\(")}).join("|");
 
@@ -293,8 +293,8 @@ CSL.Util.FlipFlopper = function(state) {
     function _doppelString(str) {
         var forcedSpaces = [];
         // Normalize markup
-        str = str.replace(/(<span)\s+(style=\"font-variant:)\s*(small-caps);?\"[^>]*(>)/g, "$1 $2$3;\"$4");
-        str = str.replace(/(<span)\s+(class=\"no(?:case|decor)\")[^>]*(>)/g, "$1 $2$3");
+        str = str.replace(/(<span)\s+(style="font-variant:)\s*(small-caps);?"[^>]*(>)/g, "$1 $2$3;\"$4");
+        str = str.replace(/(<span)\s+(class="no(?:case|decor)")[^>]*(>)/g, "$1 $2$3");
 
         var match = str.match(_tagRex.matchAll);
         if (!match) {
@@ -323,6 +323,7 @@ CSL.Util.FlipFlopper = function(state) {
         }
     }
 
+    // eslint-disable-next-line
     function _undoppelString(obj) {
         var lst = obj.strings.slice(-1);
         for (var i=obj.tags.length-1; i>-1; i+=-1) {
@@ -337,7 +338,7 @@ CSL.Util.FlipFlopper = function(state) {
         this.set = set;
         this.pair = pair;
         this.pop = pop;
-        _stack = [];
+        var _stack = [];
         function set(tag) {
             var attr = _nestingData[tag].attr;
             var decor = null;
@@ -351,11 +352,11 @@ CSL.Util.FlipFlopper = function(state) {
             if (!decor) {
                 var allTheDecor = [state[state.tmp.area].opt.layout_decorations].concat(blob.alldecor)
                 outer:
-                for (var i=allTheDecor.length-1;i>-1;i--) {
+                for (i=allTheDecor.length-1;i>-1;i--) {
                     var decorset = allTheDecor[i];
                     if (!decorset) continue;
                     for (var j=decorset.length-1;j>-1;j--) {
-                        var _decor = decorset[j];
+                        _decor = decorset[j];
                         if (_decor[0] === attr) {
                             decor = _decor;
                             break outer;
@@ -379,25 +380,24 @@ CSL.Util.FlipFlopper = function(state) {
     }
     
     function _apostropheForce(tag, str) {
-        if (tag === "\'") {
-            if (str && str.match(/^[^\.\?\:\;\ ]/)) {
+        if (tag === "'") {
+            if (str && str.match(/^[^.?:; ]/)) {
                 return true;
             }
-        } else if (tag === " \'" && str && str.match(/^[\ ]/)) {
+        } else if (tag === " '" && str && str.match(/^[ ]/)) {
             return true;
         }
         return false;
     }
 
     function _undoppelToQueue(blob, doppel, leadingSpace) {
-        var TOP = blob;
         var firstString = true;
         var tagReg = new _TagReg(blob);
         blob.blobs = [];
         function Stack (blob) {
             this.stack = [blob];
             this.latest = blob;
-            this.addStyling = function(str, decor, forcedSpace) {
+            this.addStyling = function(str, decor) {
                 if (firstString) {
                     if (str.slice(0, 1) === " ") {
                         str = str.slice(1);
@@ -453,15 +453,15 @@ CSL.Util.FlipFlopper = function(state) {
                     this.stack.push(newblob);
                     this.latest = newblob;
                     if (str) {
-                        var tok = new CSL.Token();
-                        var newblob = new CSL.Blob(null, tok);
+                        tok = new CSL.Token();
+                        newblob = new CSL.Blob(null, tok);
                         newblob.blobs = str;
                         newblob.alldecor = this.latest.alldecor.slice();
                         this.latest.blobs.push(newblob);
                     }
                 } else {
                     if (str) {
-                        var child = new CSL.Blob();
+                        child = new CSL.Blob();
                         child.blobs = str;
                         child.alldecor = this.latest.alldecor.slice();
                         this.latest.blobs.push(child);
@@ -482,7 +482,7 @@ CSL.Util.FlipFlopper = function(state) {
         }
         for (var i=0,ilen=doppel.tags.length;i<ilen;i++) {
             var tag = doppel.tags[i];
-            var str = doppel.strings[i+1];
+            str = doppel.strings[i+1];
             if (tag.match(_tagRex.open)) {
                 tagReg.set(tag);
                 stack.addStyling(str, tagReg.pair());
@@ -501,10 +501,10 @@ CSL.Util.FlipFlopper = function(state) {
     function processTags(blob) {
         var str = blob.blobs;
         var leadingSpace = false;
-        if (str.slice(0, 1) === " " && !str.match(/^\s+[\'\"]/)) {
+        if (str.slice(0, 1) === " " && !str.match(/^\s+['"]/)) {
             leadingSpace = true;
         }
-        var str = " " + str;
+        str = " " + str;
         var doppel = _doppelString(str);
         if (doppel.tags.length === 0) return;
         var quoteFormSeen = false;
@@ -515,9 +515,9 @@ CSL.Util.FlipFlopper = function(state) {
         
     	for (var i=0,ilen=doppel.tags.length;i<ilen;i++) {
             var tag = doppel.tags[i];
-            var str = doppel.strings[i+1];
+            str = doppel.strings[i+1];
             if (_apostropheForce(tag, str)) {
-                if (tag === " \'") {
+                if (tag === " '") {
                     doppel.strings[i+1] = " \u2019" + doppel.strings[i+1];
                 } else {
                     doppel.strings[i+1] = "\u2019" + doppel.strings[i+1];
@@ -525,12 +525,13 @@ CSL.Util.FlipFlopper = function(state) {
                 doppel.tags[i] = "";
             } else {
                 var tagInfo;
+                // eslint-disable-next-line
                 while (true) {
                     tagInfo = _nestingFix(tag, i);
                     if (tagInfo) {
                         if (Object.keys(tagInfo).indexOf("fixtag") > -1) {
                             if (tag.match(_tagRex.close)
-                                && tag === "\'") {
+                                && tag === "'") {
                                 
                                 doppel.strings[i+1] = "\u2019" + doppel.strings[i+1];
                                 doppel.tags[i] = "";
@@ -565,11 +566,10 @@ CSL.Util.FlipFlopper = function(state) {
             }
         }
         // Stray tags are neutralized here
-        for (var i=_nestingState.length-1;i>-1;i--) {
+        for (i=_nestingState.length-1;i>-1;i--) {
             var tagPos = _nestingState[i].pos
-            var tag = doppel.tags[tagPos];
-            if (tag === " \'" || tag === "\'") {
-
+            tag = doppel.tags[tagPos];
+            if (tag === " '" || tag === "'") {
                 doppel.strings[tagPos+1] = " \u2019" + doppel.strings[tagPos+1];
             } else {
                 doppel.strings[tagPos+1] = doppel.tags[tagPos] + doppel.strings[tagPos+1];
@@ -577,7 +577,7 @@ CSL.Util.FlipFlopper = function(state) {
             doppel.tags[tagPos] = "";
             _nestingState.pop();
         }
-        for (var i=doppel.tags.length-1;i>-1;i--) {
+        for (i=doppel.tags.length-1;i>-1;i--) {
             if (!doppel.tags[i]) {
                 doppel.tags = doppel.tags.slice(0,i).concat(doppel.tags.slice(i+1));
                 doppel.strings[i] = doppel.strings[i] + doppel.strings[i+1];
@@ -586,10 +586,10 @@ CSL.Util.FlipFlopper = function(state) {
         }
         // Sniff initial (outer) quote form (single or double) and configure parser
         // Also add leading spaces.
-        for (var i=0,ilen=doppel.tags.length;i<ilen;i++) {
-            var tag = doppel.tags[i];
+        for (i=0,ilen=doppel.tags.length;i<ilen;i++) {
+            tag = doppel.tags[i];
             var forcedSpace = doppel.forcedSpaces[i-1];
-            if ([" \"", " \'", "(\"", "(\'"].indexOf(tag) > -1) {
+            if ([" \"", " '", "(\"", "('"].indexOf(tag) > -1) {
                 if (!quoteFormSeen) {
                     _setOuterQuoteForm(tag);
                     quoteFormSeen = true;

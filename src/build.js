@@ -1,7 +1,6 @@
-/*global CSL: true */
 
 CSL.Engine = function (sys, style, lang, forceLang) {
-    var attrs, langspec, localexml, locale;
+    var attrs, langspec;
     this.processor_version = CSL.PROCESSOR_VERSION;
     this.csl_version = "1.0";
     this.sys = sys;
@@ -204,7 +203,7 @@ CSL.Engine = function (sys, style, lang, forceLang) {
 
     // Build skip-word regexp
     function makeRegExp(lst) {
-        var lst = lst.slice();
+        lst = lst.slice();
         var ret = new RegExp( "(?:(?:[?!:]*\\s+|-|^)(?:" + lst.join("|") + ")(?=[!?:]*\\s+|-|$))", "g");
         return ret;
     }
@@ -226,7 +225,7 @@ CSL.Engine = function (sys, style, lang, forceLang) {
     this.buildTokenLists(area_nodes, this[this.build.area].tokens);
 
     this.build.area = "bibliography";
-    var area_nodes = this.cslXml.getNodesByName(this.cslXml.dataObj, this.build.area);
+    area_nodes = this.cslXml.getNodesByName(this.cslXml.dataObj, this.build.area);
     this.buildTokenLists(area_nodes, this[this.build.area].tokens);
 
     this.juris = {};
@@ -287,7 +286,7 @@ CSL.makeBuilder = function (me, target) {
         CSL.XmlToToken.call(node, me, CSL.SINGLETON, target);
     };
     function buildStyle (node) {
-        var starttag, origparent;
+        var origparent;
         if (me.cslXml.numberofnodes(me.cslXml.children(node))) {
             origparent = node;
             enterFunc(origparent);
@@ -325,7 +324,6 @@ CSL.Engine.prototype.buildTokenLists = function (area_nodes, target) {
 
 
 CSL.Engine.prototype.setStyleAttributes = function () {
-    var dummy, attr, key, attributes, attrname;
     // Protect against DOM engines that deliver a top-level document
     // (needed for createElement) that does not contain our top-level node.
     // 
@@ -347,7 +345,7 @@ CSL.Engine.prototype.setStyleAttributes = function () {
     // and it could be tough slog to get it fixed.
     // XXXXX
 
-    var dummy = {};
+    var dummy = {}, attributes, attrname;;
 
     //var cslXml = this.cslXml;
 	//var tagName = this.cslXml.tagName ? ("" + this.cslXml.tagName).toLowerCase() : "";
@@ -479,11 +477,9 @@ CSL.Engine.getField = function (mode, hash, term, form, plural, gender) {
 };
 
 CSL.Engine.prototype.configureTokenLists = function () {
-    var dateparts_master, area, pos, token, dateparts, part, ppos, pppos, len, llen, lllen;
-    //for each (var area in ["citation", "citation_sort", "bibliography","bibliography_sort"]) {
+    var area, pos, len;
     len = CSL.AREAS.length;
     for (pos = 0; pos < len; pos += 1) {
-        //var ret = [];
         area = CSL.AREAS[pos];
         var tokens = this[area].tokens;
         this.configureTokenList(tokens);
@@ -493,10 +489,10 @@ CSL.Engine.prototype.configureTokenLists = function () {
 };
 
 CSL.Engine.prototype.configureTokenList = function (tokens) {
-    var dateparts_master, area, pos, token, dateparts, part, ppos, pppos, len, llen, lllen;
+    var dateparts_master, token, dateparts, part, ppos, pppos, len, llen;
     dateparts_master = ["year", "month", "day"];
-    llen = tokens.length - 1;
-    for (ppos = llen; ppos > -1; ppos += -1) {
+    len = tokens.length - 1;
+    for (ppos = len; ppos > -1; ppos += -1) {
         token = tokens[ppos];
         //token.pos = ppos;
         //ret.push(token);
@@ -504,8 +500,8 @@ CSL.Engine.prototype.configureTokenList = function (tokens) {
             dateparts = [];
         }
         if ("date-part" === token.name && token.strings.name) {
-            lllen = dateparts_master.length;
-            for (pppos = 0; pppos < lllen; pppos += 1) {
+            llen = dateparts_master.length;
+            for (pppos = 0; pppos < llen; pppos += 1) {
                 part = dateparts_master[pppos];
                 if (part === token.strings.name) {
                     dateparts.push(token.strings.name);
@@ -524,8 +520,7 @@ CSL.Engine.prototype.configureTokenList = function (tokens) {
 }
 
 CSL.Engine.prototype.retrieveItems = function (ids) {
-    var ret, pos, len;
-    ret = [];
+    var ret = [];
     for (var i = 0, ilen = ids.length; i < ilen; i += 1) {
         ret.push(this.retrieveItem("" + ids[i]));
     }
@@ -538,7 +533,7 @@ CSL.ITERATION = 0;
 // Adds experimental fields embedded in the note field for
 // style development trial and testing purposes.
 CSL.Engine.prototype.retrieveItem = function (id) {
-    var Item, m, pos, len, mm;
+    var Item, m, i, ilen, field, key, jurisdiction;
 
     if (!this.tmp.loadedItemIDs[id]) {
         this.tmp.loadedItemIDs[id] = true;
@@ -549,13 +544,13 @@ CSL.Engine.prototype.retrieveItem = function (id) {
     if (this.opt.development_extensions.normalize_lang_keys_to_lowercase &&
         "boolean" === typeof this.opt.development_extensions.normalize_lang_keys_to_lowercase) {
         // This is a hack. Should properly be configured by a processor method after build.
-        for (var i=0,ilen=this.opt["default-locale"].length; i<ilen; i+=1) {
+        for (i=0,ilen=this.opt["default-locale"].length; i<ilen; i+=1) {
             this.opt["default-locale"][i] = this.opt["default-locale"][i].toLowerCase();
         }
-        for (var i=0,ilen=this.opt["locale-translit"].length; i<ilen; i+=1) {
+        for (i=0,ilen=this.opt["locale-translit"].length; i<ilen; i+=1) {
             this.opt["locale-translit"][i] = this.opt["locale-translit"][i].toLowerCase();
         }
-        for (var i=0,ilen=this.opt["locale-translat"].length; i<ilen; i+=1) {
+        for (i=0,ilen=this.opt["locale-translat"].length; i<ilen; i+=1) {
             this.opt["locale-translat"][i] = this.opt["locale-translat"][i].toLowerCase();
         }
         this.opt.development_extensions.normalize_lang_keys_to_lowercase = 100;
@@ -570,8 +565,8 @@ CSL.Engine.prototype.retrieveItem = function (id) {
     if (this.opt.development_extensions.normalize_lang_keys_to_lowercase) {
         if (Item.multi) {
             if (Item.multi._keys) {
-                for (var field in Item.multi._keys) {
-                    for (var key in Item.multi._keys[field]) {
+                for (field in Item.multi._keys) {
+                    for (key in Item.multi._keys[field]) {
                         if (key !== key.toLowerCase()) {
                             Item.multi._keys[field][key.toLowerCase()] = Item.multi._keys[field][key];
                             delete Item.multi._keys[field][key];
@@ -580,19 +575,19 @@ CSL.Engine.prototype.retrieveItem = function (id) {
                 }
             }
             if (Item.multi.main) {
-                for (var field in Item.multi.main) {
+                for (field in Item.multi.main) {
                     Item.multi.main[field] = Item.multi.main[field].toLowerCase();
                 }
             }
         }
-        for (var i=0, ilen=CSL.CREATORS.length; i>ilen; i+=1) {
+        for (i=0, ilen=CSL.CREATORS.length; i>ilen; i+=1) {
             var ctype = CSL.CREATORS[i];
             if (Item[ctype] && Item[ctype].multi) {
                 for (var j=0, jlen=Item[ctype].length; j<jlen; j+=1) {
                     var creator = Item[ctype][j];
                     if (creator.multi) {
                         if (creator.multi._key) {
-                            for (var key in creator.multi._key) {
+                            for (key in creator.multi._key) {
                                 if (key !== key.toLowerCase()) {
                                     creator.multi._key[key.toLowerCase()] = creator.multi._key[key];
                                     delete creator.multi._key[key];
@@ -653,7 +648,7 @@ CSL.Engine.prototype.retrieveItem = function (id) {
         CSL.parseNoteFieldHacks(Item, false, this.opt.development_extensions.allow_field_hack_date_override);
     }
     // not including locator-date
-    for (var i = 1, ilen = CSL.DATE_VARIABLES.length; i < ilen; i += 1) {
+    for (i = 1, ilen = CSL.DATE_VARIABLES.length; i < ilen; i += 1) {
         var dateobj = Item[CSL.DATE_VARIABLES[i]];
         if (dateobj) {
             // raw date parsing is harmless, but can be disabled if desired
@@ -714,11 +709,7 @@ CSL.Engine.prototype.retrieveItem = function (id) {
         }
     }
     if (!isLegalType && Item.title && this.sys.getAbbreviation) {
-        var noHints = false;
-        if (!Item.jurisdiction) {
-            noHints = true;
-        }
-        var jurisdiction = this.transform.loadAbbreviation(Item.jurisdiction, "title", Item.title, Item.type, true);
+        jurisdiction = this.transform.loadAbbreviation(Item.jurisdiction, "title", Item.title, Item.type, true);
         if (this.transform.abbrevs[jurisdiction].title) {
             if (this.transform.abbrevs[jurisdiction].title[Item.title]) {
                 Item["title-short"] = this.transform.abbrevs[jurisdiction].title[Item.title];
@@ -729,7 +720,7 @@ CSL.Engine.prototype.retrieveItem = function (id) {
         Item["container-title-short"] = Item.journalAbbreviation;
     }
     if (Item["container-title"] && this.sys.getAbbreviation) {
-        var jurisdiction = this.transform.loadAbbreviation(Item.jurisdiction, "container-title", Item["container-title"]);
+        jurisdiction = this.transform.loadAbbreviation(Item.jurisdiction, "container-title", Item["container-title"]);
         if (this.transform.abbrevs[jurisdiction]["container-title"]) {
             if (this.transform.abbrevs[jurisdiction]["container-title"][Item["container-title"]]) {
                 Item["container-title-short"] = this.transform.abbrevs[jurisdiction]["container-title"][Item["container-title"]];

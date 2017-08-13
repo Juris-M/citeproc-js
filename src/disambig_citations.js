@@ -1,6 +1,5 @@
-/*global CSL: true */
 
-CSL.Registry.CitationReg = function (state) {
+CSL.Registry.CitationReg = function () {
     this.citationById = {};
     this.citationByIndex = [];
 };

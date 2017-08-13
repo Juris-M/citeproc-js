@@ -1,5 +1,3 @@
-/*global CSL: true */
-
 
 /**
  * String stack object.

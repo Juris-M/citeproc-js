@@ -1,3 +1,5 @@
+/* global DOMParser:true, ActiveXObject: true, marknote: true, XMLHttpRequest: true */
+
 /**
  * Functions for parsing an XML object using E4X.
  */
@@ -7,13 +9,14 @@ CSL.XmlDOM = function (dataObj) {
     if ("undefined" == typeof DOMParser) {
         DOMParser = function() {};
         DOMParser.prototype.parseFromString = function(str, contentType) {
+            var xmldata;
             if ("undefined" != typeof ActiveXObject) {
-                var xmldata = new ActiveXObject('MSXML.DomDocument');
+                xmldata = new ActiveXObject('MSXML.DomDocument');
                 xmldata.async = false;
                 xmldata.loadXML(str);
                 return xmldata;
             } else if ("undefined" != typeof XMLHttpRequest) {
-                var xmldata = new XMLHttpRequest;
+                xmldata = new XMLHttpRequest;
                 if (!contentType) {
                     contentType = 'text/xml';
                 }
@@ -23,7 +26,7 @@ CSL.XmlDOM = function (dataObj) {
                 }
                 xmldata.send(null);
                 return xmldata.responseXML;
-            } else if ("undefined" != typeof marknote) {
+            } else if ("undefined" !== typeof marknote) {
                 var parser = new marknote.Parser();
                 return parser.parse(str);
             }
@@ -54,10 +57,11 @@ CSL.XmlDOM = function (dataObj) {
         };
     }
     this.importNode = function (doc, srcElement) {
+        var ret;
         if ("undefined" == typeof doc.importNode) {
-            var ret = this._importNode(doc, srcElement, true);
+            ret = this._importNode(doc, srcElement, true);
         } else {
-            var ret = doc.importNode(srcElement, true);
+            ret = doc.importNode(srcElement, true);
         }
         return ret;
     };
@@ -74,10 +78,9 @@ CSL.XmlDOM = function (dataObj) {
                     for (var i = 0, il = node.attributes.length; i < il;)
                         newNode.setAttribute(node.attributes[i].nodeName, node.getAttribute(node.attributes[i++].nodeName));
                     if (allChildren && node.childNodes && node.childNodes.length > 0)
-                        for (var i = 0, il = node.childNodes.length; i < il;)
+                        for (i = 0, il = node.childNodes.length; i < il;)
                             newNode.appendChild(this._importNode(doc, node.childNodes[i++], allChildren));
                 return newNode;
-                break;
             case 3:
             case 4:
             case 8:
@@ -163,7 +166,7 @@ CSL.XmlDOM.prototype.nodename = function (myxml) {
 };
 
 CSL.XmlDOM.prototype.attributes = function (myxml) {
-    var ret, attrs, attr, key, xml, pos, len;
+    var ret, attrs, attr, pos, len;
     ret = new Object();
     if (myxml && this.hasAttributes(myxml)) {
         attrs = myxml.attributes;
@@ -250,7 +253,7 @@ CSL.XmlDOM.prototype.getNodeValue = function (myxml,name) {
 }
 
 CSL.XmlDOM.prototype.setAttributeOnNodeIdentifiedByNameAttribute = function (myxml,nodename,partname,attrname,val) {
-    var pos, len, xml, nodes, node;
+    var pos, len, nodes, node;
     if (attrname.slice(0,1) === '@'){
         attrname = attrname.slice(1);
     }
@@ -324,7 +327,6 @@ CSL.XmlDOM.prototype.nodeNameIs = function (myxml,name) {
 }
 
 CSL.XmlDOM.prototype.makeXml = function (myxml) {
-    var ret, topnode;
     if (!myxml) {
         myxml = "<docco><bogus/></docco>";
     }
@@ -334,7 +336,7 @@ CSL.XmlDOM.prototype.makeXml = function (myxml) {
 };
 
 CSL.XmlDOM.prototype.insertChildNodeAfter = function (parent,node,pos,datexml) {
-    var myxml, xml;
+    var myxml;
     myxml = this.importNode(node.ownerDocument, datexml);
     parent.replaceChild(myxml, node);
      return parent;
@@ -352,7 +354,7 @@ CSL.XmlDOM.prototype.insertPublisherAndPlace = function(myxml) {
         }
         if (node.childNodes.length - skippers.length === 2) {
             var twovars = [];
-            for (var j = 0, jlen = 2; j < jlen; j += 1) {
+            for (j = 0, jlen = 2; j < jlen; j += 1) {
                 if (skippers.indexOf(j) > -1) {
                     continue;
                 }
@@ -407,7 +409,7 @@ CSL.XmlDOM.prototype.addMissingNameNodes = function(myxml) {
 
 
 CSL.XmlDOM.prototype.addInstitutionNodes = function(myxml) {
-    var names, thenames, institution, theinstitution, name, thename, xml, pos, len;
+    var names, thenames, institution, theinstitution, name, thename, pos, len, attrname, attrval;
     names = myxml.getElementsByTagName("names");
     for (pos = 0, len = names.length; pos < len; pos += 1) {
         thenames = names.item(pos);
@@ -418,22 +420,22 @@ CSL.XmlDOM.prototype.addInstitutionNodes = function(myxml) {
         institution = thenames.getElementsByTagName("institution");
         if (institution.length == 0) {
             theinstitution = this.importNode(myxml.ownerDocument, this.institution);
-            theinstitutionpart = theinstitution.getElementsByTagName("institution-part").item(0);
+            var theinstitutionpart = theinstitution.getElementsByTagName("institution-part").item(0);
             thename = name.item(0);
             thenames.insertBefore(theinstitution, thename.nextSibling);
             for (var j = 0, jlen = CSL.INSTITUTION_KEYS.length; j < jlen; j += 1) {
-                var attrname = CSL.INSTITUTION_KEYS[j];
-                var attrval = thename.getAttribute(attrname);
+                attrname = CSL.INSTITUTION_KEYS[j];
+                attrval = thename.getAttribute(attrname);
                 if (attrval) {
                     theinstitutionpart.setAttribute(attrname, attrval);
                 }
             }
             var nameparts = thename.getElementsByTagName("name-part");
-            for (var j = 0, jlen = nameparts.length; j < jlen; j += 1) {
+            for (j = 0, jlen = nameparts.length; j < jlen; j += 1) {
                 if ('family' === nameparts[j].getAttribute('name')) {
                     for (var k = 0, klen = CSL.INSTITUTION_KEYS.length; k < klen; k += 1) {
-                        var attrname = CSL.INSTITUTION_KEYS[k];
-                        var attrval = nameparts[j].getAttribute(attrname);
+                        attrname = CSL.INSTITUTION_KEYS[k];
+                        attrval = nameparts[j].getAttribute(attrname);
                         if (attrval) {
                             theinstitutionpart.setAttribute(attrname, attrval);
                         }
@@ -447,7 +449,7 @@ CSL.XmlDOM.prototype.addInstitutionNodes = function(myxml) {
 
 CSL.XmlDOM.prototype.flagDateMacros = function(myxml) {
     var pos, len, thenode, thedate;
-    nodes = myxml.getElementsByTagName("macro");
+    var nodes = myxml.getElementsByTagName("macro");
     for (pos = 0, len = nodes.length; pos < len; pos += 1) {
         thenode = nodes.item(pos);
         thedate = thenode.getElementsByTagName("date");

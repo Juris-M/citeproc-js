@@ -1,5 +1,3 @@
-/*global CSL: true */
-
 
 /**
  * Output specifications.
@@ -215,7 +213,7 @@ CSL.Output.Formats.prototype.text = {
     "@display/indent": function (state, str) {
         return "\n    "+str;
     },
-    "@showid/true": function (state, str, cslid) {
+    "@showid/true": function (state, str) {
         return str;
     },
     "@URL/true": function (state, str) {
@@ -285,9 +283,10 @@ CSL.Output.Formats.prototype.rtf = {
     "bibstart":"{\\rtf ",
     "bibend":"}",
     "@display/block": "\\line{}%%STRING%%\\line\r\n",
-    "@cite/entry": function (state, str) {
-        return str;
-	},
+    // FIXME: Bug here again. Duplicate key
+    // "@cite/entry": function (state, str) {
+    //     return str;
+	// },
     "@cite/entry": function (state, str) {
         // If wrapCitationEntry does not exist, cite/entry 
         // is not applied.
@@ -305,7 +304,7 @@ CSL.Output.Formats.prototype.rtf = {
     "@display/indent": function (state, str) {
         return "\n\\tab "+str+"\\line\r\n";
     },
-    "@showid/true": function (state, str, cslid) {
+    "@showid/true": function (state, str) {
         if (!state.tmp.just_looking && ! state.tmp.suppress_decorations) {
             var prePunct = "";
             if (str) {

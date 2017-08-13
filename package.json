@@ -8,7 +8,7 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "rollup -c",
+    "build": "./test.py -B && rollup -c",
     "lint": "eslint --ext .js src/",
     "test": "./test.py -s"
   },

@@ -1,5 +1,3 @@
-/*global CSL: true */
-
 CSL.Engine.prototype.rebuildProcessorState = function (citations, mode, uncitedItemIDs) {
     // Rebuilds the processor from scratch, based on a list of citation
     // objects. In a dynamic application, once the internal state of processor
@@ -20,8 +18,9 @@ CSL.Engine.prototype.rebuildProcessorState = function (citations, mode, uncitedI
     }
     var doneIDs = {};
     var itemIDs = [];
-    for (var i=0,ilen=citations.length;i<ilen;i+=1) {
-        for (var j=0,jlen=citations[i].citationItems.length;j<jlen;j+=1) {
+    var i, ilen, j, jlen;
+    for (i=0,ilen=citations.length;i<ilen;i+=1) {
+        for (j=0,jlen=citations[i].citationItems.length;j<jlen;j+=1) {
             var itemID = "" + citations[i].citationItems[j].id;
             if (!doneIDs[itemID]) {
                 itemIDs.push(itemID);
@@ -35,12 +34,12 @@ CSL.Engine.prototype.rebuildProcessorState = function (citations, mode, uncitedI
     var ret = [];
     var oldMode = this.opt.mode;
     this.setOutputFormat(mode);
-    for (var i=0,ilen=citations.length;i<ilen;i+=1) {
+    for (i=0,ilen=citations.length;i<ilen;i+=1) {
         // res contains a result report and a list of [index,string] pairs
         // index begins at 0
         var res = this.processCitationCluster(citations[i],pre,post,CSL.ASSUME_ALL_ITEMS_REGISTERED);
         pre.push([citations[i].citationID,citations[i].properties.noteIndex]);
-        for (var j=0,jlen=res[1].length;j<jlen;j+=1) {
+        for (j=0,jlen=res[1].length;j<jlen;j+=1) {
             var index = res[1][j][0];
             ret[index] = [
                 pre[index][0],
@@ -239,7 +238,6 @@ CSL.Engine.prototype.updateItems = function (idList, nosort, rerun_ambigs, impli
 };
 
 CSL.Engine.prototype.updateUncitedItems = function (idList, nosort) {
-    var debug = false;
     var oldArea = this.tmp.area;
     var oldRoot = this.tmp.root;
     var oldExtension = this.tmp.extension;
@@ -252,14 +250,15 @@ CSL.Engine.prototype.updateUncitedItems = function (idList, nosort) {
         idList = [];
     }
     if ("object" == typeof idList) {
+        var idHash;
         if ("undefined" == typeof idList.length) {
-            var idHash = idList;
+            idHash = idList;
             idList = [];
             for (var key in idHash) {
                 idList.push(key);
             }
         } else if ("number" == typeof idList.length) {
-            var idHash = {};
+            idHash = {};
             for (var i=0,ilen=idList.length;i<ilen;i+=1) {
                 idHash[idList[i]] = true;
             }

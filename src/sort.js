@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.getSortCompare = function (default_locale) {
     if (CSL.stringCompare) {
@@ -23,7 +22,7 @@ CSL.getSortCompare = function (default_locale) {
         return a.toLocaleLowerCase().localeCompare(b.toLocaleLowerCase(),default_locale,strcmp_opts);
     };
     var stripPunct = function (str) {
-        return str.replace(/^[\[\]\'\"]*/g, "");
+        return str.replace(/^[[\]'"]*/g, "");
     }
     var getBracketPreSort = function () {
         if (!strcmp("[x","x")) {

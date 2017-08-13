@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.Disambiguation = function (state) {
     this.state = state;
@@ -13,25 +12,14 @@ CSL.Disambiguation.prototype.run = function(akey) {
     if (!this.modes.length) {
         return;
     }
-    //SNIP-START
-    if (this.debug) {
-        print("[A] === RUN ===");
-    }
-    //SNIP-END
     this.akey = akey;
     if (this.initVars(akey)) {
         this.runDisambig();
     }
-
 };
 
 CSL.Disambiguation.prototype.runDisambig = function () {
-    var pos, len, ppos, llen, pppos, lllen, ismax;
-    //SNIP-START
-    if (this.debug) {
-        print("[C] === runDisambig() ===");
-    }
-    //SNIP-END
+    var ismax;
     this.initGivens = true;
     //
     // Length of list may change during processing
@@ -46,7 +34,6 @@ CSL.Disambiguation.prototype.runDisambig = function () {
             if (!this.base) {
                 this.base = this.lists[0][0];
             }
-            var names_used = [];
             ismax = this.incrementDisambig();
             this.scanItems(this.lists[0]);
             this.evalScan(ismax);
@@ -56,13 +43,7 @@ CSL.Disambiguation.prototype.runDisambig = function () {
 };
 
 CSL.Disambiguation.prototype.scanItems = function (list) {
-    var pos, len, Item, otherItem, ItemCite, ignore, base;
-    //SNIP-START
-    if (this.debug) {
-        print("[2] === scanItems() ===");
-    }
-    //SNIP-END
-
+    var pos, len, otherItem;
     this.Item = list[1][0];
     this.ItemCite = CSL.getAmbiguousCite.call(this.state, this.Item, this.base, true);
 
@@ -72,32 +53,13 @@ CSL.Disambiguation.prototype.scanItems = function (list) {
     this.nonpartners = [];
     var clashes = 0;
 
-    for (var pos = 1, len = list[1].length; pos < len; pos += 1) {
+    for (pos = 1, len = list[1].length; pos < len; pos += 1) {
         otherItem = list[1][pos];
         var otherItemCite = CSL.getAmbiguousCite.call(this.state, otherItem, this.base, true);
-        //SNIP-START
-        if (this.debug) {
-            if (pos > 1) {
-                print("  -----------");
-            }
-        }
-        //SNIP-END
         if (this.ItemCite === otherItemCite) {
-            //SNIP-START
-            if (this.debug) {
-                print("  [CLASH]--> "+this.Item.id+": "+this.ItemCite);
-                print("             "+otherItem.id+": "+otherItemCite);
-            }
-            //SNIP-END
             clashes += 1;
             this.partners.push(otherItem);
         } else {
-            //SNIP-START
-            if (this.debug) {
-                print("  [clear]--> "+this.Item.id+": "+this.ItemCite);
-                print("             "+otherItem.id+": "+otherItemCite);
-            }
-            //SNIP-END
             this.nonpartners.push(otherItem);
         }
     }
@@ -117,16 +79,8 @@ CSL.Disambiguation.prototype.evalScan = function (maxed) {
 };
 
 CSL.Disambiguation.prototype.disNames = function (ismax) {
-    var pos, len, mybase, i, ilen;
+    var i, ilen;
     
-    //SNIP-START
-    if (this.debug) {
-        print("[3] == disNames() ==");
-        //print("       partners: "+[this.partners[i].id for (i in this.partners)].join(", "));
-        //print("    nonpartners: "+[this.nonpartners[i].id for (i in this.nonpartners)].join(", "));
-    }
-    //SNIP-END
-
     // New design
     // this.base is a forward-only counter. Values are never
     // reduced, and the counter object is never overwritten.
@@ -149,23 +103,11 @@ CSL.Disambiguation.prototype.disNames = function (ismax) {
 
     if (this.clashes[1] === 0 && this.nonpartners.length === 1) {
         this.captureStepToBase();
-        //SNIP-START
-        if (this.debug) {
-            print("  ** RESOLUTION [a]: lone partner, one nonpartner");
-            print("  registering "+this.partners[0].id+" and "+this.nonpartners[0].id);
-        }
-        //SNIP-END
         this.state.registry.registerAmbigToken(this.akey, "" + this.nonpartners[0].id, this.betterbase);
         this.state.registry.registerAmbigToken(this.akey, "" + this.partners[0].id, this.betterbase);
         this.lists[this.listpos] = [this.betterbase, []];
     } else if (this.clashes[1] === 0) {
         this.captureStepToBase();
-        //SNIP-START
-        if (this.debug) {
-            print("  ** RESOLUTION [b]: lone partner, unknown number of remaining nonpartners");
-            print("  registering "+this.partners[0].id);
-        }
-        //SNIP-END
         this.state.registry.registerAmbigToken(this.akey, "" + this.partners[0].id, this.betterbase);
         this.lists[this.listpos] = [this.betterbase, this.nonpartners];
         if (this.nonpartners.length) {
@@ -173,40 +115,19 @@ CSL.Disambiguation.prototype.disNames = function (ismax) {
         }
     } else if (this.nonpartners.length === 1) {
         this.captureStepToBase();
-        //SNIP-START
-        if (this.debug) {
-            print("  ** RESOLUTION [c]: lone nonpartner, unknown number of partners remaining");
-            print("  registering "+this.nonpartners[0].id);
-        }
-        //SNIP-END
         this.state.registry.registerAmbigToken(this.akey, "" + this.nonpartners[0].id, this.betterbase);
         //this.lists[this.listpos] = [this.betterbase, this.partners];
         this.lists[this.listpos] = [this.betterbase, this.partners];
     } else if (this.clashes[1] < this.clashes[0]) {
         this.captureStepToBase();
-        //SNIP-START
-        if (this.debug) {
-            print("  ** RESOLUTION [d]: better result, but no entries safe to register");
-        }
-        //SNIP-END
         this.lists[this.listpos] = [this.betterbase, this.partners];
         this.lists.push([this.betterbase, this.nonpartners]);
     } else {
-        //SNIP-START
-        if (this.debug) {
-            print("  ** RESOLUTION [e]: no improvement, and clashes remain");
-        }
-        //SNIP-END
         if (ismax) {
             this.lists[this.listpos] = [this.betterbase, this.nonpartners];
             this.lists.push([this.betterbase, this.partners]);
             if (this.modeindex === this.modes.length - 1) {
-                //SNIP-START
-                if (this.debug) {
-                    print("     (registering clashing entries because we've run out of options)");
-                }
-                //SNIP-END
-                for (var i = 0, ilen = this.partners.length; i < ilen; i += 1) {
+                for (i = 0, ilen = this.partners.length; i < ilen; i += 1) {
                     this.state.registry.registerAmbigToken(this.akey, "" + this.partners[i].id, this.betterbase);
                 }
                 this.lists[this.listpos] = [this.betterbase, []];
@@ -216,15 +137,7 @@ CSL.Disambiguation.prototype.disNames = function (ismax) {
 };
 
 CSL.Disambiguation.prototype.disExtraText = function () {
-    var pos, len, mybase;
-
-    //SNIP-START
-    if (this.debug) {
-        print("[3] === disExtraText ==");
-    }
-    //SNIP-END
-    
-    var done = false;
+    var done = false, i, ilen, base;
 
     if (this.clashes[1] === 0 && this.nonpartners.length < 2) {
         done = true;
@@ -244,7 +157,7 @@ CSL.Disambiguation.prototype.disExtraText = function () {
             // If disambiguate is false set to true
             this.base.disambiguate = 1;
             // There may be changes
-            for (var i = 0, ilen = this.lists[this.listpos][1].length; i < ilen; i += 1) {
+            for (i = 0, ilen = this.lists[this.listpos][1].length; i < ilen; i += 1) {
                 this.state.tmp.taintedItemIDs[this.lists[this.listpos][1][i].id] = true;
             }
         } else {
@@ -254,8 +167,8 @@ CSL.Disambiguation.prototype.disExtraText = function () {
         if (done || this.modeindex === this.modes.length - 1) {
             // If this is the end, disambiguation failed.
             // Discard disambiguate=true (?) and set parameters
-            var base = this.lists[this.listpos][0];
-            for (var i = 0, ilen = this.lists[this.listpos][1].length; i < ilen; i += 1) {
+            base = this.lists[this.listpos][0];
+            for (i = 0, ilen = this.lists[this.listpos][1].length; i < ilen; i += 1) {
                 this.state.tmp.taintedItemIDs[this.lists[this.listpos][1][i].id] = true;
                 this.state.registry.registerAmbigToken(this.akey, "" + this.lists[this.listpos][1][i].id, base);
             }
@@ -267,9 +180,9 @@ CSL.Disambiguation.prototype.disExtraText = function () {
             // This may be a bit over-aggressive for cases in which the
             // disambiguate condition does not add the date
             this.modeindex = this.modes.length - 1;
-            var base = this.lists[this.listpos][0];
+            base = this.lists[this.listpos][0];
             base.disambiguate = true;
-            for (var i = 0, ilen = this.lists[this.listpos][1].length; i < ilen; i += 1) {
+            for (i = 0, ilen = this.lists[this.listpos][1].length; i < ilen; i += 1) {
                 // Always tainting here might be a little over-aggressive, but a taint may be required.
                 this.state.tmp.taintedItemIDs[this.lists[this.listpos][1][i].id] = true;
                 this.state.registry.registerAmbigToken(this.akey, "" + this.lists[this.listpos][1][i].id, base);
@@ -279,12 +192,7 @@ CSL.Disambiguation.prototype.disExtraText = function () {
 };
 
 CSL.Disambiguation.prototype.disYears = function () {
-    var pos, len, tokens, token, item;
-    //SNIP-START
-    if (this.debug) {
-        print("[3] === disYears ==");
-    }
-    //SNIP-END
+    var pos, len, tokens, token;
     tokens = [];
     var base = this.lists[this.listpos][0];
     if (this.clashes[1]) {
@@ -294,7 +202,7 @@ CSL.Disambiguation.prototype.disYears = function () {
 		for (var i = 0, ilen = this.state.registry.mylist.length; i < ilen; i += 1) {
 			var origid = this.state.registry.mylist[i];
 			for (var j = 0, jlen = this.lists[this.listpos][1].length; j < jlen; j += 1) {
-				var token = this.lists[this.listpos][1][j];
+				token = this.lists[this.listpos][1][j];
 				// Warning: token.id can be number. This should be fixed at a higher level in citeproc-js if poss.
 				if (token.id == origid) {
 					tokens.push(this.registry[token.id]);
@@ -304,7 +212,7 @@ CSL.Disambiguation.prototype.disYears = function () {
 		}
     }
     tokens.sort(this.state.registry.sorter.compareKeys);
-    for (var pos = 0, len = tokens.length; pos < len; pos += 1) {
+    for (pos = 0, len = tokens.length; pos < len; pos += 1) {
         base.year_suffix = ""+pos;
         var oldBase = this.state.registry.registry[tokens[pos].id].disambig;
         this.state.registry.registerAmbigToken(this.akey, "" + tokens[pos].id, base);
@@ -316,19 +224,12 @@ CSL.Disambiguation.prototype.disYears = function () {
 };
 
 CSL.Disambiguation.prototype.incrementDisambig = function () {
-    var val;
-    //SNIP-START
-    if (this.debug) {
-        print("\n[1] === incrementDisambig() ===");
-    }
-    //SNIP-END
     if (this.initGivens) {
         this.initGivens = false;
         return false;
     }
     var maxed = false;
     var increment_names = true;
-    var increment_givens = true;
     if ("disNames" === this.modes[this.modeindex]) {
         // this.gnameset: the index pos of the current nameset
         // this.gname: the index pos of the current name w/in the current nameset
@@ -380,39 +281,13 @@ CSL.Disambiguation.prototype.incrementDisambig = function () {
                 this.gnameset += 1;
                 this.base.names[this.gnameset] = 1;
                 this.gname = 0;
-            } else {
-                var increment_mode = true;
             }
         }
-        //SNIP-START
-        if (this.debug) {
-            print("    ------------------");
-            print("    incremented values");
-            print("    ------------------");
-            print("    | gnameset: "+this.gnameset);
-            print("    | gname: "+this.gname);
-            print("    | names value: "+this.base.names[this.gnameset]);
-            if (this.base.givens.length) {
-                print("    | givens value: "+this.base.givens[this.gnameset][this.gname]);
-            } else {
-                print("    | givens value: nil");
-            }
-            print("    | namesetsMax: "+this.namesetsMax);
-            print("    | namesMax: "+this.namesMax);
-            print("    | givensMax: "+this.givensMax);
-        }
-        //SNIP-END
         if (("number" !== typeof this.namesetsMax || this.namesetsMax === -1 || this.gnameset === this.namesetsMax)
             && (!this.state.opt["disambiguate-add-names"] || "number" !== typeof this.namesMax || this.gname === this.namesMax)
             && ("number" != typeof this.givensMax || "undefined" === typeof this.base.givens[this.gnameset] || "undefined" === typeof this.base.givens[this.gnameset][this.gname] || this.base.givens[this.gnameset][this.gname] === this.givensMax)) {
   
-
             maxed = true;
-            //SNIP-START
-            if (this.debug) {
-                print("    MAXED");
-            }
-            //SNIP-END
         }
     } else if ("disExtraText" === this.modes[this.modeindex]) {
         this.base.disambiguate += 1;
@@ -423,11 +298,6 @@ CSL.Disambiguation.prototype.incrementDisambig = function () {
 
 CSL.Disambiguation.prototype.initVars = function (akey) {
     var i, ilen, myIds, myItemBundles, myItems;
-    //SNIP-START
-    if (this.debug) {
-        print("[B] === initVars() ===");
-    }
-    //SNIP-END
     this.lists = [];
     this.base = false;
     this.betterbase = false;
@@ -441,7 +311,6 @@ CSL.Disambiguation.prototype.initVars = function (akey) {
     if (!myIds || !myIds.length) {
         return false;
     }
-    var Item = false;
     var myItem = this.state.retrieveItem("" + myIds[0]);
     this.getCiteData(myItem);
     this.base = CSL.getAmbigConfig.call(this.state);
@@ -452,7 +321,7 @@ CSL.Disambiguation.prototype.initVars = function (akey) {
         // way to get the items sorted by the number of names
         // to be disambiguated. If they are in descending order
         // with name expansions, the processor will hang.
-        for (var i = 1, ilen = myIds.length; i < ilen; i += 1) {
+        for (i = 1, ilen = myIds.length; i < ilen; i += 1) {
             myItem = this.state.retrieveItem("" + myIds[i]);
             this.getCiteData(myItem, this.base);
             myItemBundles.push([this.maxNamesByItemId[myItem.id], myItem]);
@@ -475,7 +344,7 @@ CSL.Disambiguation.prototype.initVars = function (akey) {
             }
         );
         myItems = [];
-        for (var i = 0, ilen = myItemBundles.length; i < ilen; i += 1) {
+        for (i = 0, ilen = myItemBundles.length; i < ilen; i += 1) {
             myItems.push(myItemBundles[i][1]);
         }
         this.lists.push([this.base, myItems]);
@@ -485,14 +354,17 @@ CSL.Disambiguation.prototype.initVars = function (akey) {
     }
 
     this.modeindex = 0;
-    if (this.state.citation.opt["disambiguate-add-names"] || true) {
-        this.namesMax = this.maxNamesByItemId[this.Item.id][0];
-    } else {
-        var namesMax = this.base.names[0];
-        for (var i=1,ilen=this.base.names.length;i<ilen;i+=1){
-            namesMax = Math.max(namesMax,this.base.names.names[i]);
-        }
-    }
+
+    this.namesMax = this.maxNamesByItemId[this.Item.id][0];
+    // FIXME: This is definitely a bug. Else will never run here
+    // if (this.state.citation.opt["disambiguate-add-names"] || true) {
+    //     this.namesMax = this.maxNamesByItemId[this.Item.id][0];
+    // } else {
+    //     var namesMax = this.base.names[0];
+    //     for (var i=1,ilen=this.base.names.length;i<ilen;i+=1){
+    //         namesMax = Math.max(namesMax,this.base.names.names[i]);
+    //     }
+    // }
 
 
     this.padBase(this.base);
@@ -543,6 +415,7 @@ CSL.Disambiguation.prototype.configModes = function () {
 };
 
 CSL.Disambiguation.prototype.getCiteData = function(Item, base) {
+    var i, ilen;
     // Initialize base if first set item seen
     if (!this.maxNamesByItemId[Item.id]) {
         CSL.getAmbiguousCite.call(this.state, Item, base);
@@ -550,7 +423,7 @@ CSL.Disambiguation.prototype.getCiteData = function(Item, base) {
         this.maxNamesByItemId[Item.id] = CSL.getMaxVals.call(this.state);
         this.state.registry.registry[Item.id].disambig.givens = this.state.tmp.disambig_settings.givens.slice();
         // Slice the nested lists as well. Without this, disambiguate_YearSuffixFiftyTwoEntriesByCite fails.
-        for (var i=0,ilen=this.state.registry.registry[Item.id].disambig.givens.length;i<ilen;i+=1) {
+        for (i=0,ilen=this.state.registry.registry[Item.id].disambig.givens.length;i<ilen;i+=1) {
             this.state.registry.registry[Item.id].disambig.givens[i] = this.state.tmp.disambig_settings.givens[i].slice();
         }
         this.namesetsMax = this.state.registry.registry[Item.id].disambig.names.length - 1;
@@ -565,8 +438,7 @@ CSL.Disambiguation.prototype.getCiteData = function(Item, base) {
             this.base = base;
         }
         // Padding. Within namesets, we use the longer of the two throughout.
-        var update = false;
-        for (var i = 0, ilen = base.names.length; i < ilen; i += 1) {
+        for (i = 0, ilen = base.names.length; i < ilen; i += 1) {
             if (base.names[i] > this.base.names[i]) {
                 // XXX The old must have been wrong surely. The new, I'm not sure.
                 //this.base.givens[i] = this.base.givens[i].concat(this.base.givens[i].slice(this.base.names[i]));

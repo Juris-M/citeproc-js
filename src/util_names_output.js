@@ -1,12 +1,6 @@
-/*global CSL: true */
 
-CSL.NameOutput = function(state, Item, item, variables) {
+CSL.NameOutput = function(state, Item, item) {
     this.debug = false;
-    //SNIP-START
-    if (this.debug) {
-        print("(1)");
-    }
-    //SNIP-END
     this.state = state;
     this.Item = Item;
     this.item = item;
@@ -127,51 +121,11 @@ CSL.NameOutput.prototype.outputNames = function () {
     } else {
         this.given_decor = false;
     }
-
-    //SNIP-START
-    if (this.debug) {
-        print("(2)");
-    }
-    //SNIP-END
-    // util_names_etalconfig.js
     this.getEtAlConfig();
-    //SNIP-START
-    if (this.debug) {
-        print("(3)");
-    }
-    //SNIP-END
-    // util_names_divide.js
     this.divideAndTransliterateNames();
-    //SNIP-START
-    if (this.debug) {
-        print("(4)");
-    }
-    //SNIP-END
-    // util_names_truncate.js
-
     this.truncatePersonalNameLists();
-    //SNIP-START
-    if (this.debug) {
-        print("(5)");
-    }
-    //SNIP-END
-
-    //SNIP-START
-    if (this.debug) {
-        print("(6)");
-    }
-    //SNIP-END
-    // util_names_disambig.js
     this.disambigNames();
-
-    // util_names_constraints.js
     this.constrainNames();
-    //SNIP-START
-    if (this.debug) {
-        print("(7)");
-    }
-    //SNIP-END
-    // form="count"
     if (this.name.strings.form === "count") {
         if (this.state.tmp.extension || this.names_count != 0) {
             this.state.output.append(this.names_count, "empty");
@@ -180,31 +134,10 @@ CSL.NameOutput.prototype.outputNames = function () {
         return;
     }
 
-    //SNIP-START
-    if (this.debug) {
-        print("(8)");
-    }
-    //SNIP-END
-    this.setEtAlParameters();
-    //SNIP-START
-    if (this.debug) {
-        print("(9)");
-    }
-    //SNIP-END
     this.setCommonTerm();
-    //SNIP-START
-    if (this.debug) {
-        print("(10)");
-    }
-    //SNIP-END
     this.state.tmp.name_node = {};
     this.state.tmp.name_node.children = [];
     this.renderAllNames();
-    //SNIP-START
-    if (this.debug) {
-        print("(11)");
-    }
-    //SNIP-END
     var blob_list = [];
     for (i = 0, ilen = variables.length; i < ilen; i += 1) {
         var v = variables[i];
@@ -214,19 +147,9 @@ CSL.NameOutput.prototype.outputNames = function () {
         if (!this.state.opt.development_extensions.spoof_institutional_affiliations) {
             varblob = this._join([this.freeters[v]], "");
         } else {
-            //SNIP-START
-            if (this.debug) {
-                print("(11a)");
-            }
-            //SNIP-END
             for (var j = 0, jlen = this.institutions[v].length; j < jlen; j += 1) {
                 institution_sets.push(this.joinPersonsAndInstitutions([this.persons[v][j], this.institutions[v][j]]));
             }
-            //SNIP-START
-            if (this.debug) {
-                print("(11b)");
-            }
-            //SNIP-END
             if (this.institutions[v].length) {
                 var pos = this.nameset_base + this.variable_offset[v];
                 if (this.freeters[v].length) {
@@ -234,17 +157,7 @@ CSL.NameOutput.prototype.outputNames = function () {
                 }
                 institutions = this.joinInstitutionSets(institution_sets, pos);
             }
-            //SNIP-START
-            if (this.debug) {
-                print("(11c)");
-            }
-            //SNIP-END
-            var varblob = this.joinFreetersAndInstitutionSets([this.freeters[v], institutions]);
-            //SNIP-START
-            if (this.debug) {
-                print("(11d)");
-            }
-            //SNIP-END
+            varblob = this.joinFreetersAndInstitutionSets([this.freeters[v], institutions]);
         }
         if (varblob) {
             // Apply labels, if any
@@ -253,65 +166,25 @@ CSL.NameOutput.prototype.outputNames = function () {
             }
             blob_list.push(varblob);
         }
-        //SNIP-START
-        if (this.debug) {
-            print("(11e)");
-        }
-        //SNIP-END
         if (this.common_term) {
             break;
         }
     }
-    //SNIP-START
-    if (this.debug) {
-        print("(12)");
-    }
-    //SNIP-END
     this.state.output.openLevel("empty");
     this.state.output.current.value().strings.delimiter = this.state.inheritOpt(this.names, "delimiter", "names-delimiter");
-    //SNIP-START
-    if (this.debug) {
-        print("(13)");
-    }
-    //SNIP-END
     for (i = 0, ilen = blob_list.length; i < ilen; i += 1) {
         // notSerious
         this.state.output.append(blob_list[i], "literal", true);
     }
-    //SNIP-START
-    if (this.debug) {
-        print("(14)");
-    }
-    //SNIP-END
     this.state.output.closeLevel("empty");
-    //SNIP-START
-    if (this.debug) {
-        print("(15)");
-    }
-    //SNIP-END
     var blob = this.state.output.pop();
-    //SNIP-START
-    if (this.debug) {
-        print("(16)");
-    }
-    //SNIP-END
     var namesToken = CSL.Util.cloneToken(this.names);
     this.state.output.append(blob, namesToken);
     if (this.state.tmp.term_predecessor_name) {
         this.state.tmp.term_predecessor = true;
     }
-    //SNIP-START
-    if (this.debug) {
-        print("(17)");
-    }
-    //SNIP-END
     // Also used in CSL.Util.substituteEnd (which could do with
     // some cleanup at this writing).
-    //SNIP-START
-    if (this.debug) {
-        print("(18)");
-    }
-    //SNIP-END
     this.state.tmp.name_node.top = this.state.output.current.value();
 
     if (variables[0] !== "authority") {
@@ -319,8 +192,8 @@ CSL.NameOutput.prototype.outputNames = function () {
         var name_node_string = [];
         var nameobjs = this.Item[variables[0]];
         if (nameobjs) {
-            for (var i = 0, ilen = nameobjs.length; i < ilen; i += 1) {
-                substring = CSL.Util.Names.getRawName(nameobjs[i]);
+            for (i = 0, ilen = nameobjs.length; i < ilen; i += 1) {
+                var substring = CSL.Util.Names.getRawName(nameobjs[i]);
                 if (substring) {
                     name_node_string.push(substring);
                 }
@@ -367,11 +240,6 @@ CSL.NameOutput.prototype.outputNames = function () {
 
     // For name_SubstituteOnNamesSpanNamesSpanFail
     this.variables = [];
-    //SNIP-START
-    if (this.debug) {
-        print("(19)");
-    }
-    //SNIP-END
 };
 
 CSL.NameOutput.prototype._applyLabels = function (blob, v) {

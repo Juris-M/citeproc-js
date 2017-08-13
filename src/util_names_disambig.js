@@ -1,8 +1,6 @@
 // Disambiguate names (the number of names is controlled externally, by successive
 // runs of the processor).
 
-/*global CSL: true */
-
 CSL.NameOutput.prototype.disambigNames = function () {
     var pos;
     for (var i = 0, ilen = this.variables.length; i < ilen; i += 1) {
@@ -22,7 +20,7 @@ CSL.NameOutput.prototype.disambigNames = function () {
                 }
             }
         }
-        for (var j = 0, jlen = this.persons[v].length; j < jlen; j += 1) {
+        for (j = 0, jlen = this.persons[v].length; j < jlen; j += 1) {
             if (this.persons[v][j].length) {
                 this._runDisambigNames(this.persons[v][j], pos);
             }

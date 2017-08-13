@@ -1,15 +1,13 @@
-/*global CSL: true */
 
 CSL.Node.name = {
     build: function (state, target) {
-        var func, pos, len, attrname;
         if ([CSL.SINGLETON, CSL.START].indexOf(this.tokentype) > -1) {
 
+            var oldTmpRoot;
             if ("undefined" === typeof state.tmp.root) {
-                var oldTmpRoot = undefined;
                 state.tmp.root = "citation";
             } else {
-                var oldTmpRoot = state.tmp.root;
+                oldTmpRoot = state.tmp.root;
             }
             // Many CSL styles set et-al-[min|use-first]
             // and et-al-subsequent-[min|use-first] to the same
@@ -31,7 +29,7 @@ CSL.Node.name = {
 
             state.tmp.root = oldTmpRoot;
 
-            func = function (state, Item) {
+            var func = function (state) {
                 // Et-al (onward processing in node_etal.js and node_names.js)
                 // XXXXX Why is this necessary? This is available on this.name, right?
                 state.tmp.etal_term = "et-al";

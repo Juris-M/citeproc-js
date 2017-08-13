@@ -1,4 +1,4 @@
-/*global CSL: true */
+/* global load: true */
 
 /**
  * A Javascript implementation of the CSL citation formatting language.
@@ -156,8 +156,8 @@ var CSL = {
                 
                 // Receives affix string, returns with flipped parens.
                 
-                var str = str ? str : '';
-                var lst = str.split(/([\(\)])/);
+                str = str ? str : '';
+                var lst = str.split(/([()])/);
                 for (var i=1,ilen=lst.length;i<ilen;i += 2) {
                     if (lst[i] === '(') {
                         if (1 === (this.depth % 2)) {
@@ -260,7 +260,7 @@ var CSL = {
                     var raw_locator = item.locator;
                     item.locator = raw_locator.slice(0, idx);
                     raw_locator = raw_locator.slice(idx + 1);
-                    m = raw_locator.match(/^([0-9]{4}-[0-9]{2}-[0-9]{2}).*/);
+                    var m = raw_locator.match(/^([0-9]{4}-[0-9]{2}-[0-9]{2}).*/);
                     if (m) {
                         item["locator-date"] = this.fun.dateparser.parseDateToObject(m[1]);
                         raw_locator = raw_locator.slice(m[1].length);
@@ -289,11 +289,10 @@ var CSL = {
         if ("string" !== typeof Item.note) return;
         var elems = [];
         var lines = Item.note.split('\n');
-        var lastline = "";
         // Normalize entries
         for (var i=0, ilen=lines.length; i<ilen; i++) {
             var line = lines[i];
-            var elems = [];
+            elems = [];
             var m = line.match(CSL.NOTE_FIELDS_REGEXP);
             if (m) {
                 var splt = line.split(CSL.NOTE_FIELDS_REGEXP);
@@ -302,7 +301,7 @@ var CSL = {
                     elems.push(m[j]);
                 }
                 elems.push(splt[splt.length-1])
-                for (var j=1,jlen=elems.length;j<jlen;j += 2) {
+                for (j=1,jlen=elems.length;j<jlen;j += 2) {
                     // Abort conversions if preceded by unparseable text
                     if (elems[j-1].trim() && (i>0 || j>1) && !elems[j-1].match(CSL.NOTE_FIELD_REGEXP)) {
                         break
@@ -317,8 +316,8 @@ var CSL = {
         lines = lines.join('\n').split('\n');
         var offset = 0;
         var names = {};
-        for (var i=0,ilen=lines.length;i<ilen;i++) {
-            var line = lines[i];
+        for (i=0,ilen=lines.length;i<ilen;i++) {
+            line = lines[i];
             var mm = line.match(CSL.NOTE_FIELD_REGEXP);
             if (!line.trim()) {
                 continue;
@@ -363,7 +362,7 @@ var CSL = {
                 }
             }
         }
-        for (var key in names) {
+        for (key in names) {
             Item[key] = names[key];
         }
         // Final cleanup for validCslFields only: eliminate blank lines, add blank line to text
@@ -371,7 +370,7 @@ var CSL = {
             if (lines[offset].trim()) {
                 lines[offset] = '\n' + lines[offset]
             }
-            for (var i=offset-1;i>-1;i--) {
+            for (i=offset-1;i>-1;i--) {
                 if (!lines[i].trim()) {
                     lines = lines.slice(0, i).concat(lines.slice(i + 1));
                 }
@@ -486,7 +485,7 @@ var CSL = {
     TOLERANT: 2,
 
     PREFIX_PUNCTUATION: /[.;:]\s*$/,
-    SUFFIX_PUNCTUATION: /^\s*[.;:,\(\)]/,
+    SUFFIX_PUNCTUATION: /^\s*[.;:,()]/,
 
     NUMBER_REGEXP: /(?:^\d+|\d+$)/,
     //
@@ -636,13 +635,14 @@ var CSL = {
             var seg = segments[i];
             var title = CSL.TITLE_FIELD_SPLITS(seg);
             var langs = [false];
+            var lang;
             if (Item.multi) {
-                for (var lang in Item.multi._keys[title.short]) {
+                for (lang in Item.multi._keys[title.short]) {
                     langs.push(lang);
                 }
             }
-            for (var j=0,jlen=langs.length;j<ilen;j++) {
-                var lang = langs[j];
+            for (var j=0,jlen=langs.length;j<jlen;j++) {
+                lang = langs[j];
                 var vals = {};
                 if (lang) {
                     if (Item.multi._keys[title.title]) {
@@ -659,21 +659,22 @@ var CSL = {
                 vals[title.sub] = false;
                 if (vals[title.title] && vals[title["short"]]) {
                     var shortTitle = vals[title["short"]];
-                    offset = shortTitle.length;
+                    var offset = shortTitle.length;
                     if (vals[title.title].slice(0,offset) === shortTitle && vals[title.title].slice(offset).match(/^\s*:/)) {
                         vals[title.main] = vals[title.title].slice(0,offset).replace(/\s+$/,"");
                         vals[title.sub] = vals[title.title].slice(offset).replace(/^\s*:\s*/,"");
                     }
                 }
+                var key;
                 if (lang) {
-                    for (var key in vals) {
+                    for (key in vals) {
                         if (!Item.multi._keys[key]) {
                             Item.multi._keys[key] = {};
                         }
                         Item.multi._keys[key][lang] = vals[key];
                     }
                 } else {
-                    for (var key in vals) {
+                    for (key in vals) {
                         Item[key] = vals[key];
                     }
                 }
@@ -1042,15 +1043,8 @@ var CSL = {
 
 };
 
-// For citeproc-node
-if (typeof require !== "undefined" && typeof module !== 'undefined' && "exports" in module) {
-    var CSL_IS_NODEJS = true;
-    exports.CSL = CSL;
-}
-
 CSL.TERMINAL_PUNCTUATION_REGEXP = new RegExp("^([" + CSL.TERMINAL_PUNCTUATION.slice(0, -1).join("") + "])(.*)");
 CSL.CLOSURES = new RegExp(".*[\\]\\)]");
-
 
 //SNIP-START
 

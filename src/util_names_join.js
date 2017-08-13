@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.NameOutput.prototype.joinPersons = function (blobs, pos, j, tokenname) {
     var ret;
@@ -87,7 +86,7 @@ CSL.NameOutput.prototype._joinAnd = function (blobs, tokenname) {
 };
 
 
-CSL.NameOutput.prototype._join = function (blobs, delimiter, single, multiple, tokenname) {
+CSL.NameOutput.prototype._join = function (blobs, delimiter, single, multiple) {
     var i, ilen;
     if (!blobs) {
         return false;

@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 /**
  * Date mangling functions.
@@ -31,7 +30,8 @@ CSL.Util.Dates.year["long"] = function (state, num) {
  * Crudely convert to Japanese Imperial form.
  * <p>Returns the result as a string.</p>
  */
-CSL.Util.Dates.year.imperial = function (state, num, end, makeShort) {
+CSL.Util.Dates.year.imperial = function (state, num, end) {
+    var year;
     if (!num) {
         if ("boolean" === typeof num) {
             num = "";
@@ -155,7 +155,7 @@ CSL.Util.Dates.month = {};
  * <p>This just passes the number back as a string.</p>
  */
 CSL.Util.Dates.month.numeric = function (state, num) {
-    var num = CSL.Util.Dates.normalizeMonth(num);
+    num = CSL.Util.Dates.normalizeMonth(num);
     if (!num) {
         num = "";
     }
@@ -167,7 +167,7 @@ CSL.Util.Dates.month.numeric = function (state, num) {
  * <p>This just passes the number back as string padded with zeros.</p>
  */
 CSL.Util.Dates.month["numeric-leading-zeros"] = function (state, num) {
-    var num = CSL.Util.Dates.normalizeMonth(num);
+    num = CSL.Util.Dates.normalizeMonth(num);
     if (!num) {
         num = "";
     } else {
@@ -188,7 +188,7 @@ CSL.Util.Dates.month["numeric-leading-zeros"] = function (state, num) {
 
 CSL.Util.Dates.month["long"] = function (state, num, gender, forceDefaultLocale) {
     var res = CSL.Util.Dates.normalizeMonth(num, true);
-    var num = res.num;
+    num = res.num;
     if (!num) {
         num = "";
     } else {
@@ -210,7 +210,7 @@ CSL.Util.Dates.month["long"] = function (state, num, gender, forceDefaultLocale)
 
 CSL.Util.Dates.month["short"] = function (state, num, gender, forceDefaultLocale) {
     var res = CSL.Util.Dates.normalizeMonth(num, true);
-    var num = res.num;
+    num = res.num;
     if (!num) {
         num = "";
     } else {

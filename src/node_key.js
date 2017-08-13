@@ -1,11 +1,10 @@
-/*global CSL: true */
 
 CSL.Node.key = {
     build: function (state, target) {
         
         target = state[state.build.root + "_sort"].tokens;
 
-        var func, i, ilen;
+        var func;
         var debug = false;
         var start_key = new CSL.Token("key", CSL.START);
 
@@ -19,7 +18,7 @@ CSL.Node.key = {
 
 
         // initialize done vars
-        func = function (state, Item) {
+        func = function (state) {
             state.tmp.done_vars = [];
         };
         start_key.execs.push(func);
@@ -27,7 +26,7 @@ CSL.Node.key = {
         state.opt.citation_number_sort_direction = this.strings.sort_direction;
 
         // initialize output queue
-        func = function (state, Item) {
+        func = function (state) {
             state.output.openLevel("empty");
         };
         start_key.execs.push(func);
@@ -50,7 +49,7 @@ CSL.Node.key = {
         }
 
         // et al init
-        func = function (state, Item) {
+        func = function (state) {
             state.tmp.sort_key_flag = true;
             //print("== key node function ==");
             if (state.inheritOpt(this, "et-al-min")) {
@@ -117,8 +116,7 @@ CSL.Node.key = {
                 single_text.dateparts = this.dateparts;
                 if (CSL.NUMERIC_VARIABLES.indexOf(variable) > -1) {
                     func = function (state, Item) {
-                        var num, m;
-                        num = false;
+                        var num = false;
                         if ("citation-number" === variable) {
                             num = state.registry.registry[Item.id].seq.toString();
                         } else {
@@ -175,7 +173,7 @@ CSL.Node.key = {
         //end_key.execs.push(func);
         
         // store key for use
-        func = function (state, Item) {
+        func = function (state) {
             var keystring = state.output.string(state, state.output.queue);
             if (state.sys.normalizeUnicode) {
                 keystring = state.sys.normalizeUnicode(keystring);
@@ -219,7 +217,7 @@ CSL.Node.key = {
         }
 
         // reset key params
-        func = function (state, Item) {
+        func = function (state) {
             // state.tmp.name_quash = new Object();
 
             // XXX This should work, should be necessary, but doesn't and isn't.

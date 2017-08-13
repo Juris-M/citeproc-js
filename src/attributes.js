@@ -1,11 +1,8 @@
-/*global CSL: true */
-
 CSL.Attributes = {};
 
 CSL.Attributes["@genre"] = function (state, arg) {
     arg = arg.replace("-", " ");
-    var func = function (Item, item) {
-        var ret;
+    var func = function (Item) {
         if (arg === Item.genre) {
             return true;
         }
@@ -15,9 +12,10 @@ CSL.Attributes["@genre"] = function (state, arg) {
 }
 
 CSL.Attributes["@disambiguate"] = function (state, arg) {
+    var func;
     if (arg === "true") {
         state.opt.has_disambiguate = true;
-        var func = function (Item, item) {
+        func = function () {
             state.tmp.disambiguate_maxMax += 1;
             if (state.tmp.disambig_settings.disambiguate
                 && state.tmp.disambiguate_count < state.tmp.disambig_settings.disambiguate) {
@@ -28,7 +26,7 @@ CSL.Attributes["@disambiguate"] = function (state, arg) {
         };
         this.tests.push(func);
     } else if (arg === "check-ambiguity-and-backreference") {
-        var func = function (Item, item) {
+        func = function (Item) {
             if (state.registry.registry[Item.id].disambig.disambiguate && state.registry.registry[Item.id]["citation-count"] > 1) {
                 return true;
             }
@@ -38,7 +36,7 @@ CSL.Attributes["@disambiguate"] = function (state, arg) {
     }
 };
 
-CSL.Attributes["@is-numeric"] = function (state, arg, joiner) {
+CSL.Attributes["@is-numeric"] = function (state, arg) {
     var variables = arg.split(/\s+/);
     var maketest = function(variable) {
         return function (Item, item) {
@@ -76,7 +74,7 @@ CSL.Attributes["@is-uncertain-date"] = function (state, arg) {
     var variables = arg.split(/\s+/);
     // Strip off any boolean prefix.
     var maketest = function (myvariable) {
-        return function(Item, item) {
+        return function(Item) {
             if (Item[myvariable] && Item[myvariable].circa) {
                 return true;
             } else {
@@ -138,7 +136,7 @@ CSL.Attributes["@position"] = function (state, arg) {
         }
     }
     for (var i=0,ilen=trypositions.length;i<ilen;i+=1) {
-        var tryposition = trypositions[i];
+        tryposition = trypositions[i];
         if (tryposition === "first") {
             tryposition = CSL.POSITION_FIRST;
         } else if (tryposition === "subsequent") {
@@ -174,7 +172,7 @@ CSL.Attributes["@type"] = function (state, arg) {
     var types = arg.split(/\s+/);
     // Strip off any boolean prefix.
     var maketest = function (mytype) {
-        return function(Item,item) {
+        return function(Item) {
             var ret = (Item.type === mytype);
             if (ret) {
                 return true;
@@ -210,10 +208,11 @@ CSL.Attributes["@variable"] = function (state, arg) {
         // set variable names
         func = function (state, Item, item) {
             // Clear this.variables in place
-            for (var i = this.variables.length - 1; i > -1; i += -1) {
+            var i;
+            for (i = this.variables.length - 1; i > -1; i--) {
                 this.variables.pop();
             }
-            for (var i=0,ilen=this.variables_real.length;i<ilen;i++) {
+            for (i=0,ilen=this.variables_real.length;i<ilen;i++) {
                 // set variable name if not quashed, and if not the title of a legal case w/suppress-author
                 if (state.tmp.done_vars.indexOf(this.variables_real[i]) === -1 
                     && !(item && Item.type === "legal_case" && item["suppress-author"] && this.variables_real[i] === "title")
@@ -229,10 +228,9 @@ CSL.Attributes["@variable"] = function (state, arg) {
 
         // check for output
         func = function (state, Item, item) {
-            var mydate;
-            output = false;
-            for (var i=0,ilen=this.variables.length;i<ilen;i++) {
-                var variable = this.variables[i];
+            var output = false, i, ilen, variable;
+            for (i=0,ilen=this.variables.length;i<ilen;i++) {
+                variable = this.variables[i];
                 if (["authority", "committee"].indexOf(variable) > -1
                     && "string" === typeof Item[variable]
                     && "names" === this.name) {
@@ -241,13 +239,13 @@ CSL.Attributes["@variable"] = function (state, arg) {
                     // And we only recombine everything if the length
                     // of all the splits matches.
                     
-                    var creatorParents = [];
                     // Preflight
                     var isValid = true;
                     var rawNames = Item[variable].split(/\s*;\s*/);
                     var rawMultiNames = {};
+                    var langTag;
                     if (Item.multi && Item.multi._keys[variable]) {
-                        for (var langTag in Item.multi._keys[variable]) {
+                        for (langTag in Item.multi._keys[variable]) {
                             rawMultiNames[langTag] = Item.multi._keys[variable][langTag].split(/\s*;\s*/);
                             if (rawMultiNames[langTag].length !== rawNames.length) {
                                 isValid = false;
@@ -266,7 +264,7 @@ CSL.Attributes["@variable"] = function (state, arg) {
                                 _key:{}
                             }
                         };
-                        for (var langTag in rawMultiNames) {
+                        for (langTag in rawMultiNames) {
                             var creatorChild = {
                                 literal:rawMultiNames[langTag][j]
                             }
@@ -355,8 +353,8 @@ CSL.Attributes["@variable"] = function (state, arg) {
             //print("-- VAR: "+variable);
             //flag = state.tmp.group_context.tip;
             if (output) {
-                for (var i=0,ilen=this.variables_real.length;i<ilen;i++) {
-                    var variable = this.variables_real[i];
+                for (i=0,ilen=this.variables_real.length;i<ilen;i++) {
+                    variable = this.variables_real[i];
                     if (variable !== "citation-number" || state.tmp.area !== "bibliography") {
                         state.tmp.cite_renders_content = true;
                     }
@@ -404,7 +402,7 @@ CSL.Attributes["@variable"] = function (state, arg) {
                         // that have at least one attribute, or for a
                         // non-zero-length list
                         //
-                        for (key in myitem[variable]) {
+                        for (var key in myitem[variable]) {
                             if (myitem[variable][key]) {
                                 return true;
                             }
@@ -426,7 +424,7 @@ CSL.Attributes["@page"] = function (state, arg) {
     trylabels = trylabels.split(/\s+/);
     // Strip off any boolean prefix.
     var maketest = function (trylabel) {
-        return function(Item, item) {
+        return function(Item) {
             var label;
             state.processNumber(false, Item, "page", Item.type);
             if (!state.tmp.shadow_numbers.page.label) {
@@ -454,7 +452,7 @@ CSL.Attributes["@number"] = function (state, arg) {
     var trylabels = arg.replace("sub verbo", "sub-verbo");
     trylabels = trylabels.split(/\s+/);
     var maketest = function(trylabel) {
-        return function (Item, item) {
+        return function (Item) {
             var label;
             state.processNumber(false, Item, "number", Item.type);
             if (!state.tmp.shadow_numbers.number.label) {
@@ -478,12 +476,13 @@ CSL.Attributes["@number"] = function (state, arg) {
 
 CSL.Attributes["@jurisdiction"] = function (state, arg) {
     var tryjurisdictions = arg.split(/\s+/);
+    var i, ilen;
     // Strip off any boolean prefix.
-    for (var i=0,ilen=tryjurisdictions.length;i<ilen;i+=1) {
+    for (i=0,ilen=tryjurisdictions.length;i<ilen;i+=1) {
         tryjurisdictions[i] = tryjurisdictions[i].split(":");
     }
     var maketests = function (tryjurisdiction) {
-        return function(Item,item){
+        return function(Item){
             if (!Item.jurisdiction) {
                 return false;
             }
@@ -503,7 +502,7 @@ CSL.Attributes["@jurisdiction"] = function (state, arg) {
             return true;
         }
     }
-    for (var i=0,ilen=tryjurisdictions.length;i<ilen;i+=1) {
+    for (i=0,ilen=tryjurisdictions.length;i<ilen;i+=1) {
         var tryjurisdictionSlice = tryjurisdictions[i].slice();
         this.tests.push(maketests(tryjurisdictionSlice));
     }
@@ -511,7 +510,7 @@ CSL.Attributes["@jurisdiction"] = function (state, arg) {
 
 
 CSL.Attributes["@context"] = function (state, arg) {
-    var func = function (Item, item) {
+    var func = function () {
 		var area = state.tmp.area.slice(0, arg.length);
 		if (area === arg) {
 			return true;
@@ -524,7 +523,7 @@ CSL.Attributes["@context"] = function (state, arg) {
 CSL.Attributes["@has-year-only"] = function (state, arg) {
     var trydates = arg.split(/\s+/);
     var maketest = function (trydate) {
-        return function(Item,item){
+        return function(Item){
             var date = Item[trydate];
             if (!date || date.month || date.season) {
                 return false;
@@ -541,7 +540,7 @@ CSL.Attributes["@has-year-only"] = function (state, arg) {
 CSL.Attributes["@has-to-month-or-season"] = function (state, arg) {
     var trydates = arg.split(/\s+/);
     var maketest = function (trydate) {
-        return function(Item,item){
+        return function(Item){
             var date = Item[trydate];
             if (!date || (!date.month && !date.season) || date.day) {
                 return false;
@@ -558,7 +557,7 @@ CSL.Attributes["@has-to-month-or-season"] = function (state, arg) {
 CSL.Attributes["@has-day"] = function (state, arg) {
     var trydates = arg.split(/\s+/);
     var maketest = function (trydate) {
-        return function(Item,item){
+        return function(Item){
             var date = Item[trydate];
             if (!date || !date.day) {
                 return false;
@@ -574,7 +573,7 @@ CSL.Attributes["@has-day"] = function (state, arg) {
 
 CSL.Attributes["@subjurisdictions"] = function (state, arg) {
     var trysubjurisdictions = parseInt(arg, 10);
-    var func = function (Item, item) {
+    var func = function (Item) {
         var subjurisdictions = 0;
         if (Item.jurisdiction) {
             subjurisdictions = Item.jurisdiction.split(":").length;
@@ -591,7 +590,7 @@ CSL.Attributes["@subjurisdictions"] = function (state, arg) {
 };
 
 CSL.Attributes["@is-plural"] = function (state, arg) {
-    var func = function (Item, item) {
+    var func = function (Item) {
         var nameList = Item[arg];
         if (nameList && nameList.length) {
             var persons = 0;
@@ -621,7 +620,7 @@ CSL.Attributes["@is-plural"] = function (state, arg) {
 };
 
 CSL.Attributes["@locale"] = function (state, arg) {
-    var func, ret, len, pos, variable, myitem, langspec, lang, lst, i, ilen, fallback;
+    var langspec, lang, lst, i, ilen;
     // Style default
     var locale_default = state.opt["default-locale"][0];
 
@@ -640,7 +639,7 @@ CSL.Attributes["@locale"] = function (state, arg) {
             } else {
                 sort_locale[localeMaster.best] = localeMaster.best;
             }
-            for (var i=1,ilen=locales.length;i<ilen;i+=1) {
+            for (i=1,ilen=locales.length;i<ilen;i+=1) {
                 var localeServant = CSL.localeResolve(locales[i], locale_default);
                 if (localeServant.generic) {
                     sort_locale[localeServant.generic] = localeMaster.best;
@@ -683,9 +682,8 @@ CSL.Attributes["@locale"] = function (state, arg) {
         // check for variable value
         // Closure probably not necessary here.
         var maketest = function (locale_list, locale_default,locale_bares) {
-            return function (Item, item) {
-                var key, res;
-                ret = [];
+            return function (Item) {
+                var res;
                 res = false;
                 var langspec = false;
 
@@ -715,7 +713,7 @@ CSL.Attributes["@locale"] = function (state, arg) {
 CSL.Attributes["@authority-residue"] = function (state, arg) {
     var maketest = function () {
         var succeed = (arg === "true") ? true : false;
-        return function(Item, item) {
+        return function(Item) {
             if (!Item.authority || !Item.authority[0] || !Item.authority[0].family) return !succeed;
             var varLen = Item.authority[0].family.split("|").length;
             var stopLast = state.tmp.authority_stop_last;
@@ -730,7 +728,7 @@ CSL.Attributes["@authority-residue"] = function (state, arg) {
 }
 
 CSL.Attributes["@locale-internal"] = function (state, arg) {
-    var func, ret, len, pos, variable, myitem, langspec, lang, lst, i, ilen, fallback;
+    var langspec, lang, lst, i, ilen;
         // For if and if-else
 
         // Split argument
@@ -764,9 +762,8 @@ CSL.Attributes["@locale-internal"] = function (state, arg) {
         // check for variable value
         // Closure probably not necessary here.
         var maketest = function (me) {
-            return function (Item, item) {
-                var key, res;
-                ret = [];
+            return function (Item) {
+                var res;
                 res = false;
                 var langspec = false;
                 if (Item.language) {
@@ -969,7 +966,7 @@ CSL.Attributes["@term"] = function (state, arg) {
  * @name CSL.Attributes.@xmlns
  * @function
  */
-CSL.Attributes["@xmlns"] = function (state, arg) {};
+CSL.Attributes["@xmlns"] = function () {};
 
 
 /*
@@ -987,11 +984,11 @@ CSL.Attributes["@lang"] = function (state, arg) {
 
 
 // Used as a flag during dates processing
-CSL.Attributes["@lingo"] = function (state, arg) {
+CSL.Attributes["@lingo"] = function () {
 };
 
 // Used as a flag during dates processing
-CSL.Attributes["@macro-has-date"] = function (state, arg) {
+CSL.Attributes["@macro-has-date"] = function () {
     this["macro-has-date"] = true;
 };
 
@@ -1073,7 +1070,7 @@ CSL.Attributes["@plural"] = function (state, arg) {
 };
 
 
-CSL.Attributes["@has-publisher-and-publisher-place"] = function (state, arg) {
+CSL.Attributes["@has-publisher-and-publisher-place"] = function () {
     this.strings["has-publisher-and-publisher-place"] = true;
 };
 
@@ -1089,9 +1086,7 @@ CSL.Attributes["@publisher-and"] = function (state, arg) {
     this.strings["publisher-and"] = arg;
 };
 
-CSL.Attributes["@newdate"] = function (state, arg) {
-
-};
+CSL.Attributes["@newdate"] = function () {};
 
 
 CSL.Attributes["@givenname-disambiguation-rule"] = function (state, arg) {
@@ -1291,8 +1286,6 @@ CSL.Attributes["@text-case"] = function (state, arg) {
         } else {
             this.strings["text-case"] = arg;
             if (arg === "title") {
-                var m = false;
-                var default_locale = state.opt["default-locale"][0].slice(0, 2);
                 if (Item.jurisdiction) {
                     this.strings["text-case"] = "passthrough";
                 }
@@ -1348,7 +1341,6 @@ CSL.Attributes["@default-locale"] = function (state, arg) {
 };
 
 CSL.Attributes["@default-locale-sort"] = function (state, arg) {
-    var lst, len, pos, m, ret;
     state.opt["default-locale-sort"] = arg;
 };
 

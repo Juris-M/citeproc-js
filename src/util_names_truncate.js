@@ -1,7 +1,6 @@
-/*global CSL: true */
 
 CSL.NameOutput.prototype.truncatePersonalNameLists = function () {
-    var v, i, ilen, j, jlen, chopvar, values;
+    var v, i, ilen, j, jlen, chopvar;
     // XXX Before truncation, make a note of the original number
     // of names, for use in et-al evaluation.
     this.freeters_count = {};
@@ -51,7 +50,7 @@ CSL.NameOutput.prototype.truncatePersonalNameLists = function () {
                     this._please_chop = chopvar;
                 }
             }
-            for (var j=0,jlen = this.persons[v].length;j<jlen;j++) {
+            for (j=0,jlen = this.persons[v].length;j<jlen;j++) {
                 if (this.persons[v][j].length) {
                     if (this._please_chop === v) {
                         this.persons[v][j] = this.persons[v][j].slice(1);
@@ -63,7 +62,6 @@ CSL.NameOutput.prototype.truncatePersonalNameLists = function () {
                         this.freeters_count[v] = 1;
                         this.institutions[v] = [];
                         this.persons[v] = [];
-                        values = [];
                         this._please_chop = chopvar;
                         break;
                     }
@@ -77,7 +75,6 @@ CSL.NameOutput.prototype.truncatePersonalNameLists = function () {
                 } else if (chopvar && !this._please_chop) {
                     this.institutions[v] = this.institutions[v].slice(0, 1);
                     this.institutions_count[v] = 1;
-                    values = [];
                     this._please_chop = chopvar;
                 }
             }
@@ -99,17 +96,6 @@ CSL.NameOutput.prototype.truncatePersonalNameLists = function () {
     // operation can be applied in util_names_render.js, and the logic
     // becomes very similar to what we already have running in util_transform.js.
 
-/*
-    for (v in this.freeters) {
-        this._transformNameset(this.freeters[v]);
-    }
-    for (v in this.persons) {
-        for (i = 0, ilen = this.persons[v].length; i < ilen; i += 1) {
-            this._transformNameset(this.persons[v][i]);
-        }
-        this._transformNameset(this.institutions[v]);
-    }
-*/
 
     // Could also be factored out to a separate function for clarity.
     // ???? XXX Does this belong?
@@ -117,7 +103,7 @@ CSL.NameOutput.prototype.truncatePersonalNameLists = function () {
         if (this.institutions[v].length) {
             this.nameset_offset += 1;
         }
-        for (var j=0,jlen=this.persons[v].length;j<jlen;j++) {
+        for (j=0,jlen=this.persons[v].length;j<jlen;j++) {
             if (this.persons[v][j].length) {
                 this.nameset_offset += 1;
             }

@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.Node.group = {
     build: function (state, target, realGroup) {
@@ -14,7 +13,7 @@ CSL.Node.group = {
             }
 
             // newoutput
-            func = function (state, Item) {
+            func = function (state) {
                 state.output.startTag("group", this);
                 
                 if (this.strings.label_form_override) {
@@ -48,13 +47,11 @@ CSL.Node.group = {
                             not: true
                         }
                         force_suppress = true;
-                        done_vars = [];
                     } else if (this.strings.require) {
                         condition = {
                             test: this.strings.require,
                             not: false
                         }
-                        done_vars = [];
                     }
                     // CONDITION
                     //if (!state.tmp.just_looking) {
@@ -141,10 +138,6 @@ CSL.Node.group = {
                 // Code for fetching an instantiating?
 
 
-                for (var x=0,xlen=target.length;x<xlen;x++) {
-                    var token = target[x];
-                }
-
                 var choose_start = new CSL.Token("choose", CSL.START);
                 CSL.Node.choose.build.call(choose_start, state, target);
                 
@@ -154,13 +147,13 @@ CSL.Node.group = {
                     return function (Item) {
                         if (!state.sys.retrieveStyleModule || !CSL.MODULE_MACROS[macroName] || !Item.jurisdiction) return false;
                         var jurisdictionList = state.getJurisdictionList(Item.jurisdiction);
+                        var jurisdiction;
                         // Set up a list of jurisdictions here, we will reuse it
                         if (!state.opt.jurisdictions_seen[jurisdictionList[0]]) {
                             var res = state.retrieveAllStyleModules(jurisdictionList);
                             // Okay. We have code for each of the novel modules in the
                             // hierarchy. Load them all into the processor.
-                            for (var jurisdiction in res) {
-                                var macroCount = 0;
+                            for (jurisdiction in res) {
                                 state.juris[jurisdiction] = {};
                                 var myXml = CSL.setupXml(res[jurisdiction]);
                                 var myNodes = myXml.getNodesByName(myXml.dataObj, "law-module");
@@ -177,14 +170,13 @@ CSL.Node.group = {
                                 if (!state.juris[jurisdiction].types) {
                                     state.juris[jurisdiction].types = CSL.MODULE_TYPES;
                                 }
-                                var myNodes = myXml.getNodesByName(myXml.dataObj, "macro");
-                                for (var i=0,ilen=myNodes.length;i<ilen;i++) {
+                                myNodes = myXml.getNodesByName(myXml.dataObj, "macro");
+                                for (i=0,ilen=myNodes.length;i<ilen;i++) {
                                     var myName = myXml.getAttributeValue(myNodes[i], "name");
                                     if (!CSL.MODULE_MACROS[myName]) {
                                         CSL.debug("CSL: skipping non-modular macro name \"" + myName + "\" in module context");
                                         continue;
                                     };
-                                    macroCount++;
                                     state.juris[jurisdiction][myName] = [];
                                     // Must use the same XML parser for style and modules.
                                     state.buildTokenLists(myNodes[i], state.juris[jurisdiction][myName]);
@@ -197,8 +189,8 @@ CSL.Node.group = {
                             }
                         }
                         // Identify the best jurisdiction for the item and return true, otherwise return false
-                        for (var i=0,ilen=jurisdictionList.length;i<ilen;i++) {
-                            var jurisdiction = jurisdictionList[i];
+                        for (i=0,ilen=jurisdictionList.length;i<ilen;i++) {
+                            jurisdiction = jurisdictionList[i];
                             if(state.juris[jurisdiction] && state.juris[jurisdiction].types[Item.type]) {
                                 Item["best-jurisdiction"] = jurisdiction;
                                 return true;
@@ -242,7 +234,7 @@ CSL.Node.group = {
             if (state.build["publisher-special"]) {
                 state.build["publisher-special"] = false;
                 if ("string" === typeof state[state.build.root].opt["name-delimiter"]) {
-                    func = function (state, Item) {
+                    func = function (state) {
                         if (state.publisherOutput) {
                             state.publisherOutput.render();
                             state.publisherOutput = false;

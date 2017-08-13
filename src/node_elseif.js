@@ -1,7 +1,5 @@
-/*global CSL: true */
 
 CSL.Node["else-if"] = {
-    //
     // these function are the same as those in if, might just clone
     build: function (state, target) {
         CSL.Conditions.TopNode.call(this, state, target);

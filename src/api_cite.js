@@ -1,5 +1,3 @@
-/*global CSL: true */
-
 CSL.Engine.prototype.previewCitationCluster = function (citation, citationsPre, citationsPost, newMode) {
     // Generate output for a hypothetical citation at the current position,
     // Leave the registry in the same state in which it was found.
@@ -371,17 +369,18 @@ CSL.Engine.prototype.processCitationCluster = function (citation, citationsPre, 
                             var oldCount = this.registry.registry[myid]["citation-count"]
                             var newCount = this.registry.citationreg.citationsByItemId[myid].length;
                             this.registry.registry[myid]["citation-count"] = this.registry.citationreg.citationsByItemId[myid].length;
+                            var l, llen;
                             if ("number" === typeof oldCount) {
                                 var oldCountCheck = (oldCount < 2);
                                 var newCountCheck = (newCount < 2);
                                 if (oldCountCheck !== newCountCheck) {
-                                    for (var l=0,llen=this.registry.citationreg.citationsByItemId[myid].length;l<llen;l++) {
+                                    for (l=0,llen=this.registry.citationreg.citationsByItemId[myid].length;l<llen;l++) {
                                         rerunAkeys[this.registry.registry[myid].ambig] = true;
                                         this.tmp.taintedCitationIDs[this.registry.citationreg.citationsByItemId[myid][l].citationID] = true;
                                     }
                                 }
                             } else {
-                                for (var l=0,llen=this.registry.citationreg.citationsByItemId[myid].length;l<llen;l++) {
+                                for (l=0,llen=this.registry.citationreg.citationsByItemId[myid].length;l<llen;l++) {
                                     rerunAkeys[this.registry.registry[myid].ambig] = true;
                                     this.tmp.taintedCitationIDs[this.registry.citationreg.citationsByItemId[myid][l].citationID] = true;
                                 }
@@ -791,7 +790,7 @@ CSL.Engine.prototype.makeCitationCluster = function (rawList) {
  * [boolean] If true, include first-reference-note-number value in cite
  */
 CSL.getAmbiguousCite = function (Item, disambig, visualForm, item) {
-    var use_parallels, ret;
+    var ret;
     var flags = this.tmp.group_context.tip;
     var oldTermSiblingLayer = {
         term_intended: flags.term_intended,
@@ -901,7 +900,7 @@ CSL.getSpliceDelimiter = function (last_collapsed, pos) {
  * flexible inter-cite splicing.
  */
 CSL.getCitationCluster = function (inputList, citationID) {
-    var result, objects, myparams, len, pos, item, last_collapsed, params, empties, composite, compie, myblobs, Item, llen, ppos, obj, preceding_item, txt_esc, error_object;
+    var result, objects, myparams, len, pos, item, last_collapsed, params, composite, compie, myblobs, Item, llen, ppos, obj, preceding_item, txt_esc, error_object;
     inputList = inputList ? inputList : [];
     this.tmp.last_primary_names_string = false;
     txt_esc = CSL.getSafeEscape(this);
@@ -936,7 +935,6 @@ CSL.getCitationCluster = function (inputList, citationID) {
     if (this.opt.xclass === "note") {
         var parasets = [];
         var lastTitle = false;
-        var lastPosition = false;
         var lastID = false;
         var lst = [];
         for (var i=0, ilen = inputList.length; i < ilen; i += 1) {
@@ -953,7 +951,6 @@ CSL.getCitationCluster = function (inputList, citationID) {
                 lst.push(inputList[i][1]);
             }
             lastTitle = title;
-            lastPosition = position;
             lastID = id;
         }
         // We now have a list of sublists, each w/matching titles
@@ -1064,16 +1061,8 @@ CSL.getCitationCluster = function (inputList, citationID) {
     // of it to get each cite item, setting params from
     // the array that was built in the preceding loop.
     //
-    empties = 0;
     myblobs = this.output.queue.slice();
 
-    // Use a fake blob to reflect any mods to the suffix and delimiter
-    var fakeblob = {
-        strings: {
-            suffix: this.citation.opt.layout_suffix,
-            delimiter: this.citation.opt.layout_delimiter                
-        }
-    };
     var suffix = this.citation.opt.layout_suffix;
     var last_locale = this.tmp.cite_locales[this.tmp.cite_locales.length - 1];
     //
@@ -1095,7 +1084,7 @@ CSL.getCitationCluster = function (inputList, citationID) {
     suffix = this.output.checkNestedBrace.update(suffix);
 
 
-    for (var i=0,ilen=this.output.queue.length;i<ilen;i+=1) {
+    for (i=0,ilen=this.output.queue.length;i<ilen;i+=1) {
         CSL.Output.Queue.purgeEmptyBlobs(this.output.queue[i]);
     }
     if (!this.tmp.suppress_decorations && this.output.queue.length) {
@@ -1111,7 +1100,7 @@ CSL.getCitationCluster = function (inputList, citationID) {
         }
     }
     if (this.opt.development_extensions.clean_up_csl_flaws) {
-        for (var j=0,jlen=this.output.queue.length;j<jlen;j+=1) {
+        for (j=0,jlen=this.output.queue.length;j<jlen;j+=1) {
             //print("OUTPUT[5]: "+JSON.stringify(this.output.queue[j],['strings','prefix','suffix','delimiter','blobs','decorations'],2))
             this.output.adjust.upward(this.output.queue[j]);
             //print("OUTPUT[4]: "+JSON.stringify(this.output.queue[j],['strings','prefix','suffix','delimiter','blobs','decorations'],2))
@@ -1191,9 +1180,6 @@ CSL.getCitationCluster = function (inputList, citationID) {
             if ("undefined" !== typeof compie) {
                 buffer.push(compie);
             }
-        }
-        if (buffer.length === 0 && !inputList[pos][1]["suppress-author"]) {
-            empties += 1;
         }
         if (buffer.length > 1 && typeof buffer[0] !== "string") {
             buffer = [this.output.renderBlobs(buffer)];
@@ -1338,10 +1324,11 @@ CSL.citeStart = function (Item, item, blockShadowNumberReset) {
                     this.tmp.disambig_request = this.tmp.disambig_settings;
                     this.tmp.disambig_settings.givens = this.registry.registry[Item.id].disambig.givens.slice();
                     this.tmp.disambig_request.givens = this.registry.registry[Item.id].disambig.givens.slice();
-                    for (var i=0,ilen=this.tmp.disambig_settings.givens.length;i<ilen;i+=1) {
+                    var i, ilen;
+                    for (i=0,ilen=this.tmp.disambig_settings.givens.length;i<ilen;i+=1) {
                         this.tmp.disambig_settings.givens[i] = this.registry.registry[Item.id].disambig.givens[i].slice();
                     }
-                    for (var i=0,ilen=this.tmp.disambig_request.givens.length;i<ilen;i+=1) {
+                    for (i=0,ilen=this.tmp.disambig_request.givens.length;i<ilen;i+=1) {
                         this.tmp.disambig_request.givens[i] = this.registry.registry[Item.id].disambig.givens[i].slice();
                     }
                 }
@@ -1408,7 +1395,7 @@ CSL.citeEnd = function (Item, item) {
 
     if (this.tmp.issued_date && this.tmp.renders_collection_number) {
         var buf = [];
-        for (var i = this.tmp.issued_date.list.length - 1; i > this.tmp.issued_date.pos; i += -1) {
+        for (i = this.tmp.issued_date.list.length - 1; i > this.tmp.issued_date.pos; i += -1) {
             buf.push(this.tmp.issued_date.list.pop());
         }
         // Throw away the unwanted blob

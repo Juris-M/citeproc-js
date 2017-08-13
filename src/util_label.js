@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.evaluateLabel = function (node, state, Item, item) {
     var myterm;

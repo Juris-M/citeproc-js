@@ -1,6 +1,6 @@
 CSL.Conditions = {};
 
-CSL.Conditions.TopNode = function (state, target) {
+CSL.Conditions.TopNode = function (state) {
     var func;
     if (this.tokentype === CSL.START || this.tokentype === CSL.SINGLETON) {
         if (this.locale) {
@@ -16,7 +16,7 @@ CSL.Conditions.TopNode = function (state, target) {
     }
     if (this.tokentype === CSL.END || this.tokentype === CSL.SINGLETON) {
         // closingjump
-        func = function (state, Item) {
+        func = function (state) {
             if (this.locale_default) {
                 // Open output tag with locale marker
                 state.output.current.value().old_locale = this.locale_default;

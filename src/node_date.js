@@ -1,8 +1,7 @@
-/*global CSL: true */
 
 CSL.Node.date = {
     build: function (state, target) {
-        var func, date_obj, tok, len, pos, part, dpx, parts, mypos, start, end;
+        var func, date_obj, len, pos, part, dpx, parts, mypos, start, end;
         if (this.tokentype === CSL.START || this.tokentype === CSL.SINGLETON) {
             // used to collect rendered date part names in node_datepart,
             // for passing through to node_key, for use in dates embedded
@@ -16,11 +15,10 @@ CSL.Node.date = {
                 func = CSL.dateMacroAsSortKey;
             } else {
                 func = function (state, Item, item) {
-                    var key, dp;
                     state.tmp.element_rendered_ok = false;
                     state.tmp.donesies = [];
                     state.tmp.dateparts = [];
-                    dp = [];
+                    var dp = [];
                     //if (this.variables.length && Item[this.variables[0]]){
                     if (this.variables.length
                         && !(state.tmp.just_looking

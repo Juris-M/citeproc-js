@@ -1,8 +1,7 @@
-/*global CSL: true */
 
 CSL.Node.text = {
     build: function (state, target) {
-        var variable, func, form, plural, id, num, number, formatter, firstoutput, specialdelimiter, label, myname, names, name, year, suffix, term, dp, len, pos, n, m, value, flag;
+        var func, form, plural, id, num, number, formatter, firstoutput, specialdelimiter, label, suffix, term, value;
         if (this.postponed_macro) {
             var group_start = CSL.Util.cloneToken(this);
             group_start.name = "group";
@@ -92,8 +91,6 @@ CSL.Node.text = {
                             } else {
                                 number = new CSL.NumericBlob(false, num, this, Item.id);
                                 if (state.tmp.in_cite_predecessor) {
-                                    if (!state.tmp.just_looking) {
-                                    }
                                     number.suppress_splice_prefix = true;
                                 }
                                 state.output.append(number, "literal");
@@ -133,7 +130,7 @@ CSL.Node.text = {
                             firstoutput = false;
                             // XXX Can we do something better for length here?
                             for (var i=0,ilen=state.tmp.group_context.mystack.length; i<ilen; i++) {
-                                flags = state.tmp.group_context.mystack[i];
+                                var flags = state.tmp.group_context.mystack[i];
                                 if (!flags.variable_success && (flags.variable_attempt || (!flags.variable_attempt && !flags.term_intended))) {
                                     firstoutput = true;
                                     break;
@@ -169,7 +166,7 @@ CSL.Node.text = {
                 if (this.strings.term) {
                     
                     // printterm
-                    func = function (state, Item, item) {
+                    func = function (state, Item) {
                         var gender = state.opt.gender[Item.type];
                         var term = this.strings.term;
                         term = state.getTerm(term, form, plural, gender, CSL.TOLERANT, this.default_locale);
@@ -212,7 +209,7 @@ CSL.Node.text = {
                     state.build.form = false;
                     state.build.plural = false;
                 } else if (this.variables_real.length) {
-                    func = function (state, Item, item) {
+                    func = function (state, Item) {
 
                         // If some text variable is rendered, we're not collapsing.
                         if (this.variables_real[0] !== "locator") {
@@ -360,13 +357,13 @@ CSL.Node.text = {
                         }
                     }
                     this.execs.push(func);
-                    func = function (state, Item) {
+                    func = function (state) {
                         state.parallel.CloseVariable("text");
                     };
                     this.execs.push(func);
                 } else if (this.strings.value) {
                     // for the text value attribute.
-                    func = function (state, Item) {
+                    func = function (state) {
                         state.tmp.group_context.tip.term_intended = true;
                         // true flags that this is a literal-value term
                         CSL.UPDATE_GROUP_CONTEXT_CONDITION(state, this.strings.value, true);

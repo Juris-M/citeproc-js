@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.PublisherOutput = function (state, group_tok) {
     this.state = state;
@@ -73,7 +72,6 @@ CSL.PublisherOutput.prototype.composeElements = function () {
 CSL.PublisherOutput.prototype.composePublishers = function () {
     var blobs;
     for (var i = 0, ilen = this["publisher-list"].length; i < ilen; i += 1) {
-        var ordered_list = [];
         blobs = [this[this.varlist[0] + "-list"][i], this[this.varlist[1] + "-list"][i]];
         this["publisher-list"][i] = this._join(blobs, this.group_tok.strings.delimiter);
     }
@@ -82,7 +80,6 @@ CSL.PublisherOutput.prototype.composePublishers = function () {
 
 CSL.PublisherOutput.prototype.joinPublishers = function () {
     var blobs = this["publisher-list"];
-    var delim = this.name_delimiter;
     var publishers = this._join(blobs, this.group_tok.strings["subgroup-delimiter"], this.and_blob.single, this.and_blob.multiple, this.group_tok);
     this.state.output.append(publishers, "literal");
 };

@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 /**
  * Helper functions for constructing sort keys.

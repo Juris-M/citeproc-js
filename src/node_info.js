@@ -1,7 +1,6 @@
-/*global CSL: true */
 
 CSL.Node.info = {
-    build: function (state, target) {
+    build: function (state) {
         if (this.tokentype === CSL.START) {
             state.build.skip = "info";
         } else {

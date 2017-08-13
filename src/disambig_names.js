@@ -1,7 +1,6 @@
-/*global CSL: true */
 
 CSL.Registry.NameReg = function (state) {
-    var pkey, ikey, skey, floor, ceiling, dagopt, gdropt, ret, pos, items, strip_periods, set_keys, evalname, delitems, addname, key, myitems, i, ilen;
+    var pkey, ikey, skey, dagopt, gdropt, ret, items, strip_periods, set_keys, evalname, delitems, addname, key, myitems, i, ilen;
     this.state = state;
     this.namereg = {};
     this.nameind = {};
@@ -25,9 +24,9 @@ CSL.Registry.NameReg = function (state) {
         skey = strip_periods(nameobj.given);
         // Drop lowercase suffixes (such as et al.) from given name field
         // for disambiguation purposes.
-        var m = skey.match(/[,\!]* ([^,]+)$/);
+        var m = skey.match(/[,!]* ([^,]+)$/);
         if (m && m[1] === m[1].toLowerCase()) {
-            skey = skey.replace(/[,\!]* [^,]+$/, "");
+            skey = skey.replace(/[,!]* [^,]+$/, "");
         }
         // The %s terminator enables normal initialization behavior
         // with non-Byzantine names.
@@ -38,7 +37,7 @@ CSL.Registry.NameReg = function (state) {
     };
 
     evalname = function (item_id, nameobj, namenum, request_base, form, initials) {
-        var pos, len, items, param;
+        var param;
         // XXX THIS CAN NO LONGER HAPPEN
         if (state.tmp.area.slice(0, 12) === "bibliography" && !form) {
             if ("string" === typeof initials) {
@@ -132,7 +131,7 @@ CSL.Registry.NameReg = function (state) {
     // a print trace, and seems to work okay.
     //
     delitems = function (ids) {
-        var item, pos, len, posA, posB, id, fullkey, llen, ppos, otherid;
+        var pos, len, posB, id, fullkey;
         if ("string" === typeof ids || "number" === typeof ids) {
             ids = ["" + ids];
         }

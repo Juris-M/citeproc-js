@@ -1,7 +1,6 @@
-/*global CSL: true */
 
 CSL.ambigConfigDiff = function(a, b) {
-    var ret, pos, len, ppos, llen;
+    var pos, len, ppos, llen;
     // return of true means the ambig configs differ
     if (a.names.length !== b.names.length) {
         //print("   (1)");
@@ -32,8 +31,8 @@ CSL.ambigConfigDiff = function(a, b) {
     return 0;
 };
 
-CSL.cloneAmbigConfig = function (config, oldconfig, tainters) {
-    var i, ilen, j, jlen, k, klen, param;
+CSL.cloneAmbigConfig = function (config, oldconfig) {
+    var i, ilen, j, jlen, param;
     var ret = {};
     ret.names = [];
     ret.givens = [];

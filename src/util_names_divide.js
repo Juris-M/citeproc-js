@@ -1,4 +1,3 @@
-/*global CSL: true */
 
 CSL.NameOutput.prototype.divideAndTransliterateNames = function () {
     var i, ilen, j, jlen;
@@ -41,7 +40,7 @@ CSL.NameOutput.prototype.divideAndTransliterateNames = function () {
 };
 
 CSL.NameOutput.prototype._normalizeVariableValue = function (Item, variable) {
-    var names, name, i, ilen;
+    var names;
     if ("string" === typeof Item[variable] || "number" === typeof Item[variable]) {
         CSL.debug("name variable \"" + variable + "\" is string or number, not array. Attempting to fix.");
         names = [{literal: Item[variable] + ""}];
@@ -59,10 +58,11 @@ CSL.NameOutput.prototype._normalizeVariableValue = function (Item, variable) {
 
 CSL.NameOutput.prototype._getFreeters = function (v, values) {
     this.freeters[v] = [];
+    var i, value;
     if (this.state.opt.development_extensions.spoof_institutional_affiliations) {
-        for (var i=values.length-1;i>-1;i--) {
+        for (i=values.length-1;i>-1;i--) {
             if (this.isPerson(values[i])) {
-                var value = this._checkNickname(values.pop());
+                value = this._checkNickname(values.pop());
                 if (value) {
                     this.freeters[v].push(value);
                 }
@@ -71,10 +71,10 @@ CSL.NameOutput.prototype._getFreeters = function (v, values) {
             }
         }
     } else {
-        for (var i=values.length-1;i>-1;i--) {
-            var value = values.pop();
+        for (i=values.length-1;i>-1;i--) {
+            value = values.pop();
             if (this.isPerson(value)) {
-                var value = this._checkNickname(value);
+                value = this._checkNickname(value);
             }
             this.freeters[v].push(value);
         }

@@ -1,6 +1,6 @@
 
 CSL.Engine.prototype.makeBibliography = function (bibsection) {
-    var debug, ret, params, maxoffset, item, len, pos, tok, tokk, tokkk, entry_ids, entry_strings, bibliography_errors;
+    var debug, ret, params, item, len, pos, tok, tokk, tokkk, entry_ids, entry_strings;
     debug = false;
     // API change: added in version 1.0.51
     if (!this.bibliography.tokens.length) {
@@ -21,13 +21,13 @@ CSL.Engine.prototype.makeBibliography = function (bibsection) {
         len = this.citation.tokens.length;
         for (pos = 0; pos < len; pos += 1) {
             tokk = this.citation.tokens[pos];
-            CSL.debug("cittok: " + tok.name);
+            CSL.debug("cittok: " + tokk.name);
         }
         CSL.debug("---");
         len = this.bibliography_sort.tokens.length;
         for (pos = 0; pos < len; pos += 1) {
             tokkk = this.bibliography_sort.tokens[pos];
-            CSL.debug("bibsorttok: " + tok.name);
+            CSL.debug("bibsorttok: " + tokkk.name);
         }
     }
     //SNIP-END
@@ -52,7 +52,7 @@ CSL.Engine.prototype.makeBibliography = function (bibsection) {
     if (this.bibliography.opt["second-field-align"]) {
         params["second-field-align"] = this.bibliography.opt["second-field-align"];
     }
-    maxoffset = 0;
+
     len = this.registry.reflist.length;
     for (pos = 0; pos < len; pos += 1) {
         item = this.registry.reflist[pos];
@@ -74,7 +74,7 @@ CSL.Engine.prototype.makeBibliography = function (bibsection) {
  * Compose individual cites into a single string.
  */
 CSL.getBibliographyEntries = function (bibsection) {
-    var ret, input, include, anymatch, allmatch, bib_entry, res, len, pos, item, llen, ppos, spec, lllen, pppos, bib_layout, topblobs, all_item_ids, entry_item_ids, debug, collapse_parallel, i, ilen, siblings, skips, sortedItems, eyetem, chr, entry_item_data, j, jlen, newIDs, originalIDs;
+    var ret, input, include, anymatch, allmatch, bib_entry, res, item, spec, lllen, pppos, topblobs, entry_item_ids, debug, collapse_parallel, i, ilen, siblings, skips, sortedItems, eyetem, entry_item_data, j, jlen;
     ret = [];
     entry_item_data = [];
     this.tmp.area = "bibliography";
@@ -296,11 +296,11 @@ CSL.getBibliographyEntries = function (bibsection) {
             }
             topblobs[0].strings.prefix = this.bibliography.opt.layout_prefix + topblobs[0].strings.prefix;
         }
-        for (var j=0,jlen=this.output.queue.length;j<jlen;j+=1) {
+        for (j=0,jlen=this.output.queue.length;j<jlen;j+=1) {
             CSL.Output.Queue.purgeEmptyBlobs(this.output.queue[j]);
             //print("XXX: "+JSON.stringify(this.output.queue[j],['strings','prefix','suffix','delimiter','blobs','decorations'],2))
         }
-        for (var j=0,jlen=this.output.queue.length;j<jlen;j+=1) {
+        for (j=0,jlen=this.output.queue.length;j<jlen;j+=1) {
             this.output.adjust.upward(this.output.queue[j]);
             this.output.adjust.leftward(this.output.queue[j]);
             this.output.adjust.downward(this.output.queue[j],true);
