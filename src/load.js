@@ -853,7 +853,7 @@ var CSL = {
         "sv-SE":"Swedish",
         "th-TH":"Thai",
         "tr-TR":"Turkish",
-        "uk-UA":"Ukranian",
+        "uk-UA":"Ukrainian",
         "vi-VN":"Vietnamese",
         "zh-CN":"Chinese (CN)",
         "zh-TW":"Chinese (TW)"
