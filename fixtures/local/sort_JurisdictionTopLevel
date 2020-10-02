@@ -1,0 +1,233 @@
+>>===== MODE =====>>
+bibliography
+<<===== MODE =====<<
+
+>>===== RESULT =====>>
+<div class="csl-bib-body">
+  <div class="csl-entry">Judgment ofNovember 22, 2012 Rs C-139/11,.</div>
+  <div class="csl-entry">ogh, 11.09.2012, 6 Ob 24/11i.</div>
+  <div class="csl-entry">lg, 29.11.2018, 2R247/18s.</div>
+  <div class="csl-entry">vfgh, 18.06.2019, G150/2018 ua.</div>
+  <div class="csl-entry">515 U.S. 618.</div>
+</div>
+<<===== RESULT =====<<
+
+>>===== INPUT =====>>
+[
+  {
+    "id": "ITEM-1",
+    "type": "legal_case",
+    "authority": "ogh",
+    "number": "6 Ob 24/11i",
+    "issued": {
+      "date-parts": [
+        [
+          2012,
+          9,
+          11
+        ]
+      ]
+    },
+    "note": "",
+    "multi": {
+      "main": {},
+      "_keys": {}
+    },
+    "jurisdiction": "at"
+  },
+  {
+    "id": "ITEM-2",
+    "type": "legal_case",
+    "authority": "vfgh",
+    "number": "G150/2018 ua",
+    "issued": {
+      "literal": "18.06.2019",
+      "date-parts": [
+        [],
+        []
+      ]
+    },
+    "multi": {
+      "main": {},
+      "_keys": {}
+    },
+    "jurisdiction": "at"
+  },
+  {
+    "id": "G4PEPCSP",
+    "type": "legal_case",
+    "authority": "lg",
+    "number": "2R247/18s",
+    "issued": {
+      "literal": "29.11.2018",
+      "date-parts": [
+        [],
+        []
+      ]
+    },
+    "multi": {
+      "main": {},
+      "_keys": {}
+    },
+    "jurisdiction": "at:innsbruck:feldkirch"
+  },
+  {
+    "id": "WTN385KW",
+    "type": "legal_case",
+    "title": "Florida Bar v. Went For It, Inc.",
+    "volume": "515",
+    "authority": "supreme.court",
+    "page": "618",
+    "issued": {
+      "date-parts": [
+        [
+          1995,
+          6,
+          21
+        ]
+      ]
+    },
+    "note": "",
+    "multi": {
+      "main": {},
+      "_keys": {}
+    },
+    "container-title": "U.S.",
+    "jurisdiction": "us"
+  },
+  {
+    "id": "P5SBRNE6",
+    "type": "legal_case",
+    "title": "Moré/KLM",
+    "authority": "ecj",
+    "number": "Rs C-139/11",
+    "issued": {
+      "date-parts": [
+        [
+          2012,
+          11,
+          22
+        ]
+      ]
+    },
+    "note": "",
+    "multi": {
+      "main": {},
+      "_keys": {}
+    },
+    "jurisdiction": "eu.int:cjeu"
+  }
+]
+<<===== INPUT =====<<
+
+>>===== CSL =====>>
+<style 
+      xmlns="http://purl.org/net/xbiblio/csl"
+      class="note"
+      version="1.1mlz1">
+  <info>
+    <title>Test fixture</title>
+    <id>http://citationstyles.org/tests/fixture</id>
+    <link href="http://citationstyles.org/tests/fixture" rel="self"/>
+    <link href="http://citationstyles.org/documentation/text" rel="documentation"/>
+    <category citation-format="author-date"/>
+    <updated>2014-04-30T13:19:38+00:00</updated>
+    <rights license="http://creativecommons.org/licenses/by-sa/3.0/">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>
+  </info>
+  <locale xmlns="http://purl.org/net/xbiblio/csl" xml:lang="de">
+    <style-options jurisdiction-preference="LegCit"/>
+  </locale>
+
+  <!-- sort macros -->
+  <macro name="jurisdiction-sort">
+    <choose>
+      <if jurisdiction="eu.int">
+        <text value="1"/>
+      </if>
+      <else-if jurisdiction="at">
+        <text value="2"/>
+      </else-if>
+      <else>
+        <text value="jurisdiction"/>
+      </else>
+    </choose>
+  </macro>
+
+  <macro name="type-sort-legal">
+    <choose>
+      <if jurisdiction="at">
+        <choose>
+          <if court-class="o1">
+            <text value="1"/>
+          </if>
+          <else-if court-class="o2">
+            <text value="2"/>
+          </else-if>
+          <else-if court-class="o3">
+            <text value="2"/>
+          </else-if>
+          <else-if court-class="o4">
+            <text value="2"/>
+          </else-if>
+          <else-if court-class="v0">
+            <text value="3"/>
+          </else-if>
+          <else-if court-class="v1">
+            <text value="4"/>
+          </else-if>
+          <else-if court-class="v2">
+            <text value="5"/>
+          </else-if>
+          <else>
+            <text value="6"/>
+          </else>
+        </choose>
+      </if>
+      <text variable="jurisdiction"/>
+    </choose>
+  </macro>
+
+  <!-- Juris-M scaffolding -->
+  <macro name="juris-pretitle">
+    <text value=""/>
+  </macro>
+  <macro name="juris-title">
+    <text value=""/>
+  </macro>
+  <macro name="juris-main">
+    <text value=""/>
+  </macro>
+  <macro name="juris-tail">
+    <text value=""/>
+  </macro>
+  <macro name="juris-pretitle-short">
+    <text value=""/>
+  </macro>
+  <macro name="juris-title-short">
+    <text value=""/>
+  </macro>
+  <macro name="juris-main-short">
+    <text value=""/>
+  </macro>
+  <macro name="juris-tail-short">
+    <text value=""/>
+  </macro>
+  <macro name="juris-locator">
+    <text value=""/>
+  </macro>
+
+  <macro name="jurism">
+    <text macro="juris-main"/>
+  </macro>
+
+  <bibliography>
+    <sort>
+      <key macro="jurisdiction-sort"/>
+      <key macro="type-sort-legal"/>
+    </sort>
+    <layout suffix=".">
+      <text macro="jurism"/>
+    </layout>
+  </bibliography>
+</style>
+<<===== CSL =====<<
