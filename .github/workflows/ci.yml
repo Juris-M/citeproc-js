@@ -1,0 +1,17 @@
+name: CI tests
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+      - run: npm install -g mocha
+      - run: npm install -g citeproc-test-runner
+      - run: cslrun -a --reporter spec
