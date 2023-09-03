@@ -711,6 +711,9 @@ var CSL = {
     VIETNAMESE_SPECIALS: /[\u00c0-\u00c3\u00c8-\u00ca\u00cc\u00cd\u00d2-\u00d5\u00d9\u00da\u00dd\u00e0-\u00e3\u00e8-\u00ea\u00ec\u00ed\u00f2-\u00f5\u00f9\u00fa\u00fd\u0101\u0103\u0110\u0111\u0128\u0129\u0168\u0169\u01a0\u01a1\u01af\u01b0\u1ea0-\u1ef9]/,
 
     VIETNAMESE_NAMES: /^(?:(?:[.AaBbCcDdEeGgHhIiKkLlMmNnOoPpQqRrSsTtUuVvXxYy \u00c0-\u00c3\u00c8-\u00ca\u00cc\u00cd\u00d2-\u00d5\u00d9\u00da\u00dd\u00e0-\u00e3\u00e8-\u00ea\u00ec\u00ed\u00f2-\u00f5\u00f9\u00fa\u00fd\u0101\u0103\u0110\u0111\u0128\u0129\u0168\u0169\u01a0\u01a1\u01af\u01b0\u1ea0-\u1ef9]{2,6})(\s+|$))+$/,
+    
+    KATAKANA_REGEXP: /^[\u30a0-\u30ff,\uff60-\uff9f,\u3000,\s]+$/,
+    STARTSWITH_KATAKANA_REGEXP: /^[\u30a0-\u30ff,\uff60-\uff9f]+[\u3000,a-zA-Z\s\.]*$/,
 
     NOTE_FIELDS_REGEXP: /\{:(?:[\-_a-z]+|[A-Z]+):[^\}]+\}/g,
     NOTE_FIELD_REGEXP: /^([\-_a-z]+|[A-Z]+):\s*([^\}]+)$/,
@@ -6465,6 +6468,13 @@ CSL.Engine.Opt = function () {
     // suffixes we support in separate fields.
     this["parse-names"] = true;
     // this["auto-vietnamese-names"] = true;
+    
+    /*
+    Support Japanese katakana
+    default "legacy-order": always セイメイ
+    activate "normal-order": メイ、セイ and セイ・メイ 
+    */
+    this["katakana-display"] = "normal-order";
 
     this.citation_number_slug = false;
     this.trigraph = "Aaaa00:AaAa00:AaAA00:AAAA00";
@@ -13363,8 +13373,6 @@ CSL.NameOutput.prototype.renderInstitutionNames = function () {
 
             var name = this.institutions[v][j];
 
-            
-
             // XXX Start here for institutions
             // Figure out the three segments: primary, secondary, tertiary
             var j, jlen, localesets;
@@ -13734,6 +13742,51 @@ CSL.NameOutput.prototype._renderPersonalName = function (v, name, slot, pos, i, 
     return personblob;
 };
 
+/** Japanese */
+CSL.NameOutput.prototype._isJapanese = function(name) 
+{
+    /**
+    0: Not japanese
+    1: Japanese
+    */
+    var ret = 0;
+    var top_locale;
+    if(name.multi && name.multi.main) {
+        top_locale = name.multi.main.slice(0, 2);
+    } else if (this.Item.language) {
+        top_locale = this.Item.language.slice(0, 2);
+    }
+    if(top_locale==="ja") {
+        ret = 1;
+    }
+    return ret;
+}
+
+CSL.NameOutput.prototype._isKatakana = function (name) {
+    // 0 =　katakana + kanji || hiragana => Normal Japanese
+    // 1 = katakana or katakana + initial.
+    var ret = 0;
+    var fullname = name.family.replace(/\"/g, '');
+    if(name.given)
+    {
+        fullname = name.family.replace(/\"/g, '')+name.given.replace(/\"/g, '');
+    }
+    
+    if(fullname.match(CSL.KATAKANA_REGEXP)) {
+        ret = 1;
+    }
+    else if(name.family.replace(/\"/g, '').match(CSL.KATAKANA_REGEXP) && name.given.match(CSL.STARTSWITH_KATAKANA_REGEXP))
+    {
+        /**
+        Initial in given name
+        */
+        ret = 1;
+    }
+    return ret;
+}
+
+/***/
+
 CSL.NameOutput.prototype._isRomanesque = function (name) {
     // 0 = entirely non-romanesque
     // 1 = mixed content
@@ -13746,6 +13799,7 @@ CSL.NameOutput.prototype._isRomanesque = function (name) {
         ret = 1;
     }
     var top_locale;
+    
     if (ret == 2) {
         if (name.multi && name.multi.main) {
             top_locale = name.multi.main.slice(0, 2);
@@ -13760,6 +13814,65 @@ CSL.NameOutput.prototype._isRomanesque = function (name) {
     return ret;
 };
 
+/**
+It would be great if this function was renamed something like _renderCJK(language, name, non_dropping_particle, given, family, sort_sep) in the future. Japanese should work as long as family and given are provided.
+*/
+CSL.NameOutput.prototype._renderJapaneseName = function (japanese, katakana, family, given, i, j, sort_sep) {
+    var blob;
+    /**
+    katakana-display
+    "legacy-order": セイメイ 
+    "normal-order": メイ、セイ and セイ・メイ (Family, Given and Given・Family)
+    */
+    
+    /**
+    Take care of "and", which will not be displayed for Japanese. It will be likely "symbol", used for English names
+    Leave delimiter only
+    This is a hacky way to override "name.and". Looking for a better idea.
+    */
+    this.name.and.single.strings.prefix="";
+    this.name.and.single.strings.suffix="";
+    this.name.and.single.blobs=this.name.strings.delimiter;
+    
+    this.name.and.multiple.blobs=this.name.strings.delimiter;
+    this.name.and.multiple.strings.prefix="";
+    this.name.and.multiple.strings.suffix="";
+    
+    if(katakana===1 && this.state.opt["katakana-display"]!=="legacy-order")
+    {
+        if (this.state.inheritOpt(this.name, "name-as-sort-order") === "all" || (this.state.inheritOpt(this.name, "name-as-sort-order") === "first" && i === 0 && (j === 0 || "undefined" === typeof j)))
+        {
+            blob = this._join([family, given], sort_sep);
+        }
+        else
+        {
+            blob = this._join([given, family], "・");
+        }
+    }
+    
+    /**
+    1. Some styles in Japanese require space between Family and Given. We should allow affixing in Japanese too.
+    2. This should be the default but if it leads to issues for existing Japanese styles, we could add a global option to activate it as well. e.g. kanji-display: ["legacy-order", "normal-order"]. It depends on how much we can "pollute" the global options :D 
+    */
+    else if(japanese===1)
+    {
+        /*
+        Romanesque names will not lead here even if language-name is ja
+        */
+        
+        if(this.family && this.family.strings) {
+            family.strings.prefix = this.family.strings.prefix;
+            family.strings.suffix = this.family.strings.suffix;
+        }
+        if(this.given && this.given.strings) {
+            given.strings.prefix = this.given.strings.prefix;
+            given.strings.suffix = this.given.strings.suffix;
+        }
+        blob = this._join([family, given], "");
+    }
+    return blob;
+}
+
 CSL.NameOutput.prototype._renderOnePersonalName = function (value, pos, i, j) {
     var name = value;
     var dropping_particle = this._droppingParticle(name, pos, j);
@@ -13773,6 +13886,7 @@ CSL.NameOutput.prototype._renderOnePersonalName = function (value, pos, i, j) {
         suffix = false;
     }
     var sort_sep = this.state.inheritOpt(this.name, "sort-separator");
+    
     if (!sort_sep) {
         sort_sep = "";
     }
@@ -13783,6 +13897,9 @@ CSL.NameOutput.prototype._renderOnePersonalName = function (value, pos, i, j) {
         suffix_sep = " ";
     }
     var romanesque = this._isRomanesque(name);
+    var katakana = this._isKatakana(name);
+    var japanese = this._isJapanese(name);
+    
     function hasJoiningPunctuation(blob) {
         if (!blob) {
             return false;
@@ -13805,11 +13922,32 @@ CSL.NameOutput.prototype._renderOnePersonalName = function (value, pos, i, j) {
     } else {
         nbspace = " ";
     }
-
+    
+    /**
+    Keep roman rendering if name is Romanesque but language is Japanese
+    The style may still depend on language to render other parts
+    */
+    if((romanesque===2 || romanesque===1) && japanese===1){
+        japanese = 0;
+        romanesque = 2;
+    }
+    
     var blob, merged, first, second;
+        
     if (romanesque === 0) {
-        // XXX handle affixes for given and family
-        blob = this._join([non_dropping_particle, family, given], "");
+        if((katakana===1 && this.state.opt["katakana-display"]!=="legacy-order") || japanese===1){
+            blob = this._renderJapaneseName(japanese, katakana, family, given, i, j, sort_sep);
+        } else {
+            // XXX handle affixes for given and family
+            blob = this._join([non_dropping_particle, family, given], "");
+        }
+    }
+    else if((katakana===1 && this.state.opt["katakana-display"]!=="legacy-order") || japanese===1){
+        /*
+        Sometimes katakana can be partially romanesque when mixed with initials.
+        Initializing katakana is difficult programatically.
+        */
+        blob = this._renderJapaneseName(japanese, katakana, family, given, i, j, sort_sep);
     } else if (romanesque === 1 || name["static-ordering"]) { // entry likes sort order
         merged = this._join([non_dropping_particle, family], nbspace);
         blob = this._join([merged, given], " ");
@@ -17366,7 +17504,7 @@ CSL.Attributes["@default-locale-sort"] = function (state, arg) {
     state.opt["default-locale-sort"] = arg;
 };
 
-CSL.Attributes["@demote-non-dropping-particle"] = function (state, arg) {
+CSL.Attributes["@demote-non-dropping-particle"] = function(state, arg) {
     state.opt["demote-non-dropping-particle"] = arg;
 };
 
@@ -17374,6 +17512,13 @@ CSL.Attributes["@initialize-with-hyphen"] = function (state, arg) {
     if (arg === "false") {
         state.opt["initialize-with-hyphen"] = false;
     }
+};
+
+/**
+Japanese katakana
+*/
+CSL.Attributes["@katakana-display"] = function (state, arg) {
+    state.opt["katakana-display"] = arg;
 };
 
 CSL.Attributes["@institution-parts"] = function (state, arg) {

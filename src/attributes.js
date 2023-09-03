@@ -1554,7 +1554,7 @@ CSL.Attributes["@default-locale-sort"] = function (state, arg) {
     state.opt["default-locale-sort"] = arg;
 };
 
-CSL.Attributes["@demote-non-dropping-particle"] = function (state, arg) {
+CSL.Attributes["@demote-non-dropping-particle"] = function(state, arg) {
     state.opt["demote-non-dropping-particle"] = arg;
 };
 
@@ -1562,6 +1562,13 @@ CSL.Attributes["@initialize-with-hyphen"] = function (state, arg) {
     if (arg === "false") {
         state.opt["initialize-with-hyphen"] = false;
     }
+};
+
+/**
+Japanese katakana
+*/
+CSL.Attributes["@katakana-display"] = function (state, arg) {
+    state.opt["katakana-display"] = arg;
 };
 
 CSL.Attributes["@institution-parts"] = function (state, arg) {
