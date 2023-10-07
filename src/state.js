@@ -122,6 +122,13 @@ CSL.Engine.Opt = function () {
     // suffixes we support in separate fields.
     this["parse-names"] = true;
     // this["auto-vietnamese-names"] = true;
+    
+    /*
+    Support Japanese katakana
+    default "legacy-order": always セイメイ
+    activate "normal-order": メイ、セイ and セイ・メイ 
+    */
+    this["katakana-display"] = "normal-order";
 
     this.citation_number_slug = false;
     this.trigraph = "Aaaa00:AaAa00:AaAA00:AAAA00";
