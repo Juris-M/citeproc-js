@@ -111,7 +111,7 @@ var CSL = {
         "amend.": "amendment",
         "annot.": "annotation",
         "app.": "appendix",
-        "art.": "article",
+        "art.": "article-locator",
         "bibliog.": "bibliography",
         "bk.": "book",
         "ch.": "chapter",
@@ -146,7 +146,7 @@ var CSL = {
         "subsec.": "subsection",
         "supp.": "supplement",
         "tbl.": "table",
-        "tit.": "title",
+        "tit.": "title-locator",
         "vol.": "volume"
     },
     STATUTE_SUBDIV_STRINGS_REVERSE: {
@@ -161,6 +161,7 @@ var CSL = {
         "annotation": "annot.",
         "appendix": "app.",
         "article": "art.",
+        "article-locator": "art.",
         "bibliography": "bibliog.",
         "book": "bk.",
         "chapter": "ch.",
@@ -195,6 +196,7 @@ var CSL = {
         "supplement": "supp.",
         "table": "tbl.",
         "title": "tit.",
+        "title-locator": "tit.",
         "volume": "vol."
     },
 
@@ -208,7 +210,7 @@ var CSL = {
         "amend": "amendment",
         "annot": "annotation",
         "app": "appendix",
-        "art": "article",
+        "art": "article-locator",
         "bibliog": "bibliography",
         "bk": "book",
         "ch": "chapter",
@@ -243,7 +245,7 @@ var CSL = {
         "subsec": "subsection",
         "supp": "supplement",
         "tbl": "table",
-        "tit": "title",
+        "tit": "title-locator",
         "vol": "volume"
     },
     MODULE_MACROS: {
@@ -15915,10 +15917,20 @@ CSL.Attributes["@locator"] = function (state, arg) {
     trylabels = trylabels.split(/\s+/);
     // Strip off any boolean prefix.
     var maketest = function (trylabel) {
+        if (trylabel === "article") {
+            trylabel = "article-locator";
+        } else if (trylabel === "title") {
+            trylabel = "title-locator";
+        }
         return function(Item, item) {
             var label;
             state.processNumber(false, item, "locator");
             label = state.tmp.shadow_numbers.locator.label;
+            // If item.label is not in CSL.STATUTE_SUBDIV_STRINGS_REVERSE,
+            // the label is undefined here.
+            if (!label) {
+                label = item && item.label ? item.label : "page";
+            }
             if (label && trylabel === label) {
                 return true;
             } else {
