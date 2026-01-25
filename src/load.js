@@ -87,7 +87,7 @@ var CSL = {
         "amend.": "amendment",
         "annot.": "annotation",
         "app.": "appendix",
-        "art.": "article",
+        "art.": "article-locator",
         "bibliog.": "bibliography",
         "bk.": "book",
         "ch.": "chapter",
@@ -122,7 +122,7 @@ var CSL = {
         "subsec.": "subsection",
         "supp.": "supplement",
         "tbl.": "table",
-        "tit.": "title",
+        "tit.": "title-locator",
         "vol.": "volume"
     },
     STATUTE_SUBDIV_STRINGS_REVERSE: {
@@ -137,6 +137,7 @@ var CSL = {
         "annotation": "annot.",
         "appendix": "app.",
         "article": "art.",
+        "article-locator": "art.",
         "bibliography": "bibliog.",
         "book": "bk.",
         "chapter": "ch.",
@@ -171,6 +172,7 @@ var CSL = {
         "supplement": "supp.",
         "table": "tbl.",
         "title": "tit.",
+        "title-locator": "tit.",
         "volume": "vol."
     },
 
@@ -184,7 +186,7 @@ var CSL = {
         "amend": "amendment",
         "annot": "annotation",
         "app": "appendix",
-        "art": "article",
+        "art": "article-locator",
         "bibliog": "bibliography",
         "bk": "book",
         "ch": "chapter",
@@ -219,7 +221,7 @@ var CSL = {
         "subsec": "subsection",
         "supp": "supplement",
         "tbl": "table",
-        "tit": "title",
+        "tit": "title-locator",
         "vol": "volume"
     },
     MODULE_MACROS: {

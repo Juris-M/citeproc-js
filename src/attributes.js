@@ -92,10 +92,20 @@ CSL.Attributes["@locator"] = function (state, arg) {
     trylabels = trylabels.split(/\s+/);
     // Strip off any boolean prefix.
     var maketest = function (trylabel) {
+        if (trylabel === "article") {
+            trylabel = "article-locator";
+        } else if (trylabel === "title") {
+            trylabel = "title-locator";
+        }
         return function(Item, item) {
             var label;
             state.processNumber(false, item, "locator");
             label = state.tmp.shadow_numbers.locator.label;
+            // If item.label is not in CSL.STATUTE_SUBDIV_STRINGS_REVERSE,
+            // the label is undefined here.
+            if (!label) {
+                label = item && item.label ? item.label : "page";
+            }
             if (label && trylabel === label) {
                 return true;
             } else {

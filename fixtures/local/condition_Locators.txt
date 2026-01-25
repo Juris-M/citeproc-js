@@ -1,0 +1,380 @@
+>>===== MODE =====>>
+citation
+<<===== MODE =====<<
+
+
+>>===== DESCRIPTION =====>>
+<https://discourse.citationstyles.org/t/unexpected-behavior-with-article-locator/1825>
+<<===== DESCRIPTION =====<<
+
+
+>>===== RESULT =====>>
+act locator: act 42
+appendix locator: app. 42
+article-locator locator: art. 42
+book locator: bk. 42
+canon locator: c. 42
+chapter locator: chap. 42
+column locator: col. 42
+elocation locator: loc. 42
+equation locator: eq. 42
+figure locator: fig. 42
+folio locator: fol. 42
+line locator: l. 42
+note locator: n. 42
+opus locator: op. 42
+paragraph locator: para. 42
+rule locator: r. 42
+scene locator: sc. 42
+sub-verbo locator: s.v. 42
+table locator: tbl. 42
+timestamp locator: 42
+title-locator locator: tit. 42
+verse locator: v. 42
+issue locator: no. 42
+page locator: p. 42
+part locator: pt. 42
+section locator: sec. 42
+supplement locator: supp. 42
+version locator: v. 42
+volume locator: vol. 42
+<<===== RESULT =====<<
+
+
+>>===== CITATION-ITEMS =====>>
+[
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "act"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "appendix"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "article-locator"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "book"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "canon"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "chapter"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "column"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "elocation"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "equation"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "figure"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "folio"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "line"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "note"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "opus"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "paragraph"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "rule"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "scene"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "sub-verbo"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "table"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "timestamp"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "title-locator"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "verse"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "issue"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "page"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "part"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "section"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "supplement"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "version"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "volume"
+        }
+    ]
+]
+<<===== CITATION-ITEMS =====<<
+
+
+>>===== CSL =====>>
+<style
+      xmlns="http://purl.org/net/xbiblio/csl"
+      class="note"
+      version="1.0">
+  <info>
+    <id />
+    <title />
+    <updated>2026-01-24T16:50:04+00:00</updated>
+  </info>
+  <citation>
+    <layout>
+      <group delimiter=" ">
+        <choose>
+          <if locator="act">
+            <text value="act"/>
+          </if>
+          <else-if locator="appendix">
+            <text value="appendix"/>
+          </else-if>
+          <else-if locator="article">
+            <text value="article-locator"/>
+          </else-if>
+          <else-if locator="book">
+            <text value="book"/>
+          </else-if>
+          <else-if locator="canon">
+            <text value="canon"/>
+          </else-if>
+          <else-if locator="chapter">
+            <text value="chapter"/>
+          </else-if>
+          <else-if locator="column">
+            <text value="column"/>
+          </else-if>
+          <else-if locator="elocation">
+            <text value="elocation"/>
+          </else-if>
+          <else-if locator="equation">
+            <text value="equation"/>
+          </else-if>
+          <else-if locator="figure">
+            <text value="figure"/>
+          </else-if>
+          <else-if locator="folio">
+            <text value="folio"/>
+          </else-if>
+          <else-if locator="line">
+            <text value="line"/>
+          </else-if>
+          <else-if locator="note">
+            <text value="note"/>
+          </else-if>
+          <else-if locator="opus">
+            <text value="opus"/>
+          </else-if>
+          <else-if locator="paragraph">
+            <text value="paragraph"/>
+          </else-if>
+          <else-if locator="rule">
+            <text value="rule"/>
+          </else-if>
+          <else-if locator="scene">
+            <text value="scene"/>
+          </else-if>
+          <else-if locator="sub-verbo">
+            <text value="sub-verbo"/>
+          </else-if>
+          <else-if locator="table">
+            <text value="table"/>
+          </else-if>
+          <else-if locator="timestamp">
+            <text value="timestamp"/>
+          </else-if>
+          <else-if locator="title">
+            <text value="title-locator"/>
+          </else-if>
+          <else-if locator="verse">
+            <text value="verse"/>
+          </else-if>
+          <else-if locator="issue">
+            <text value="issue"/>
+          </else-if>
+          <else-if locator="page">
+            <text value="page"/>
+          </else-if>
+          <else-if locator="part">
+            <text value="part"/>
+          </else-if>
+          <else-if locator="section">
+            <text value="section"/>
+          </else-if>
+          <else-if locator="supplement">
+            <text value="supplement"/>
+          </else-if>
+          <else-if locator="version">
+            <text value="version"/>
+          </else-if>
+          <else-if locator="volume">
+            <text value="volume"/>
+          </else-if>
+          <else>
+            <text value="none"/>
+          </else>
+        </choose>
+        <text value="locator:"/>
+        <label variable="locator" form="short"/>
+        <text variable="locator"/>
+      </group>
+    </layout>
+  </citation>
+</style>
+<<===== CSL =====<<
+
+
+>>===== INPUT =====>>
+[
+    {
+        "id": "ITEM-1",
+        "type": "legislation"
+    }
+]
+<<===== INPUT =====<<
+
+
+>>===== VERSION =====>>
+1.0
+<<===== VERSION =====<<

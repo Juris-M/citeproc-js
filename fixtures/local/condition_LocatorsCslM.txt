@@ -1,0 +1,345 @@
+>>===== MODE =====>>
+citation
+<<===== MODE =====<<
+
+
+>>===== DESCRIPTION =====>>
+<https://discourse.citationstyles.org/t/unexpected-behavior-with-article-locator/1825>
+
+These test are the locators in CSL-M but not in CSL v1.0.2.
+<<===== DESCRIPTION =====<<
+
+
+>>===== RESULT =====>>
+addendum locator: add. 42
+amendment locator: amend. 42
+annotation locator: annot. 42
+article locator: art. 42 also matches article-locator
+bibliography locator: bibliog. 42
+clause locator: cl. 42
+comment locator: cmt. 42
+decision locator: dec. 42
+department locator: dept. 42
+example locator: ex. 42
+field locator: fld. 42
+hypothetical locator: hypo. 42
+illustration locator: illus. 42
+introduction locator: intro. 42
+preamble locator: pmbl. 42
+principle locator: princ. 42
+publication locator: pub. 42
+randnummer locator: rn. 42
+schedule locator: sched. 42
+series, locator: ser. 42
+subchapter locator: subch. 42
+subdivision locator: subdiv. 42
+subparagraph locator: subpara. 42
+subsection locator: subsec. 42
+title locator: tit. 42 also matches title-locator
+<<===== RESULT =====<<
+
+
+>>===== CITATION-ITEMS =====>>
+[
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "addendum"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "amendment"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "annotation"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "article"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "bibliography"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "clause"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "comment"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "decision"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "department"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "example"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "field"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "hypothetical"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "illustration"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "introduction"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "preamble"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "principle"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "publication"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "randnummer"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "schedule"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "series,"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "subchapter"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "subdivision"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "subparagraph"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "subsection"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-1",
+            "locator": "42",
+            "label": "title"
+        }
+    ]
+]
+<<===== CITATION-ITEMS =====<<
+
+
+>>===== CSL =====>>
+<style
+      xmlns="http://purl.org/net/xbiblio/csl"
+      class="note"
+      version="1.1">
+  <info>
+    <id />
+    <title />
+    <updated>2026-01-24T16:48:31+00:00</updated>
+  </info>
+  <citation>
+    <layout>
+      <group delimiter=" ">
+        <choose>
+          <if locator="addendum">
+            <text value="addendum"/>
+          </if>
+          <else-if locator="amendment">
+            <text value="amendment"/>
+          </else-if>
+          <else-if locator="annotation">
+            <text value="annotation"/>
+          </else-if>
+          <else-if locator="article">
+            <text value="article"/>
+          </else-if>
+          <else-if locator="bibliography">
+            <text value="bibliography"/>
+          </else-if>
+          <else-if locator="clause">
+            <text value="clause"/>
+          </else-if>
+          <else-if locator="comment">
+            <text value="comment"/>
+          </else-if>
+          <else-if locator="decision">
+            <text value="decision"/>
+          </else-if>
+          <else-if locator="department">
+            <text value="department"/>
+          </else-if>
+          <else-if locator="example">
+            <text value="example"/>
+          </else-if>
+          <else-if locator="field">
+            <text value="field"/>
+          </else-if>
+          <else-if locator="hypothetical">
+            <text value="hypothetical"/>
+          </else-if>
+          <else-if locator="illustration">
+            <text value="illustration"/>
+          </else-if>
+          <else-if locator="introduction">
+            <text value="introduction"/>
+          </else-if>
+          <else-if locator="preamble">
+            <text value="preamble"/>
+          </else-if>
+          <else-if locator="principle">
+            <text value="principle"/>
+          </else-if>
+          <else-if locator="publication">
+            <text value="publication"/>
+          </else-if>
+          <else-if locator="randnummer">
+            <text value="randnummer"/>
+          </else-if>
+          <else-if locator="schedule">
+            <text value="schedule"/>
+          </else-if>
+          <else-if locator="series,">
+            <text value="series,"/>
+          </else-if>
+          <else-if locator="subchapter">
+            <text value="subchapter"/>
+          </else-if>
+          <else-if locator="subdivision">
+            <text value="subdivision"/>
+          </else-if>
+          <else-if locator="subparagraph">
+            <text value="subparagraph"/>
+          </else-if>
+          <else-if locator="subsection">
+            <text value="subsection"/>
+          </else-if>
+          <else-if locator="title">
+            <text value="title"/>
+          </else-if>
+          <else>
+            <text value="none"/>
+          </else>
+        </choose>
+        <text value="locator:"/>
+        <label variable="locator" form="short"/>
+        <text variable="locator"/>
+        <choose>
+          <if locator="article-locator">
+            <text value="also matches article-locator"/>
+          </if>
+          <else-if locator="title-locator">
+            <text value="also matches title-locator"/>
+          </else-if>
+      </group>
+    </layout>
+  </citation>
+</style>
+<<===== CSL =====<<
+
+
+>>===== INPUT =====>>
+[
+    {
+        "id": "ITEM-1",
+        "type": "legislation"
+    }
+]
+<<===== INPUT =====<<
+
+
+>>===== VERSION =====>>
+1.0
+<<===== VERSION =====<<
