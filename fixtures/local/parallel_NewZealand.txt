@@ -12,7 +12,7 @@ Failing parallel collapse in New Zealand Law style
 
 
 >>===== CSL =====>>
-<?xml version="1.1mlz1" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <style xmlns="http://purl.org/net/xbiblio/csl" version="1.1mlz1" class="note" default-locale="en">
   <info>
     <title>Test fixture</title>

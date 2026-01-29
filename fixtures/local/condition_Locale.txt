@@ -88,6 +88,7 @@ Author Bob; Container Bob (編); Secondary Bob (訳)
             <text macro="container-contributors"/>
             <text macro="secondary-contributors"/>
           </else>
+        </choose>
       </group>
     </layout>
   </citation>
