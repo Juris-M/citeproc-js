@@ -59,7 +59,6 @@ P. Writer, J. Scriber, An English Title, K. Editor, ed., English Work.
   <citation et-al-min="4" et-al-use-first="1" disambiguate-add-names="true">
     <layout suffix="." delimiter="; ">
       <group delimiter=", ">
-        <choose>
         <names variable="author">
           <name initialize-with=". "/>
           <label form="short" prefix=", "/>

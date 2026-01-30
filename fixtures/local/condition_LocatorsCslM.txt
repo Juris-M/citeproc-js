@@ -323,6 +323,7 @@ title locator: tit. 42 also matches title-locator
           <else-if locator="title-locator">
             <text value="also matches title-locator"/>
           </else-if>
+        </choose>
       </group>
     </layout>
   </citation>

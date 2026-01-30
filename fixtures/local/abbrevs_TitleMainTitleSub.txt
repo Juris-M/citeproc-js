@@ -78,10 +78,11 @@ sub: Fourth subtitle
   <citation>
     <layout>
       <group delimiter="&#x0A;" suffix="&#x0A;">
-      <text variable="title" prefix="full: "/>
-      <text variable="title" form="short" prefix="short: "/>
-      <text variable="title-main" prefix="main: "/>
-      <text variable="title-sub" prefix="sub: "/>
+        <text variable="title" prefix="full: "/>
+        <text variable="title" form="short" prefix="short: "/>
+        <text variable="title-main" prefix="main: "/>
+        <text variable="title-sub" prefix="sub: "/>
+      </group>
     </layout>
   </citation>
 </style>

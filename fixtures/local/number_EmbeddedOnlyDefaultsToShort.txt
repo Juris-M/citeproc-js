@@ -58,7 +58,6 @@ citation
           <number variable="volume"/>
         </group>
         <number variable="page"/>
-	</group>
       </group>
     </layout>
   </citation>

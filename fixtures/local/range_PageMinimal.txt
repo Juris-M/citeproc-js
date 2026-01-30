@@ -47,7 +47,7 @@ should pass test style_test001
       <number variable="page"/>
     </layout>
   </bibliography>
-
+</style>
 <<===== CSL =====<<
 
 >>===== INPUT =====>>
