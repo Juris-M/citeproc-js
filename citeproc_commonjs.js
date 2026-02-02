@@ -4745,7 +4745,7 @@ CSL.Doppeler = function(rexStr, stringMangler) {
                 match[i] = "";
             }
             var tag = match[i];
-            if (tag === "\'" && split[i+1].length > 0) {
+            if (tag === "\'" && split[i + 1].length > 0 && split[i + 1][0] !== " ") {
                 // Fixes https://forums.zotero.org/discussion/comment/294317
                 split[i+1] = match[i] + split[i+1];
                 match[i] = "";

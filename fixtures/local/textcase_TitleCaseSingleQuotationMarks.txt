@@ -1,0 +1,103 @@
+>>===== MODE =====>>
+citation
+<<===== MODE =====<<
+
+
+>>===== DESCRIPTION =====>>
+<https://github.com/Juris-M/citeproc-js/issues/266>
+<<===== DESCRIPTION =====<<
+
+
+>>===== RESULT =====>>
+Word Word Word Word
+Word “Word” Word Word
+Word “Word” Word Word
+Word “Word” “Word” Word
+Word “Word” Word “Word”
+<<===== RESULT =====<<
+
+
+>>===== CITATION-ITEMS =====>>
+[
+    [
+        {
+            "id": "ITEM-1"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-2"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-3"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-4"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-5"
+        }
+    ]
+]
+<<===== CITATION-ITEMS =====<<
+
+
+>>===== CSL =====>>
+<style
+      xmlns="http://purl.org/net/xbiblio/csl"
+      class="note"
+      version="1.0">
+  <info>
+    <id />
+    <title />
+    <updated>2026-02-02T12:58:17+00:00</updated>
+  </info>
+  <citation>
+    <layout>
+      <text variable="title" text-case="title"/>
+    </layout>
+  </citation>
+</style>
+<<===== CSL =====<<
+
+
+>>===== INPUT =====>>
+[
+    {
+        "id": "ITEM-1",
+        "type": "book",
+        "title": "Word word word word"
+    },
+    {
+        "id": "ITEM-2",
+        "type": "book",
+        "title": "Word \"word\" word word"
+    },
+    {
+        "id": "ITEM-3",
+        "type": "book",
+        "title": "Word 'word' word word"
+    },
+    {
+        "id": "ITEM-4",
+        "type": "book",
+        "title": "Word 'word' 'word' word"
+    },
+    {
+        "id": "ITEM-5",
+        "type": "book",
+        "title": "Word 'word' word 'word'"
+    }
+]
+<<===== INPUT =====<<
+
+
+>>===== VERSION =====>>
+1.0
+<<===== VERSION =====<<
