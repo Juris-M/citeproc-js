@@ -1,0 +1,1275 @@
+>>===== MODE =====>>
+citation
+<<===== MODE =====<<
+
+
+>>===== DESCRIPTION =====>>
+The default locale is `de-DE` and the title case coversions should be skipped.
+
+<https://github.com/Juris-M/citeproc-js/issues/251>
+<<===== DESCRIPTION =====<<
+
+
+>>===== RESULT =====>>
+accessed | Literal date value | Literal date value
+available-date | Literal date value | Literal date value
+event-date | Literal date value | Literal date value
+issued | Literal date value | Literal date value
+original-date | Literal date value | Literal date value
+submitted | Literal date value | Literal date value
+author | Literal name value
+chair | Literal name value
+collection-editor | Literal name value
+compiler | Literal name value
+composer | Literal name value
+container-author | Literal name value
+contributor | Literal name value
+curator | Literal name value
+director | Literal name value
+editor | Literal name value
+editor-translator | Literal name value
+editorial-director | Literal name value
+executive-producer | Literal name value
+guest | Literal name value
+host | Literal name value
+illustrator | Literal name value
+interviewer | Literal name value
+narrator | Literal name value
+organizer | Literal name value
+original-author | Literal name value
+performer | Literal name value
+producer | Literal name value
+recipient | Literal name value
+reviewed-author | Literal name value
+script-writer | Literal name value
+series-creator | Literal name value
+translator | Literal name value
+chapter-number | Literal number value | Literal number value
+collection-number | Literal number value | Literal number value
+edition | Literal number value | Literal number value
+issue | Literal number value | Literal number value
+number | Literal number value | Literal number value
+number-of-pages | Literal number value | Literal number value
+number-of-volumes | Literal number value | Literal number value
+page | Literal number value | Literal number value
+part-number | Literal number value | Literal number value
+printing-number | Literal number value | Literal number value
+section | Literal number value | Literal number value
+supplement-number | Literal number value | Literal number value
+version | Literal number value | Literal number value
+volume | Literal number value | Literal number value
+collection-title | Review of book by A.N. author
+container-title | Review of book by A.N. author
+original-title | Review of book by A.N. author
+part-title | Review of book by A.N. author
+reviewed-title | Review of book by A.N. author
+title | Review of book by A.N. author
+volume-title | Review of book by A.N. author
+title-short | Review of book by A.N. author
+container-title-short | Review of book by A.N. author
+abstract | Review of book by A.N. author
+annote | Review of book by A.N. author
+archive | Review of book by A.N. author
+archive_collection | Review of book by A.N. author
+archive_location | Review of book by A.N. author
+archive-place | Review of book by A.N. author
+authority | Review of book by A.N. author
+call-number | Review of book by A.N. author
+dimensions | Review of book by A.N. author
+division | Review of book by A.N. author
+event | Review of book by A.N. author
+event-title | Review of book by A.N. author
+event-place | Review of book by A.N. author
+genre | Review of book by A.N. author
+jurisdiction | Review of book by A.N. author
+license | Review of book by A.N. author
+medium | Review of book by A.N. author
+note | Review of book by A.N. author
+original-publisher | Review of book by A.N. author
+original-publisher-place | Review of book by A.N. author
+publisher | Review of book by A.N. author
+publisher-place | Review of book by A.N. author
+references | Review of book by A.N. author
+reviewed-genre | Review of book by A.N. author
+scale | Review of book by A.N. author
+source | Review of book by A.N. author
+status | Review of book by A.N. author
+term | Review of book by A.N. author
+value | Review of book by A.N. author
+<<===== RESULT =====<<
+
+
+>>===== CITATION-ITEMS =====>>
+[
+    [{"id": "ITEM-1"}],
+    [{"id": "ITEM-2"}],
+    [{"id": "ITEM-3"}],
+    [{"id": "ITEM-4"}],
+    [{"id": "ITEM-5"}],
+    [{"id": "ITEM-6"}],
+    [{"id": "ITEM-7"}],
+    [{"id": "ITEM-8"}],
+    [{"id": "ITEM-9"}],
+    [{"id": "ITEM-10"}],
+    [{"id": "ITEM-11"}],
+    [{"id": "ITEM-12"}],
+    [{"id": "ITEM-13"}],
+    [{"id": "ITEM-14"}],
+    [{"id": "ITEM-15"}],
+    [{"id": "ITEM-16"}],
+    [{"id": "ITEM-17"}],
+    [{"id": "ITEM-18"}],
+    [{"id": "ITEM-19"}],
+    [{"id": "ITEM-20"}],
+    [{"id": "ITEM-21"}],
+    [{"id": "ITEM-22"}],
+    [{"id": "ITEM-23"}],
+    [{"id": "ITEM-24"}],
+    [{"id": "ITEM-25"}],
+    [{"id": "ITEM-26"}],
+    [{"id": "ITEM-27"}],
+    [{"id": "ITEM-28"}],
+    [{"id": "ITEM-29"}],
+    [{"id": "ITEM-30"}],
+    [{"id": "ITEM-31"}],
+    [{"id": "ITEM-32"}],
+    [{"id": "ITEM-33"}],
+    [{"id": "ITEM-34"}],
+    [{"id": "ITEM-35"}],
+    [{"id": "ITEM-36"}],
+    [{"id": "ITEM-37"}],
+    [{"id": "ITEM-38"}],
+    [{"id": "ITEM-39"}],
+    [{"id": "ITEM-40"}],
+    [{"id": "ITEM-41"}],
+    [{"id": "ITEM-42"}],
+    [{"id": "ITEM-43"}],
+    [{"id": "ITEM-44"}],
+    [{"id": "ITEM-45"}],
+    [{"id": "ITEM-46"}],
+    [{"id": "ITEM-47"}],
+    [{"id": "ITEM-48"}],
+    [{"id": "ITEM-49"}],
+    [{"id": "ITEM-50"}],
+    [{"id": "ITEM-51"}],
+    [{"id": "ITEM-52"}],
+    [{"id": "ITEM-53"}],
+    [{"id": "ITEM-54"}],
+    [{"id": "ITEM-55"}],
+    [{"id": "ITEM-56"}],
+    [{"id": "ITEM-57"}],
+    [{"id": "ITEM-58"}],
+    [{"id": "ITEM-59"}],
+    [{"id": "ITEM-60"}],
+    [{"id": "ITEM-61"}],
+    [{"id": "ITEM-62"}],
+    [{"id": "ITEM-63"}],
+    [{"id": "ITEM-64"}],
+    [{"id": "ITEM-65"}],
+    [{"id": "ITEM-66"}],
+    [{"id": "ITEM-67"}],
+    [{"id": "ITEM-68"}],
+    [{"id": "ITEM-69"}],
+    [{"id": "ITEM-70"}],
+    [{"id": "ITEM-71"}],
+    [{"id": "ITEM-72"}],
+    [{"id": "ITEM-73"}],
+    [{"id": "ITEM-74"}],
+    [{"id": "ITEM-75"}],
+    [{"id": "ITEM-76"}],
+    [{"id": "ITEM-77"}],
+    [{"id": "ITEM-78"}],
+    [{"id": "ITEM-79"}],
+    [{"id": "ITEM-80"}],
+    [{"id": "ITEM-81"}],
+    [{"id": "ITEM-82"}],
+    [{"id": "ITEM-83"}],
+    [{"id": "ITEM-84"}],
+    [{"id": "ITEM-85"}]
+]
+<<===== CITATION-ITEMS =====<<
+
+
+>>===== CSL =====>>
+<style
+      xmlns="http://purl.org/net/xbiblio/csl"
+      class="note"
+      version="1.0"
+      default-locale="de-DE">
+  <info>
+    <id />
+    <title />
+    <updated>2026-01-27T09:26:07+00:00</updated>
+  </info>
+  <locale>
+    <terms>
+      <term name="review-book">Review of book by A.N. author</term>
+    </terms>
+  </locale>
+  <citation>
+    <layout>
+      <group delimiter="; ">
+        <!-- dates -->
+        <group delimiter=" | ">
+          <text value="accessed"/>
+          <date variable="accessed" text-case="title">
+            <date-part name="year"/>
+          </date>
+          <date variable="accessed">
+            <date-part name="year" text-case="title"/>
+          </date>
+        </group>
+        <group delimiter=" | ">
+          <text value="available-date"/>
+          <date variable="available-date" text-case="title">
+            <date-part name="year"/>
+          </date>
+          <date variable="available-date">
+            <date-part name="year" text-case="title"/>
+          </date>
+        </group>
+        <group delimiter=" | ">
+          <text value="event-date"/>
+          <date variable="event-date" text-case="title">
+            <date-part name="year"/>
+          </date>
+          <date variable="event-date">
+            <date-part name="year" text-case="title"/>
+          </date>
+        </group>
+        <group delimiter=" | ">
+          <text value="issued"/>
+          <date variable="issued" text-case="title">
+            <date-part name="year"/>
+          </date>
+          <date variable="issued">
+            <date-part name="year" text-case="title"/>
+          </date>
+        </group>
+        <group delimiter=" | ">
+          <text value="original-date"/>
+          <date variable="original-date" text-case="title">
+            <date-part name="year"/>
+          </date>
+          <date variable="original-date">
+            <date-part name="year" text-case="title"/>
+          </date>
+        </group>
+        <group delimiter=" | ">
+          <text value="submitted"/>
+          <date variable="submitted" text-case="title">
+            <date-part name="year"/>
+          </date>
+          <date variable="submitted">
+            <date-part name="year" text-case="title"/>
+          </date>
+        </group>
+        <!-- names -->
+        <group delimiter=" | ">
+          <text value="author"/>
+          <names variable="author">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="chair"/>
+          <names variable="chair">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="collection-editor"/>
+          <names variable="collection-editor">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="compiler"/>
+          <names variable="compiler">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="composer"/>
+          <names variable="composer">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="container-author"/>
+          <names variable="container-author">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="contributor"/>
+          <names variable="contributor">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="curator"/>
+          <names variable="curator">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="director"/>
+          <names variable="director">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="editor"/>
+          <names variable="editor">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="editor-translator"/>
+          <names variable="editor-translator">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="editorial-director"/>
+          <names variable="editorial-director">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="executive-producer"/>
+          <names variable="executive-producer">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="guest"/>
+          <names variable="guest">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="host"/>
+          <names variable="host">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="illustrator"/>
+          <names variable="illustrator">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="interviewer"/>
+          <names variable="interviewer">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="narrator"/>
+          <names variable="narrator">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="organizer"/>
+          <names variable="organizer">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="original-author"/>
+          <names variable="original-author">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="performer"/>
+          <names variable="performer">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="producer"/>
+          <names variable="producer">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="recipient"/>
+          <names variable="recipient">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="reviewed-author"/>
+          <names variable="reviewed-author">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="script-writer"/>
+          <names variable="script-writer">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="series-creator"/>
+          <names variable="series-creator">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <group delimiter=" | ">
+          <text value="translator"/>
+          <names variable="translator">
+            <name>
+              <name-part name="family" text-case="title"/>
+            </name>
+          </names>
+        </group>
+        <!-- numbers -->
+        <group delimiter=" | ">
+          <text value="chapter-number"/>
+          <text variable="chapter-number" text-case="title"/>
+          <number variable="chapter-number" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="collection-number"/>
+          <text variable="collection-number" text-case="title"/>
+          <number variable="collection-number" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="edition"/>
+          <text variable="edition" text-case="title"/>
+          <number variable="edition" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="issue"/>
+          <text variable="issue" text-case="title"/>
+          <number variable="issue" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="number"/>
+          <text variable="number" text-case="title"/>
+          <number variable="number" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="number-of-pages"/>
+          <text variable="number-of-pages" text-case="title"/>
+          <number variable="number-of-pages" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="number-of-volumes"/>
+          <text variable="number-of-volumes" text-case="title"/>
+          <number variable="number-of-volumes" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="page"/>
+          <text variable="page" text-case="title"/>
+          <number variable="page" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="part-number"/>
+          <text variable="part-number" text-case="title"/>
+          <number variable="part-number" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="printing-number"/>
+          <text variable="printing-number" text-case="title"/>
+          <number variable="printing-number" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="section"/>
+          <text variable="section" text-case="title"/>
+          <number variable="section" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="supplement-number"/>
+          <text variable="supplement-number" text-case="title"/>
+          <number variable="supplement-number" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="version"/>
+          <text variable="version" text-case="title"/>
+          <number variable="version" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="volume"/>
+          <text variable="volume" text-case="title"/>
+          <number variable="volume" text-case="title"/>
+        </group>
+        <!-- titles -->
+        <group delimiter=" | ">
+          <text value="collection-title"/>
+          <text variable="collection-title" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="container-title"/>
+          <text variable="container-title" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="original-title"/>
+          <text variable="original-title" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="part-title"/>
+          <text variable="part-title" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="reviewed-title"/>
+          <text variable="reviewed-title" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="title"/>
+          <text variable="title" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="volume-title"/>
+          <text variable="volume-title" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="title-short"/>
+          <text variable="title-short" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="container-title-short"/>
+          <text variable="container-title-short" text-case="title"/>
+        </group>
+        <!-- strings -->
+        <group delimiter=" | ">
+          <text value="abstract"/>
+          <text variable="abstract" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="annote"/>
+          <text variable="annote" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="archive"/>
+          <text variable="archive" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="archive_collection"/>
+          <text variable="archive_collection" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="archive_location"/>
+          <text variable="archive_location" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="archive-place"/>
+          <text variable="archive-place" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="authority"/>
+          <text variable="authority" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="call-number"/>
+          <text variable="call-number" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="dimensions"/>
+          <text variable="dimensions" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="division"/>
+          <text variable="division" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="event"/>
+          <text variable="event" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="event-title"/>
+          <text variable="event-title" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="event-place"/>
+          <text variable="event-place" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="genre"/>
+          <text variable="genre" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="jurisdiction"/>
+          <text variable="jurisdiction" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="license"/>
+          <text variable="license" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="medium"/>
+          <text variable="medium" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="note"/>
+          <text variable="note" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="original-publisher"/>
+          <text variable="original-publisher" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="original-publisher-place"/>
+          <text variable="original-publisher-place" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="publisher"/>
+          <text variable="publisher" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="publisher-place"/>
+          <text variable="publisher-place" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="references"/>
+          <text variable="references" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="reviewed-genre"/>
+          <text variable="reviewed-genre" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="scale"/>
+          <text variable="scale" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="source"/>
+          <text variable="source" text-case="title"/>
+        </group>
+        <group delimiter=" | ">
+          <text value="status"/>
+          <text variable="status" text-case="title"/>
+        </group>
+        <choose>
+          <if type="article">
+            <group delimiter=" | ">
+              <text value="term"/>
+              <text term="review-book" text-case="title"/>
+            </group>
+          </if>
+        </choose>
+        <choose>
+          <if type="article-journal">
+            <group delimiter=" | ">
+              <text value="value"/>
+              <text value="Review of book by A.N. author" text-case="title"/>
+            </group>
+          </if>
+        </choose>
+      </group>
+    </layout>
+  </citation>
+</style>
+<<===== CSL =====<<
+
+
+>>===== INPUT =====>>
+[
+    {
+        "id": "ITEM-1",
+        "type": "book",
+        "accessed": {
+            "literal": "Literal date value"
+        }
+    },
+    {
+        "id": "ITEM-2",
+        "type": "book",
+        "available-date": {
+            "literal": "Literal date value"
+        }
+    },
+    {
+        "id": "ITEM-3",
+        "type": "book",
+        "event-date": {
+            "literal": "Literal date value"
+        }
+    },
+    {
+        "id": "ITEM-4",
+        "type": "book",
+        "issued": {
+            "literal": "Literal date value"
+        }
+    },
+    {
+        "id": "ITEM-5",
+        "type": "book",
+        "original-date": {
+            "literal": "Literal date value"
+        }
+    },
+    {
+        "id": "ITEM-6",
+        "type": "book",
+        "submitted": {
+            "literal": "Literal date value"
+        }
+    },
+    {
+        "id": "ITEM-7",
+        "type": "book",
+        "author": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-8",
+        "type": "book",
+        "chair": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-9",
+        "type": "book",
+        "collection-editor": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-10",
+        "type": "book",
+        "compiler": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-11",
+        "type": "book",
+        "composer": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-12",
+        "type": "book",
+        "container-author": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-13",
+        "type": "book",
+        "contributor": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-14",
+        "type": "book",
+        "curator": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-15",
+        "type": "book",
+        "director": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-16",
+        "type": "book",
+        "editor": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-17",
+        "type": "book",
+        "editor-translator": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-18",
+        "type": "book",
+        "editorial-director": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-19",
+        "type": "book",
+        "executive-producer": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-20",
+        "type": "book",
+        "guest": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-21",
+        "type": "book",
+        "host": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-22",
+        "type": "book",
+        "illustrator": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-23",
+        "type": "book",
+        "interviewer": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-24",
+        "type": "book",
+        "narrator": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-25",
+        "type": "book",
+        "organizer": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-26",
+        "type": "book",
+        "original-author": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-27",
+        "type": "book",
+        "performer": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-28",
+        "type": "book",
+        "producer": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-29",
+        "type": "book",
+        "recipient": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-30",
+        "type": "book",
+        "reviewed-author": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-31",
+        "type": "book",
+        "script-writer": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-32",
+        "type": "book",
+        "series-creator": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-33",
+        "type": "book",
+        "translator": [
+            {
+                "literal": "Literal name value"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-34",
+        "type": "book",
+        "chapter-number": "Literal number value"
+    },
+    {
+        "id": "ITEM-35",
+        "type": "book",
+        "collection-number": "Literal number value"
+    },
+    {
+        "id": "ITEM-36",
+        "type": "book",
+        "edition": "Literal number value"
+    },
+    {
+        "id": "ITEM-37",
+        "type": "book",
+        "issue": "Literal number value"
+    },
+    {
+        "id": "ITEM-38",
+        "type": "book",
+        "number": "Literal number value"
+    },
+    {
+        "id": "ITEM-39",
+        "type": "book",
+        "number-of-pages": "Literal number value"
+    },
+    {
+        "id": "ITEM-40",
+        "type": "book",
+        "number-of-volumes": "Literal number value"
+    },
+    {
+        "id": "ITEM-41",
+        "type": "book",
+        "page": "Literal number value"
+    },
+    {
+        "id": "ITEM-42",
+        "type": "book",
+        "part-number": "Literal number value"
+    },
+    {
+        "id": "ITEM-43",
+        "type": "book",
+        "printing-number": "Literal number value"
+    },
+    {
+        "id": "ITEM-44",
+        "type": "book",
+        "section": "Literal number value"
+    },
+    {
+        "id": "ITEM-45",
+        "type": "book",
+        "supplement-number": "Literal number value"
+    },
+    {
+        "id": "ITEM-46",
+        "type": "book",
+        "version": "Literal number value"
+    },
+    {
+        "id": "ITEM-47",
+        "type": "book",
+        "volume": "Literal number value"
+    },
+    {
+        "id": "ITEM-48",
+        "type": "book",
+        "collection-title": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-49",
+        "type": "book",
+        "container-title": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-50",
+        "type": "book",
+        "original-title": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-51",
+        "type": "book",
+        "part-title": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-52",
+        "type": "book",
+        "reviewed-title": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-53",
+        "type": "book",
+        "title": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-54",
+        "type": "book",
+        "volume-title": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-55",
+        "type": "book",
+        "title-short": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-56",
+        "type": "book",
+        "container-title-short": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-57",
+        "type": "book",
+        "abstract": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-58",
+        "type": "book",
+        "annote": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-59",
+        "type": "book",
+        "archive": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-60",
+        "type": "book",
+        "archive_collection": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-61",
+        "type": "book",
+        "archive_location": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-62",
+        "type": "book",
+        "archive-place": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-63",
+        "type": "book",
+        "authority": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-64",
+        "type": "book",
+        "call-number": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-65",
+        "type": "book",
+        "dimensions": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-66",
+        "type": "book",
+        "division": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-67",
+        "type": "book",
+        "event": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-68",
+        "type": "book",
+        "event-title": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-69",
+        "type": "book",
+        "event-place": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-70",
+        "type": "book",
+        "genre": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-71",
+        "type": "book",
+        "jurisdiction": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-72",
+        "type": "book",
+        "license": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-73",
+        "type": "book",
+        "medium": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-74",
+        "type": "book",
+        "note": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-75",
+        "type": "book",
+        "original-publisher": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-76",
+        "type": "book",
+        "original-publisher-place": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-77",
+        "type": "book",
+        "publisher": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-78",
+        "type": "book",
+        "publisher-place": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-79",
+        "type": "book",
+        "references": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-80",
+        "type": "book",
+        "reviewed-genre": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-81",
+        "type": "book",
+        "scale": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-82",
+        "type": "book",
+        "source": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-83",
+        "type": "book",
+        "status": "Review of book by A.N. author"
+    },
+    {
+        "id": "ITEM-84",
+        "type": "article"
+    },
+    {
+        "id": "ITEM-85",
+        "type": "article-journal"
+    }
+]
+<<===== INPUT =====<<
+
+
+>>===== VERSION =====>>
+1.0
+<<===== VERSION =====<<
