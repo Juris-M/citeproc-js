@@ -14,4 +14,8 @@ jobs:
           node-version: 16.x
       - run: npm install -g mocha
       - run: npm install -g citeproc-test-runner
-      - run: cslrun -a --reporter spec
+      - run: |
+          cslrun -a --reporter spec 2>&1 | tee test-output.txt
+          if grep -qE '[0-9]+ failing' test-output.txt; then
+            exit 1
+          fi
