@@ -279,7 +279,7 @@ var CSL = {
         }
     },
 
-    MULTI_FIELDS: ["archive", "archive_collection", "archive_location", "archive-place", "authority", "collection-title", "container-title", "country", "division", "edition", "event", "event-place", "event-title", "genre", "jurisdiction", "medium", "original-publisher", "original-publisher-place", "original-title", "part-title", "publisher", "publisher-place", "reviewed-genre", "reviewed-title", "section", "source", "title", "title-short", "volume-title"],
+    MULTI_FIELDS: ["archive", "archive_collection", "archive_location", "archive-place", "authority", "collection-title", "container-title", "country", "division", "event", "event-place", "event-title", "genre", "jurisdiction", "medium", "original-publisher", "original-publisher-place", "original-title", "part-title", "publisher", "publisher-place", "reviewed-genre", "reviewed-title", "source", "title", "title-short", "volume-title"],
 
     LangPrefsMap: {
         "title":"titles",

@@ -198,6 +198,7 @@ CSL.Node.text = {
                             myterm = term;
                         }
                         
+                        CSL.checkNonEnglishTitleCase.call(this, state, Item);
                         // XXXXX Cut-and-paste code in multiple locations. This code block should be
                         // collected in a function.
                         // Tag: strip-periods-block
@@ -306,6 +307,7 @@ CSL.Node.text = {
                             // page gets mangled with the correct collapsing
                             // algorithm
                             func = function(state, Item) {
+                                CSL.checkNonEnglishTitleCase.call(this, state, Item);
                                 state.processNumber(this, Item, this.variables[0], Item.type);
                                 CSL.Util.outputNumericField(state, this.variables[0], Item.id);
                             };
@@ -401,6 +403,7 @@ CSL.Node.text = {
                                 var value;
                                 value = state.getVariable(Item, this.variables[0], form);
                                 if (value) {
+                                    CSL.checkNonEnglishTitleCase.call(this, state, Item);
                                     state.output.append(value, this);
                                 }
                             };
@@ -421,6 +424,7 @@ CSL.Node.text = {
                                     if (value) {
                                         value = "" + value;
                                         value = value.split("\\").join("");
+                                        CSL.checkNonEnglishTitleCase.call(this, state, Item);
                                         state.output.append(value, this);
                                     }
                                 }
@@ -430,10 +434,11 @@ CSL.Node.text = {
                     this.execs.push(func);
                 } else if (this.strings.value) {
                     // for the text value attribute.
-                    func = function (state) {
+                    func = function (state, Item) {
                         state.tmp.group_context.tip.term_intended = true;
                         // true flags that this is a literal-value term
                         CSL.UPDATE_GROUP_CONTEXT_CONDITION(state, this.strings.value, true, this);
+                        CSL.checkNonEnglishTitleCase.call(this, state, Item);
                         state.output.append(this.strings.value, this);
                         if (state.tmp.can_block_substitute) {
                             // Black magic here. This causes the cs:substitution condition to pass,
@@ -452,3 +457,11 @@ CSL.Node.text = {
 };
 
 
+CSL.checkNonEnglishTitleCase = function (state, Item) {
+    if (this.strings["text-case"] === "title") {
+        let lang = Item.language ? Item.language : state.opt.lang;
+        if (lang && lang.slice(0, 2) !== "en") {
+            this.strings["text-case"] = "passthrough";
+        }
+    }
+};

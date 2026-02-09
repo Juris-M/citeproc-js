@@ -1506,9 +1506,12 @@ CSL.Attributes["@text-case"] = function (state, arg) {
         } else {
             this.strings["text-case"] = arg;
             if (arg === "title") {
-                if (Item.jurisdiction) {
+                let lang = Item.language ? Item.language : state.opt.lang;
+                if (lang && lang.slice(0, 2).toLowerCase() !== "en" && this.name !== "text") {
                     this.strings["text-case"] = "passthrough";
-                }
+                } else if (Item.jurisdiction) {
+                    this.strings["text-case"] = "passthrough";
+                } 
             }
         }
     };
