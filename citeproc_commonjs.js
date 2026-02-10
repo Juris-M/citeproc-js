@@ -1580,7 +1580,6 @@ CSL.XmlJSON = function (dataObj) {
         name:"institution",
         attrs:{
             "institution-parts":"long",
-            "delimiter":", "
         },
         children:[
             {
