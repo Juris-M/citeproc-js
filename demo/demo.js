@@ -1,7 +1,7 @@
 // demo.js
 // for citeproc-js CSL citation formatter
 
-var styleID = "apa";
+var styleID = "chicago-notes-bibliography";
 
 // Get the citations that we are supposed to render, in the CSL-json format
 var xhr = new XMLHttpRequest();
@@ -55,8 +55,10 @@ function getProcessor() {
     return citeproc;
 };
 
-
+var startTime = performance.now();
 var citeproc = getProcessor();
+var endTime = performance.now();
+console.log(`Initialized CSL.Engine in ${endTime - startTime} ms`);
 
 function runOneStep(idx) {
     var citeDiv = document.getElementById('cite-div');
