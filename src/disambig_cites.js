@@ -39,6 +39,16 @@ CSL.Disambiguation.prototype.runDisambig = function () {
         this.gnameset = 0;
         this.gname = 0;
         this.clashes = [1, 0];
+        // Failsafe against non-converging disambiguation. Some inputs never
+        // reduce the clash set and never reach "maxed" -- most notably two or
+        // more items whose only name carries no distinguishing content (e.g. a
+        // literal "." placeholder author) under an author-date style: name
+        // expansion can't change the rendered cite, so the scan loop below
+        // spins forever (a sibling of GH #179). Bound the scans per list; if
+        // the bound is exceeded, register the remaining clashing items as-is
+        // and abandon the list so rendering proceeds instead of hanging.
+        var loopGuard = 0;
+        var loopGuardMax = (this.lists[0][1].length + 2) * 1000;
         // each list is scanned repeatedly until all
         // items either succeed or ultimately fail.
         while(this.lists[0][1].length) {
@@ -49,6 +59,16 @@ CSL.Disambiguation.prototype.runDisambig = function () {
             ismax = this.incrementDisambig();
             this.scanItems(this.lists[0]);
             this.evalScan(ismax);
+            loopGuard += 1;
+            if (loopGuard > loopGuardMax) {
+                var giveupBase = this.betterbase || this.base;
+                var remaining = this.lists[0][1];
+                for (var gi = 0, gilen = remaining.length; gi < gilen; gi += 1) {
+                    this.state.registry.registerAmbigToken(this.akey, "" + remaining[gi].id, giveupBase);
+                }
+                this.lists[0] = [giveupBase, []];
+                break;
+            }
         }
         this.lists = this.lists.slice(1);
     }
