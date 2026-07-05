@@ -1,0 +1,94 @@
+>>===== MODE =====>>
+citation
+<<===== MODE =====<<
+
+
+>>===== DESCRIPTION =====>>
+The name delimiter inherited from `<style>` element should also work with literal names.
+
+<http://github.com/Juris-M/citeproc-js/issues/273>
+<<===== DESCRIPTION =====<<
+
+
+>>===== RESULT =====>>
+Literal 1; Literal 2; Literal 3 | Literal 1. Literal 2. Literal 3
+Doe; Roe; Smith | Doe. Roe. Smith
+<<===== RESULT =====<<
+
+
+>>===== CITATION-ITEMS =====>>
+[
+    [
+        {
+            "id": "ITEM-1"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-2"
+        }
+    ]
+]
+<<===== CITATION-ITEMS =====<<
+
+
+>>===== CSL =====>>
+<style xmlns="http://purl.org/net/xbiblio/csl" class="in-text" version="1.0" name-delimiter="; ">
+  <info>
+    <title/>
+    <id/>
+    <updated>2026-02-10T12:30:13+00:00</updated>
+  </info>
+  <citation>
+    <layout>
+      <names variable="author">
+        <name/>
+      </names>
+      <names variable="author" prefix=" | ">
+        <name delimiter=". "/>
+      </names>
+    </layout>
+  </citation>
+</style>
+<<===== CSL =====<<
+
+
+>>===== INPUT =====>>
+[
+    {
+        "id": "ITEM-1",
+        "type": "book",
+        "author": [
+            {
+                "literal": "Literal 1"
+            },
+            {
+                "literal": "Literal 2"
+            },
+            {
+                "literal": "Literal 3"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-2",
+        "type": "book",
+        "author": [
+            {
+                "family": "Doe"
+            },
+            {
+                "family": "Roe"
+            },
+            {
+                "family": "Smith"
+            }
+        ]
+    }
+]
+<<===== INPUT =====<<
+
+
+>>===== VERSION =====>>
+1.0
+<<===== VERSION =====<<

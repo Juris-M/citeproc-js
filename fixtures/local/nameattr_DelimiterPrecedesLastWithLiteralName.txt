@@ -1,0 +1,96 @@
+>>===== MODE =====>>
+citation
+<<===== MODE =====<<
+
+
+>>===== DESCRIPTION =====>>
+https://github.com/Juris-M/citeproc-js/issues/271
+<<===== DESCRIPTION =====<<
+
+
+>>===== RESULT =====>>
+Norge, Danmark and Island
+John Doe, Jane Roe and Richard Smith
+<<===== RESULT =====<<
+
+
+>>===== CITATION-ITEMS =====>>
+[
+    [
+        {
+            "id": "ITEM-1"
+        }
+    ],
+    [
+        {
+            "id": "ITEM-2"
+        }
+    ]
+]
+<<===== CITATION-ITEMS =====<<
+
+
+>>===== CSL =====>>
+<style
+      xmlns="http://purl.org/net/xbiblio/csl"
+      class="note"
+      version="1.0">
+  <info>
+    <id />
+    <title />
+    <updated>2026-02-10T11:37:01+00:00</updated>
+  </info>
+  <citation>
+    <layout>
+      <names variable="author">
+        <name and="text" delimiter-precedes-last="never"/>
+        <!-- <institution and="text" delimiter-precedes-last="never"/> -->
+      </names>
+    </layout>
+  </citation>
+</style>
+<<===== CSL =====<<
+
+
+>>===== INPUT =====>>
+[
+    {
+        "id": "ITEM-1",
+        "type": "treaty",
+        "author": [
+            {
+                "literal": "Norge"
+            },
+            {
+                "literal": "Danmark"
+            },
+            {
+                "literal": "Island"
+            }
+        ]
+    },
+    {
+        "id": "ITEM-2",
+        "type": "book",
+        "author": [
+            {
+                "family": "Doe",
+                "given": "John"
+            },
+            {
+                "family": "Roe",
+                "given": "Jane"
+            },
+            {
+                "family": "Smith",
+                "given": "Richard"
+            }
+        ]
+    }
+]
+<<===== INPUT =====<<
+
+
+>>===== VERSION =====>>
+1.0
+<<===== VERSION =====<<
