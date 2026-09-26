@@ -22,7 +22,7 @@ CSL.Util.PageRangeMangler.getFunction = function (state, rangeType) {
     };
 
     listify = function (str) {
-        var m, lst, ret;
+        var m, lst, ret, pos, len;
         // Normalized delimiter form, for use in regexps
         var hyphens = "\\s+\\-\\s+";
         // Normalize delimiters to hyphen wrapped in single spaces
