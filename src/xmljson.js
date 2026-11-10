@@ -27,7 +27,6 @@ CSL.XmlJSON = function (dataObj) {
         name:"institution",
         attrs:{
             "institution-parts":"long",
-            "delimiter":", "
         },
         children:[
             {
@@ -428,8 +427,6 @@ CSL.XmlJSON.prototype.addInstitutionNodes = function(myjson) {
                 for (var key in myjson.children[i].attrs) {
                     attributes[key] = myjson.children[i].attrs[key];
                 }
-                attributes.delimiter = myjson.children[i].attrs.delimiter;
-                attributes.and = myjson.children[i].attrs.and;
                 insertPos = i;
                 for (var k=0,klen=myjson.children[i].children.length;k<klen;k+=1) {
                     if (myjson.children[i].children[k].attrs.name !== 'family') {
@@ -447,16 +444,16 @@ CSL.XmlJSON.prototype.addInstitutionNodes = function(myjson) {
         }
         if (insertPos > -1) {
             var institution = this.nodeCopy(this.institution);
+            for (var i = 0, ilen = CSL.NAME_ATTRIBUTES.length; i < ilen; i += 1) {
+                var attrname = CSL.NAME_ATTRIBUTES[i];
+                if ("undefined" !== typeof attributes[attrname]) {
+                    institution.attrs[attrname] = attributes[attrname];
+                }
+            }
             for (var i=0,ilen = CSL.INSTITUTION_KEYS.length;i<ilen;i+=1) {
                 var attrname = CSL.INSTITUTION_KEYS[i];
                 if ("undefined" !== typeof attributes[attrname]) {
                     institution.children[0].attrs[attrname] = attributes[attrname];
-                }
-                if (attributes.delimiter) {
-                    institution.attrs.delimiter = attributes.delimiter;
-                }
-                if (attributes.and) {
-                    institution.attrs.and = attributes.and;
                 }
             }
             myjson.children = myjson.children.slice(0,insertPos+1).concat([institution]).concat(myjson.children.slice(insertPos+1));
