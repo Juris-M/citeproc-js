@@ -1,0 +1,72 @@
+>>===== MODE =====>>
+citation
+<<===== MODE =====<<
+
+
+>>===== RESULT =====>>
+>>[0] Book Title, 2021
+<<===== RESULT =====<<
+
+
+>>===== CITATIONS =====>>
+[
+    [
+        {
+            "citationID": "CITATION-1",
+            "citationItems": [
+                {
+                    "id": "ITEM-1"
+                }
+            ],
+            "properties": {
+                "noteIndex": 1
+            }
+        },
+        [],
+        []
+    ]
+]
+<<===== CITATIONS =====<<
+
+
+>>===== CSL =====>>
+<style
+      xmlns="http://purl.org/net/xbiblio/csl"
+      class="note"
+      version="1.0"
+      unknown-style-attribute="foo">
+  <info>
+    <id />
+    <title />
+    <updated>2026-07-30T00:00:00+00:00</updated>
+  </info>
+  <citation>
+    <layout delimiter="; ">
+      <group delimiter=", ">
+        <text variable="title" unknown-node-attribute="bar"/>
+        <date variable="issued" unknown-node-attribute="bar">
+          <date-part name="year"/>
+        </date>
+      </group>
+    </layout>
+  </citation>
+</style>
+<<===== CSL =====<<
+
+
+>>===== INPUT =====>>
+[
+    {
+        "id": "ITEM-1",
+        "type": "book",
+        "title": "Book Title",
+        "issued": {
+            "date-parts": [
+                [
+                    2021
+                ]
+            ]
+        }
+    }
+]
+<<===== INPUT =====<<
