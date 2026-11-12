@@ -109,10 +109,27 @@ CSL.Engine.prototype.restoreProcessorState = function (citations) {
                 item.sortkeys = [];
             }
             Item = this.retrieveItem("" + item.id);
+            // Parse the locator as processCitationCluster() does, on a copy: the first
+            // citation is parsed again below, and remapping a legal section twice doubles it.
+            item = CSL.parseLocator.call(this, Object.assign({}, item));
+            if (this.opt.development_extensions.consolidate_legal_items) {
+                this.remapSectionVariable([[Item,item]]);
+            }
+            if (this.opt.development_extensions.locator_label_parse) {
+                if (item.locator && ["bill","gazette","legislation","regulation","treaty"].indexOf(Item.type) === -1 && (!item.label || item.label === 'page')) {
+                    var m = CSL.LOCATOR_LABELS_REGEXP.exec(item.locator);
+                    if (m) {
+                        var tryLabel = CSL.LOCATOR_LABELS_MAP[m[2]];
+                        if (this.getTerm(tryLabel)) {
+                            item.label = tryLabel;
+                            item.locator = m[3];
+                        }
+                    }
+                }
+            }
             newitem = [Item, item];
             sortedItems.push(newitem);
             oldCitations[i].citationItems[j].item = Item;
-            itemList.push("" + item.id);
         }
         if (!oldCitations[i].properties.unsorted) {
             sortedItems.sort(this.citation.srt.compareCompositeKeys);
@@ -121,8 +138,33 @@ CSL.Engine.prototype.restoreProcessorState = function (citations) {
         // Save citation data in registry
         this.registry.citationreg.citationById[oldCitations[i].citationID] = oldCitations[i];
     }
+    // Index citations by item before registering items, as processCitationCluster()
+    // does: first-reference-note-number and by-cite disambiguation read this index.
+    this.registry.citationreg.citationsByItemId = {};
+    for (i = 0, ilen = oldCitations.length; i < ilen; i += 1) {
+        for (j = 0, jlen = oldCitations[i].citationItems.length; j < jlen; j += 1) {
+            item = oldCitations[i].citationItems[j];
+            if (!this.registry.citationreg.citationsByItemId[item.id]) {
+                this.registry.citationreg.citationsByItemId[item.id] = [];
+                itemList.push("" + item.id);
+            }
+            this.registry.citationreg.citationsByItemId[item.id].push(oldCitations[i]);
+        }
+    }
     // Register Items
     this.updateItems(itemList);
+    // Sort cites on their real sort keys before positions are set, as
+    // processCitationCluster() does; the sort above ran on empty keys.
+    if (!this.opt.citation_number_sort && this.citation_sort.tokens.length > 0) {
+        for (i = 0, ilen = oldCitations.length; i < ilen; i += 1) {
+            if (oldCitations[i].sortedItems.length > 1 && !oldCitations[i].properties.unsorted) {
+                for (j = 0, jlen = oldCitations[i].sortedItems.length; j < jlen; j += 1) {
+                    oldCitations[i].sortedItems[j][1].sortkeys = CSL.getSortKeys.call(this, oldCitations[i].sortedItems[j][0], "citation_sort");
+                }
+                oldCitations[i].sortedItems.sort(this.citation.srt.compareCompositeKeys);
+            }
+        }
+    }
 
     // Construct citationList from original copy
     for (i = 0, ilen = citations.length; i < ilen; i += 1) {
