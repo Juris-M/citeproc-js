@@ -2601,7 +2601,7 @@ CSL.XmlDOM.prototype.insertPublisherAndPlace = function(myxml) {
 };
 
 CSL.XmlDOM.prototype.isChildOfSubstitute = function(node) {
-    if (node.parentNode) {
+    if (node.parentNode && node.parentNode.nodeType === 1) {
         if (node.parentNode.tagName.toLowerCase() === "substitute") {
             return true;
         } else {
@@ -2621,7 +2621,8 @@ CSL.XmlDOM.prototype.addMissingNameNodes = function(myxml) {
             
             var doc = names.ownerDocument;
             var name = doc.createElement("name");
-            names.appendChild(name);
+            // before a <label>
+            names.insertBefore(name, names.firstChild);
         }
     }
 };
