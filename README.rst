@@ -59,7 +59,7 @@ reports on the `citeproc-js GitHub tracker <https://github.com/juris-m/citeproc-
 Building the processor
 ----------------------
 
-The processor files `citeproc.js`` and ``citeproc_commonjs.js`` are built
+The processor files ``citeproc.js`` and ``citeproc_commonjs.js`` are built
 automatically when tests are run (see below).
 
 -------------
