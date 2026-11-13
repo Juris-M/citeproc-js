@@ -102,13 +102,11 @@ CSL.setDecorations = function (state, attributes) {
     var ret, key, pos;
     // This applies a fixed processing sequence
     ret = [];
-    for (pos in CSL.FORMAT_KEY_SEQUENCE) {
-        if (true) {
-            var key = CSL.FORMAT_KEY_SEQUENCE[pos];
-            if (attributes[key]) {
-                ret.push([key, attributes[key]]);
-                delete attributes[key];
-            }
+    for (pos = 0; pos < CSL.FORMAT_KEY_SEQUENCE.length; pos++) {
+        var key = CSL.FORMAT_KEY_SEQUENCE[pos];
+        if (attributes[key]) {
+            ret.push([key, attributes[key]]);
+            delete attributes[key];
         }
     }
     return ret;
