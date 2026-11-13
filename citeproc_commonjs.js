@@ -5057,6 +5057,14 @@ CSL.Engine.prototype.setAutoVietnameseNamesOption = function (arg) {
     }
 };
 
+CSL.Engine.prototype.setFollowLanguageNameOrderOption = function (arg) {
+    if (arg) {
+        this.opt["follow-language-name-order"] = true;
+    } else {
+        this.opt["follow-language-name-order"] = false;
+    }
+};
+
 CSL.Engine.prototype.setAbbreviations = function (arg) {
     if (this.sys.setAbbreviations) {
         this.sys.setAbbreviations(arg);
@@ -6464,6 +6472,7 @@ CSL.Engine.Opt = function () {
     // suffixes we support in separate fields.
     this["parse-names"] = true;
     // this["auto-vietnamese-names"] = true;
+    this["follow-language-name-order"] = true;
 
     this.citation_number_slug = false;
     this.trigraph = "Aaaa00:AaAa00:AaAA00:AAAA00";
@@ -13757,7 +13766,7 @@ CSL.NameOutput.prototype._isRomanesque = function (name) {
         } else if (this.Item.language) {
             top_locale = this.Item.language.slice(0, 2);
         }
-        if (["ja", "zh"].indexOf(top_locale) > -1) {
+        if (this.state.opt['follow-language-name-order'] && ["ja", "zh"].indexOf(top_locale) > -1) {
             ret = 1;
         }
     }
