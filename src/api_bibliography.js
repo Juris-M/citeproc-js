@@ -122,10 +122,9 @@ CSL.getBibliographyEntries = function (bibsection) {
         }
         return false;
     }
-    function eval_list(a, lst) {
-        lllen = lst.length;
-        for (pppos = 0; pppos < lllen; pppos += 1) {
-            if (eval_string(a, lst[pppos])) {
+	function eval_list(a, lst) {
+        for (const [key, value] of Object.entries(lst)) {
+            if (eval_spec(a, value)) {
                 return true;
             }
         }
@@ -139,9 +138,11 @@ CSL.getBibliographyEntries = function (bibsection) {
                 return !b;
             }
         } else {
-            if ("string" === typeof b) {
+            if ("string" === typeof b ) {
                 return eval_string(a, b);
-            } else if (!b) {
+            } else if ("number" === typeof b) {
+                return eval_string(a, b.toString());
+            }else if (!b) {
                 return false;
             } else {
                 return eval_list(a, b);
